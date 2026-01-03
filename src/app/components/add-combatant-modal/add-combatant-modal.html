@@ -1,6 +1,6 @@
 <div class="overlay">
     <div class="modal">
-        <h2>Novo Inimigo</h2>
+        <h2>Novo Combatente</h2>
 
         <form [formGroup]="form" (ngSubmit)="submit()">
 
@@ -41,6 +41,30 @@
                     id="initiative"
                     type="number"
                     formControlName="initiative" />
+            </div>
+
+            <div class="form-field">
+                <label>Tipo</label>
+
+                <div class="type-toggle">
+                    <button
+                        type="button"
+                        class="type-btn npc"
+                        [class.active]="form.value.type === 'NPC'"
+                        (click)="form.patchValue({ type: 'NPC' })"
+                    >
+                        🧙 NPC
+                    </button>
+
+                    <button
+                        type="button"
+                        class="type-btn player"
+                        [class.active]="form.value.type === 'PLAYER'"
+                        (click)="form.patchValue({ type: 'PLAYER' })"
+                    >
+                        🛡️ Jogador
+                    </button>
+                </div>
             </div>
 
             <div class="actions">

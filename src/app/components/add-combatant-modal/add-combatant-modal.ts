@@ -1,28 +1,29 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Enemy } from '../../core/entities/enemy';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Combatant, CombatantType } from '../../core/entities/combatant';
 
 @Component({
-    selector: 'app-add-enemy-modal',
+    selector: 'app-add-combatant-modal',
     imports: [CommonModule, ReactiveFormsModule],
-    templateUrl: './add-enemy-modal.html',
-    styleUrl: './add-enemy-modal.scss',
+    templateUrl: './add-combatant-modal.html',
+    styleUrl: './add-combatant-modal.scss',
 })
-export class AddEnemyModal implements AfterViewInit {
+export class AddCombatantModal implements AfterViewInit {
     @Output() close = new EventEmitter<void>();
-    @Output() create = new EventEmitter<Enemy>();
+    @Output() create = new EventEmitter<Combatant>();
 
     @ViewChild('nameInput') nameInput!: ElementRef<HTMLInputElement>;
 
     form;
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: NonNullableFormBuilder) {
         this.form = this.fb.group({
             name: ['', Validators.required],
             hp: [null, [Validators.required, Validators.min(1)]],
             ac: [null, [Validators.required, Validators.min(1)]],
             initiative: [0, Validators.min(0)],
+            type: ['NPC' as CombatantType, Validators.required]
         });
     }
 
@@ -41,7 +42,7 @@ export class AddEnemyModal implements AfterViewInit {
     submit() {
         if (this.form.invalid) return;
 
-        const {name, hp, ac, initiative} = this.form.value;
+        const {name, hp, ac, initiative, type} = this.form.getRawValue();
 
         this.create.emit({
             id: crypto.randomUUID(),
@@ -50,7 +51,8 @@ export class AddEnemyModal implements AfterViewInit {
             currentHp: hp!,
             armorClass: ac!,
             initiative: initiative ?? 0,
-            alive: true
+            alive: true,
+            type
         });
 
         this.close.emit();

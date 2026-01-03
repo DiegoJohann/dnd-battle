@@ -1,28 +1,27 @@
 <div class="grid" [@listAnim]>
-    @for (enemy of enemies; track enemy.id) {
-        <app-enemy-card
-            [enemy]="enemy"
-            (damage)="applyDamage(enemy, $event)"
-            (remove)="removeEnemy(enemy)"
-            (initiativeChange)="updateInitiative(enemy, $event)"
+    @for (combatant of combatants; track combatant.id) {
+        <app-combatant-card
+            [combatant]="combatant"
+            (damage)="applyDamage(combatant, $event)"
+            (remove)="removeCombatant(combatant)"
+            (initiativeChange)="updateInitiative(combatant, $event)"
         />
     }
 </div>
 
 <button
     class="add-btn"
-    [class.pulse]="enemies.length === 0"
-    (click)="openAddEnemyModal()"
+    [class.pulse]="combatants.length === 0"
+    (click)="openAddCombatantModal()"
 >
     <span class="icon">+</span>
-    <span class="label">Adicionar inimigo</span>
+    <span class="label">Adicionar combatente</span>
 </button>
 
-
 @if (showModal) {
-    <app-add-enemy-modal
+    <app-add-combatant-modal
         (close)="closeModal()"
-        (create)="addEnemy($event)"
+        (create)="addCombatant($event)"
     />
 }
 

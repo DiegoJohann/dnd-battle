@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Enemy } from '../../core/entities/enemy';
+import { Combatant } from '../../core/entities/combatant';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
-    selector: 'app-enemy-card',
+    selector: 'app-combatant-card',
     imports: [],
-    templateUrl: './enemy-card.html',
-    styleUrl: './enemy-card.scss',
+    templateUrl: './combatant-card.html',
+    styleUrl: './combatant-card.scss',
     animations: [
         trigger('cardAnim', [
             transition(':enter', [
@@ -23,9 +23,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
         ])
     ]
 })
-export class EnemyCard {
+export class CombatantCard {
 
-    @Input() enemy!: Enemy;
+    @Input() combatant!: Combatant;
     @Output() damage = new EventEmitter<number>();
     @Output() remove = new EventEmitter<void>();
     @Output() initiativeChange = new EventEmitter<number>();
@@ -41,7 +41,7 @@ export class EnemyCard {
         const init = Number(value);
         if (isNaN(init)) return;
 
-        this.enemy.initiative = init;
+        this.combatant.initiative = init;
         this.initiativeChange.emit(init);
     }
 

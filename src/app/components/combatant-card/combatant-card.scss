@@ -47,6 +47,16 @@
     opacity: 0.4;
 }
 
+.card.player {
+    border-color: #1976d2;
+    background: linear-gradient(180deg, #1e2a38, #1b2430);
+}
+
+.card.npc {
+    border-color: #b71c1c;
+    background: linear-gradient(180deg, #2a1e1e, #241818);
+}
+
 .hp-bar {
     background: #400;
     height: 10px;
@@ -58,5 +68,17 @@
 .hp-fill {
     background: red;
     height: 100%;
-    transition: width 0.3s;
+    transition: width 0.3s ease, background-color 0.2s ease;
+}
+
+.card.player .hp-fill {
+    background: #2e7d32; /* verde */
+}
+
+.card.player .hp-bar {
+    background: #1b3a1b;
+}
+
+.card.npc .hp-bar {
+    background: #400;
 }

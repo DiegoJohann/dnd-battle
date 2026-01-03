@@ -1,16 +1,23 @@
-<div class="card" [@cardAnim] [class.dead]="!enemy.alive">
+<div
+    class="card"
+    [@cardAnim]
+    [class.dead]="!combatant.alive"
+    [class.player]="combatant.type === 'PLAYER'"
+    [class.npc]="combatant.type === 'NPC'"
+>
+
     <button class="delete-btn" (click)="remove.emit()">✕</button>
 
-    <h3>{{ enemy.name }}</h3>
+    <h3>{{ combatant.name }}</h3>
 
     <div class="row">
-        <span>CA: {{ enemy.armorClass }}</span>
+        <span>CA: {{ combatant.armorClass }}</span>
 
         <label class="initiative">
             Ini:
             <input
                 type="number"
-                [value]="enemy.initiative"
+                [value]="combatant.initiative"
                 #initiativeInput
                 (keyup.enter)="updateInitiative(initiativeInput.value)"
             />
@@ -20,12 +27,12 @@
     <div class="hp-bar">
         <div
             class="hp-fill"
-            [style.width.%]="(enemy.currentHp / enemy.maxHp) * 100"
+            [style.width.%]="(combatant.currentHp / combatant.maxHp) * 100"
         ></div>
     </div>
 
     <div class="hp-text">
-        HP {{ enemy.currentHp }} / {{ enemy.maxHp }}
+        HP {{ combatant.currentHp }} / {{ combatant.maxHp }}
     </div>
 
     <input
@@ -33,6 +40,6 @@
         placeholder="Dano"
         (keyup.enter)="applyDamage(damageInput.value); damageInput.value=''"
         #damageInput
-        [disabled]="!enemy.alive"
+        [disabled]="!combatant.alive"
     />
 </div>

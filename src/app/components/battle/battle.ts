@@ -1,13 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Enemy } from '../../core/entities/enemy';
-import { AddEnemyModal } from '../add-enemy-modal/add-enemy-modal';
-import { EnemyCard } from '../enemy-card/enemy-card';
+import { Combatant } from '../../core/entities/combatant';
+import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
+import { CombatantCard } from '../combatant-card/combatant-card';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
 @Component({
     selector: 'app-battle',
-    imports: [CommonModule, AddEnemyModal, EnemyCard],
+    imports: [CommonModule, AddCombatantModal, CombatantCard],
     templateUrl: './battle.html',
     styleUrl: './battle.scss',
     animations: [
@@ -33,10 +33,10 @@ import { animate, query, stagger, style, transition, trigger } from '@angular/an
 })
 export class Battle implements OnInit {
 
-    enemies: Enemy[] = [];
+    combatants: Combatant[] = [];
     showModal = false;
 
-    openAddEnemyModal() {
+    openAddCombatantModal() {
         this.showModal = true;
     }
 
@@ -44,39 +44,39 @@ export class Battle implements OnInit {
         this.showModal = false;
     }
 
-    addEnemy(enemy: Enemy) {
-        this.enemies.push({
-            ...enemy,
-            initiative: enemy.initiative ?? 0
+    addCombatant(combatant: Combatant) {
+        this.combatants.push({
+            ...combatant,
+            initiative: combatant.initiative ?? 0
         });
 
         this.sortByInitiative();
         this.save();
     }
 
-    updateInitiative(enemy: Enemy, initiative: number) {
-        enemy.initiative = initiative;
+    updateInitiative(combatant: Combatant, initiative: number) {
+        combatant.initiative = initiative;
         this.sortByInitiative();
         this.save();
     }
 
-    applyDamage(enemy: Enemy, damage: number) {
-        if (!enemy.alive) return;
+    applyDamage(combatant: Combatant, damage: number) {
+        if (!combatant.alive) return;
 
-        enemy.currentHp = Math.max(enemy.currentHp - damage, 0);
-        enemy.alive = enemy.currentHp > 0;
+        combatant.currentHp = Math.max(combatant.currentHp - damage, 0);
+        combatant.alive = combatant.currentHp > 0;
         this.save();
     }
 
     save() {
-        localStorage.setItem('battle', JSON.stringify(this.enemies));
+        localStorage.setItem('battle', JSON.stringify(this.combatants));
     }
 
     load() {
         const saved = localStorage.getItem('battle');
         if (!saved) return;
 
-        this.enemies = JSON.parse(saved).map((e: Enemy) => ({
+        this.combatants = JSON.parse(saved).map((e: Combatant) => ({
             ...e,
             initiative: e.initiative ?? 0
         }));
@@ -84,8 +84,8 @@ export class Battle implements OnInit {
         this.sortByInitiative();
     }
 
-    removeEnemy(enemy: Enemy) {
-        this.enemies = this.enemies.filter(e => e.id !== enemy.id);
+    removeCombatant(combatant: Combatant) {
+        this.combatants = this.combatants.filter(e => e.id !== combatant.id);
         this.save();
     }
 
@@ -94,7 +94,7 @@ export class Battle implements OnInit {
     }
 
     private sortByInitiative() {
-        this.enemies.sort((a, b) => b.initiative - a.initiative);
+        this.combatants.sort((a, b) => b.initiative - a.initiative);
     }
 
 
@@ -107,7 +107,7 @@ export class Battle implements OnInit {
         if ((keyboardEvent.target as HTMLElement).tagName === 'INPUT') return;
 
         keyboardEvent.preventDefault();
-        this.openAddEnemyModal();
+        this.openAddCombatantModal();
     }
 
 }
