@@ -5,5 +5,56 @@
 }
 
 .add-btn {
-    margin-top: 16px;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background: linear-gradient(135deg, #b00020, #ff1744);
+    color: white;
+
+    border: none;
+    border-radius: 999px;
+    padding: 14px 20px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.add-btn:active {
+    transform: translateY(0);
+}
+
+.icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 16px rgba(255, 23, 68, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 23, 68, 0);
+    }
+}
+
+.add-btn.pulse {
+    animation: pulse 1.5s infinite;
 }

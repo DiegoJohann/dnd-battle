@@ -6,22 +6,41 @@
 
             <div class="form-field">
                 <label for="name">Nome / Descrição</label>
-                <input id="name" type="text" formControlName="name" />
+                <input
+                    #nameInput
+                    id="name"
+                    type="text"
+                    formControlName="name"
+                    (keyup.enter)="hpInput.focus()" />
             </div>
 
             <div class="form-field">
                 <label for="hp">HP Máximo</label>
-                <input id="hp" type="number" formControlName="hp" />
+                <input
+                    #hpInput
+                    id="hp"
+                    type="number"
+                    formControlName="hp"
+                    (keyup.enter)="acInput.focus()" />
             </div>
 
             <div class="form-field">
                 <label for="ac">Classe de Armadura (CA)</label>
-                <input id="ac" type="number" formControlName="ac" />
+                <input
+                    #acInput
+                    id="ac"
+                    type="number"
+                    formControlName="ac"
+                    (keyup.enter)="initInput.focus()"/>
             </div>
 
             <div class="form-field">
                 <label for="initiative">Iniciativa</label>
-                <input id="initiative" type="number" formControlName="initiative" />
+                <input
+                    #initInput
+                    id="initiative"
+                    type="number"
+                    formControlName="initiative" />
             </div>
 
             <div class="actions">

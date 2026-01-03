@@ -50,3 +50,36 @@ input:focus {
     gap: 8px;
     margin-top: 16px;
 }
+
+.actions button {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.actions button[type='submit'] {
+    background: linear-gradient(135deg, #b71c1c, #e53935);
+    color: #fff;
+}
+
+.actions button[type='submit']:hover {
+    background: linear-gradient(135deg, #c62828, #f44336);
+}
+
+.actions button[type='submit']:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.actions button[type='button'] {
+    background: transparent;
+    color: #ccc;
+}
+
+.actions button[type='button']:hover {
+    color: #fff;
+    text-decoration: underline;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Enemy } from '../../core/entities/enemy';
 import { AddEnemyModal } from '../add-enemy-modal/add-enemy-modal';
@@ -96,4 +96,18 @@ export class Battle implements OnInit {
     private sortByInitiative() {
         this.enemies.sort((a, b) => b.initiative - a.initiative);
     }
+
+
+    @HostListener('window:keydown', ['$event'])
+    handleKeydown(event: Event) {
+        const keyboardEvent = event as KeyboardEvent;
+
+        if (keyboardEvent.key.toLowerCase() !== 'a') return;
+
+        if ((keyboardEvent.target as HTMLElement).tagName === 'INPUT') return;
+
+        keyboardEvent.preventDefault();
+        this.openAddEnemyModal();
+    }
+
 }

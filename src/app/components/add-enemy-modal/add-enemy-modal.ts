@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Enemy } from '../../core/entities/enemy';
@@ -9,9 +9,11 @@ import { Enemy } from '../../core/entities/enemy';
     templateUrl: './add-enemy-modal.html',
     styleUrl: './add-enemy-modal.scss',
 })
-export class AddEnemyModal {
+export class AddEnemyModal implements AfterViewInit {
     @Output() close = new EventEmitter<void>();
     @Output() create = new EventEmitter<Enemy>();
+
+    @ViewChild('nameInput') nameInput!: ElementRef<HTMLInputElement>;
 
     form;
 
@@ -22,6 +24,18 @@ export class AddEnemyModal {
             ac: [null, [Validators.required, Validators.min(1)]],
             initiative: [0, Validators.min(0)],
         });
+    }
+
+    ngAfterViewInit() {
+        this.nameInput.nativeElement.focus();
+    }
+
+    @HostListener('document:keydown', ['$event'])
+    handleKeydown(event: KeyboardEvent) {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            this.close.emit();
+        }
     }
 
     submit() {
