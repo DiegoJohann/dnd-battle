@@ -3,12 +3,33 @@ import { CommonModule } from '@angular/common';
 import { Enemy } from '../../core/entities/enemy';
 import { AddEnemyModal } from '../add-enemy-modal/add-enemy-modal';
 import { EnemyCard } from '../enemy-card/enemy-card';
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
 @Component({
     selector: 'app-battle',
     imports: [CommonModule, AddEnemyModal, EnemyCard],
     templateUrl: './battle.html',
     styleUrl: './battle.scss',
+    animations: [
+        trigger('listAnim', [
+            transition('* <=> *', [
+                query(
+                    ':enter, :leave',
+                    style({opacity: 0}),
+                    {optional: true}
+                ),
+                query(
+                    ':enter',
+                    stagger(50, [
+                        animate('200ms ease-out',
+                            style({opacity: 1})
+                        )
+                    ]),
+                    {optional: true}
+                )
+            ])
+        ])
+    ]
 })
 export class Battle implements OnInit {
 
@@ -24,7 +45,18 @@ export class Battle implements OnInit {
     }
 
     addEnemy(enemy: Enemy) {
-        this.enemies.push(enemy);
+        this.enemies.push({
+            ...enemy,
+            initiative: enemy.initiative ?? 0
+        });
+
+        this.sortByInitiative();
+        this.save();
+    }
+
+    updateInitiative(enemy: Enemy, initiative: number) {
+        enemy.initiative = initiative;
+        this.sortByInitiative();
         this.save();
     }
 
@@ -42,7 +74,14 @@ export class Battle implements OnInit {
 
     load() {
         const saved = localStorage.getItem('battle');
-        if (saved) this.enemies = JSON.parse(saved);
+        if (!saved) return;
+
+        this.enemies = JSON.parse(saved).map((e: Enemy) => ({
+            ...e,
+            initiative: e.initiative ?? 0
+        }));
+
+        this.sortByInitiative();
     }
 
     removeEnemy(enemy: Enemy) {
@@ -52,5 +91,9 @@ export class Battle implements OnInit {
 
     ngOnInit() {
         this.load();
+    }
+
+    private sortByInitiative() {
+        this.enemies.sort((a, b) => b.initiative - a.initiative);
     }
 }

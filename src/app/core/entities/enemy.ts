@@ -4,5 +4,6 @@ export interface Enemy {
     maxHp: number;
     currentHp: number;
     armorClass: number;
+    initiative: number;
     alive: boolean;
 }

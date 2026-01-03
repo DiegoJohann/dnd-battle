@@ -2,11 +2,35 @@
     <div class="modal">
         <h2>Novo Inimigo</h2>
 
-        <input placeholder="Nome / Descrição" [(ngModel)]="name" />
-        <input type="number" placeholder="HP" [(ngModel)]="hp" />
-        <input type="number" placeholder="CA" [(ngModel)]="ac" />
+        <form [formGroup]="form" (ngSubmit)="submit()">
 
-        <button (click)="submit()">Adicionar</button>
-        <button (click)="close.emit()">Cancelar</button>
+            <div class="form-field">
+                <label for="name">Nome / Descrição</label>
+                <input id="name" type="text" formControlName="name" />
+            </div>
+
+            <div class="form-field">
+                <label for="hp">HP Máximo</label>
+                <input id="hp" type="number" formControlName="hp" />
+            </div>
+
+            <div class="form-field">
+                <label for="ac">Classe de Armadura (CA)</label>
+                <input id="ac" type="number" formControlName="ac" />
+            </div>
+
+            <div class="form-field">
+                <label for="initiative">Iniciativa</label>
+                <input id="initiative" type="number" formControlName="initiative" />
+            </div>
+
+            <div class="actions">
+                <button type="button" (click)="close.emit()">Cancelar</button>
+                <button type="submit" [disabled]="form.invalid">
+                    Adicionar
+                </button>
+            </div>
+
+        </form>
     </div>
 </div>

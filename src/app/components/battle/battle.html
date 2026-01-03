@@ -1,9 +1,10 @@
-<div class="grid">
+<div class="grid" [@listAnim]>
     @for (enemy of enemies; track enemy.id) {
         <app-enemy-card
             [enemy]="enemy"
             (damage)="applyDamage(enemy, $event)"
             (remove)="removeEnemy(enemy)"
+            (initiativeChange)="updateInitiative(enemy, $event)"
         />
     }
 </div>

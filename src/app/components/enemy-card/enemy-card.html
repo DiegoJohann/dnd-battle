@@ -1,9 +1,21 @@
-<div class="card" [class.dead]="!enemy.alive">
+<div class="card" [@cardAnim] [class.dead]="!enemy.alive">
     <button class="delete-btn" (click)="remove.emit()">✕</button>
 
     <h3>{{ enemy.name }}</h3>
 
-    <div class="ac">CA: {{ enemy.armorClass }}</div>
+    <div class="row">
+        <span>CA: {{ enemy.armorClass }}</span>
+
+        <label class="initiative">
+            Ini:
+            <input
+                type="number"
+                [value]="enemy.initiative"
+                #initiativeInput
+                (keyup.enter)="updateInitiative(initiativeInput.value)"
+            />
+        </label>
+    </div>
 
     <div class="hp-bar">
         <div
