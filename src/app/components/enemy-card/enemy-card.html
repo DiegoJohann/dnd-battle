@@ -1,0 +1,26 @@
+<div class="card" [class.dead]="!enemy.alive">
+    <button class="delete-btn" (click)="remove.emit()">✕</button>
+
+    <h3>{{ enemy.name }}</h3>
+
+    <div class="ac">CA: {{ enemy.armorClass }}</div>
+
+    <div class="hp-bar">
+        <div
+            class="hp-fill"
+            [style.width.%]="(enemy.currentHp / enemy.maxHp) * 100"
+        ></div>
+    </div>
+
+    <div class="hp-text">
+        HP {{ enemy.currentHp }} / {{ enemy.maxHp }}
+    </div>
+
+    <input
+        type="number"
+        placeholder="Dano"
+        (keyup.enter)="applyDamage(damageInput.value); damageInput.value=''"
+        #damageInput
+        [disabled]="!enemy.alive"
+    />
+</div>

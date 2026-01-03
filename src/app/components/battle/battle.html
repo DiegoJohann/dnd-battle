@@ -1,0 +1,21 @@
+<div class="grid">
+    @for (enemy of enemies; track enemy.id) {
+        <app-enemy-card
+            [enemy]="enemy"
+            (damage)="applyDamage(enemy, $event)"
+            (remove)="removeEnemy(enemy)"
+        />
+    }
+</div>
+
+<button class="add-btn" (click)="openAddEnemyModal()">
+    + Adicionar Inimigo
+</button>
+
+@if (showModal) {
+    <app-add-enemy-modal
+        (close)="closeModal()"
+        (create)="addEnemy($event)"
+    />
+}
+

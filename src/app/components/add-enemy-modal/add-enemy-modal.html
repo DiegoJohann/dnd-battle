@@ -1,0 +1,12 @@
+<div class="overlay">
+    <div class="modal">
+        <h2>Novo Inimigo</h2>
+
+        <input placeholder="Nome / Descrição" [(ngModel)]="name" />
+        <input type="number" placeholder="HP" [(ngModel)]="hp" />
+        <input type="number" placeholder="CA" [(ngModel)]="ac" />
+
+        <button (click)="submit()">Adicionar</button>
+        <button (click)="close.emit()">Cancelar</button>
+    </div>
+</div>

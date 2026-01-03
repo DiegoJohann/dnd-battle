@@ -1,0 +1,41 @@
+.card {
+    position: relative;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    padding: 12px;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-btn:hover {
+    color: red;
+}
+
+.dead {
+    opacity: 0.4;
+}
+
+.hp-bar {
+    background: #400;
+    height: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.hp-fill {
+    background: red;
+    height: 100%;
+    transition: width 0.3s;
+}
