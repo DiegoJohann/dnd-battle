@@ -19,6 +19,8 @@
     <span class="label">Adicionar combatente</span>
 </button>
 
+<button class="clear-btn" (click)="openClearModal()">🗑️ Limpar</button>
+
 @if (showModal) {
     <app-add-combatant-modal
         (close)="closeModal()"
@@ -26,3 +28,18 @@
     />
 }
 
+@if (showClearModal) {
+    <div class="overlay">
+        <div class="modal">
+            <h2>Limpar campo de batalha</h2>
+            <p>O que você deseja excluir?</p>
+
+            <div class="actions">
+                <button (click)="clearCombatants('NPC')">Somente NPCs</button>
+                <button (click)="clearCombatants('PLAYER')">Somente Jogadores</button>
+                <button (click)="clearCombatants('ALL')">Todos</button>
+                <button (click)="closeClearModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+}

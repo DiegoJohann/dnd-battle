@@ -35,6 +35,7 @@ export class Battle implements OnInit {
 
     combatants: Combatant[] = [];
     showModal = false;
+    showClearModal = false;
 
     openAddCombatantModal() {
         this.showModal = true;
@@ -74,6 +75,29 @@ export class Battle implements OnInit {
         this.save();
     }
 
+    removeCombatant(combatant: Combatant) {
+        this.combatants = this.combatants.filter(e => e.id !== combatant.id);
+        this.save();
+    }
+
+    openClearModal() {
+        this.showClearModal = true;
+    }
+
+    closeClearModal() {
+        this.showClearModal = false;
+    }
+
+    clearCombatants(type: 'NPC' | 'PLAYER' | 'ALL') {
+        if (type === 'ALL') {
+            this.combatants = [];
+        } else {
+            this.combatants = this.combatants.filter(c => c.type !== type);
+        }
+        this.save();
+        this.closeClearModal();
+    }
+
     save() {
         localStorage.setItem('battle', JSON.stringify(this.combatants));
     }
@@ -90,11 +114,6 @@ export class Battle implements OnInit {
         this.sortByInitiative();
     }
 
-    removeCombatant(combatant: Combatant) {
-        this.combatants = this.combatants.filter(e => e.id !== combatant.id);
-        this.save();
-    }
-
     ngOnInit() {
         this.load();
     }
@@ -103,10 +122,14 @@ export class Battle implements OnInit {
         this.combatants.sort((a, b) => b.initiative - a.initiative);
     }
 
-
     @HostListener('window:keydown', ['$event'])
     handleKeydown(event: Event) {
         const keyboardEvent = event as KeyboardEvent;
+
+        if (keyboardEvent.key === 'Escape') {
+            keyboardEvent.preventDefault();
+            this.closeClearModal();
+        }
 
         if (keyboardEvent.key.toLowerCase() !== 'a') return;
 
