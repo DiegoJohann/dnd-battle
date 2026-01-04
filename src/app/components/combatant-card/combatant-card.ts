@@ -27,6 +27,7 @@ export class CombatantCard {
 
     @Input() combatant!: Combatant;
     @Output() damage = new EventEmitter<number>();
+    @Output() healing = new EventEmitter<number>();
     @Output() remove = new EventEmitter<void>();
     @Output() initiativeChange = new EventEmitter<number>();
 
@@ -35,6 +36,13 @@ export class CombatantCard {
         if (isNaN(dmg) || dmg <= 0) return;
 
         this.damage.emit(dmg);
+    }
+
+    applyHealing(value: string) {
+        const heal = Number(value);
+        if (isNaN(heal) || heal <= 0) return;
+
+        this.healing.emit(heal);
     }
 
     updateInitiative(value: string) {

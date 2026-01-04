@@ -36,10 +36,19 @@
     </div>
 
     <input
+        class="health-input"
         type="number"
         placeholder="Dano"
         (keyup.enter)="applyDamage(damageInput.value); damageInput.value=''"
         #damageInput
         [disabled]="!combatant.alive"
+    />
+
+    <input
+        class="health-input"
+        type="number"
+        placeholder="Cura"
+        (keyup.enter)="applyHealing(healingInput.value); healingInput.value=''"
+        #healingInput
     />
 </div>

@@ -68,6 +68,12 @@ export class Battle implements OnInit {
         this.save();
     }
 
+    applyHealing(combatant: Combatant, healing: number) {
+        combatant.currentHp = Math.min(combatant.currentHp + healing, combatant.maxHp);
+        combatant.alive = combatant.currentHp > 0;
+        this.save();
+    }
+
     save() {
         localStorage.setItem('battle', JSON.stringify(this.combatants));
     }

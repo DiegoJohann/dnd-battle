@@ -3,6 +3,7 @@
         <app-combatant-card
             [combatant]="combatant"
             (damage)="applyDamage(combatant, $event)"
+            (healing)="applyHealing(combatant, $event)"
             (remove)="removeCombatant(combatant)"
             (initiativeChange)="updateInitiative(combatant, $event)"
         />
