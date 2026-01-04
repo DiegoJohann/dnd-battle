@@ -132,3 +132,8 @@ input:focus {
 .type-btn:not(.active) {
     opacity: 0.7;
 }
+
+.type-btn lucide-icon {
+    margin-right: 6px;
+    vertical-align: middle;
+}

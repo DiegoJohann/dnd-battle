@@ -2,10 +2,11 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Outpu
 import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Combatant, CombatantType } from '../../core/entities/combatant';
+import { BugIcon, LucideAngularModule, UserIcon } from 'lucide-angular';
 
 @Component({
     selector: 'app-add-combatant-modal',
-    imports: [CommonModule, ReactiveFormsModule],
+    imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
     templateUrl: './add-combatant-modal.html',
     styleUrl: './add-combatant-modal.scss',
 })
@@ -57,4 +58,7 @@ export class AddCombatantModal implements AfterViewInit {
 
         this.close.emit();
     }
+
+    protected readonly BugIcon = BugIcon;
+    protected readonly UserIcon = UserIcon;
 }

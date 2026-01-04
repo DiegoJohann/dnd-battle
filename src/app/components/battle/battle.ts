@@ -4,10 +4,11 @@ import { Combatant } from '../../core/entities/combatant';
 import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
 import { CombatantCard } from '../combatant-card/combatant-card';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
+import { LucideAngularModule, PlusIcon, Trash2Icon } from 'lucide-angular';
 
 @Component({
     selector: 'app-battle',
-    imports: [CommonModule, AddCombatantModal, CombatantCard],
+    imports: [CommonModule, AddCombatantModal, CombatantCard, LucideAngularModule],
     templateUrl: './battle.html',
     styleUrl: './battle.scss',
     animations: [
@@ -139,4 +140,6 @@ export class Battle implements OnInit {
         this.openAddCombatantModal();
     }
 
+    protected readonly PlusIcon = PlusIcon;
+    protected readonly Trash2Icon = Trash2Icon;
 }

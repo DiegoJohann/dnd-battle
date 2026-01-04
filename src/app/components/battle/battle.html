@@ -15,11 +15,14 @@
     [class.pulse]="combatants.length === 0"
     (click)="openAddCombatantModal()"
 >
-    <span class="icon">+</span>
+    <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
     <span class="label">Adicionar combatente</span>
 </button>
 
-<button class="clear-btn" (click)="openClearModal()">🗑️ Limpar</button>
+<button class="clear-btn" (click)="openClearModal()">
+    <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
+    Limpar
+</button>
 
 @if (showModal) {
     <app-add-combatant-modal
