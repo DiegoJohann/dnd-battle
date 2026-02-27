@@ -181,18 +181,22 @@
     background: linear-gradient(135deg, #b71c1c, #e53935); // NPC
     color: #fff;
 }
+
 .modal .actions button:nth-child(2) {
     background: linear-gradient(135deg, #1565c0, #1e88e5); // PLAYER
     color: #fff;
 }
+
 .modal .actions button:nth-child(3) {
     background: #555; // ALL
     color: #fff;
 }
+
 .modal .actions button:nth-child(4) {
     background: transparent;
     color: #ccc;
 }
+
 .modal .actions button:nth-child(4):hover {
     color: #fff;
     text-decoration: underline;

@@ -5,10 +5,11 @@ import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
 import { CombatantCard } from '../combatant-card/combatant-card';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { LucideAngularModule, PlusIcon, Trash2Icon } from 'lucide-angular';
+import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog';
 
 @Component({
     selector: 'app-battle',
-    imports: [CommonModule, AddCombatantModal, CombatantCard, LucideAngularModule],
+    imports: [CommonModule, AddCombatantModal, CombatantCard, LucideAngularModule, ConfirmationDialog],
     templateUrl: './battle.html',
     styleUrl: './battle.scss',
     animations: [
@@ -35,15 +36,18 @@ import { LucideAngularModule, PlusIcon, Trash2Icon } from 'lucide-angular';
 export class Battle implements OnInit {
 
     combatants: Combatant[] = [];
-    showModal = false;
-    showClearModal = false;
+    showAddCombatantModal = false;
+    showClearFieldModal = false;
+
+    showConfirmationDialog = false;
+    combatantToRemove: Combatant | undefined;
 
     openAddCombatantModal() {
-        this.showModal = true;
+        this.showAddCombatantModal = true;
     }
 
-    closeModal() {
-        this.showModal = false;
+    closeAddCombatantModal() {
+        this.showAddCombatantModal = false;
     }
 
     addCombatant(combatant: Combatant) {
@@ -76,17 +80,24 @@ export class Battle implements OnInit {
         this.save();
     }
 
-    removeCombatant(combatant: Combatant) {
-        this.combatants = this.combatants.filter(e => e.id !== combatant.id);
+    onClickRemoveCombatant(combatant: Combatant) {
+        this.combatantToRemove = combatant;
+        this.showConfirmationDialog = true;
+    }
+
+    removeCombatant() {
+        this.combatants = this.combatants.filter(e => e.id !== this.combatantToRemove?.id);
         this.save();
+        this.showConfirmationDialog = false;
+        this.combatantToRemove = undefined;
     }
 
-    openClearModal() {
-        this.showClearModal = true;
+    openClearFieldModal() {
+        this.showClearFieldModal = true;
     }
 
-    closeClearModal() {
-        this.showClearModal = false;
+    closeClearFieldModal() {
+        this.showClearFieldModal = false;
     }
 
     clearCombatants(type: 'NPC' | 'PLAYER' | 'ALL') {
@@ -96,7 +107,7 @@ export class Battle implements OnInit {
             this.combatants = this.combatants.filter(c => c.type !== type);
         }
         this.save();
-        this.closeClearModal();
+        this.closeClearFieldModal();
     }
 
     save() {
@@ -129,7 +140,7 @@ export class Battle implements OnInit {
 
         if (keyboardEvent.key === 'Escape') {
             keyboardEvent.preventDefault();
-            this.closeClearModal();
+            this.closeClearFieldModal();
         }
 
         if (keyboardEvent.key.toLowerCase() !== 'a') return;

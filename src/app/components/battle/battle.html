@@ -4,7 +4,7 @@
             [combatant]="combatant"
             (damage)="applyDamage(combatant, $event)"
             (healing)="applyHealing(combatant, $event)"
-            (remove)="removeCombatant(combatant)"
+            (remove)="onClickRemoveCombatant(combatant)"
             (initiativeChange)="updateInitiative(combatant, $event)"
         />
     }
@@ -19,19 +19,19 @@
     <span class="label">Adicionar combatente</span>
 </button>
 
-<button class="clear-btn" (click)="openClearModal()">
+<button class="clear-btn" (click)="openClearFieldModal()">
     <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
     Limpar
 </button>
 
-@if (showModal) {
+@if (showAddCombatantModal) {
     <app-add-combatant-modal
-        (close)="closeModal()"
+        (close)="closeAddCombatantModal()"
         (create)="addCombatant($event)"
     />
 }
 
-@if (showClearModal) {
+@if (showClearFieldModal) {
     <div class="overlay">
         <div class="modal">
             <h2>Limpar campo de batalha</h2>
@@ -41,8 +41,16 @@
                 <button (click)="clearCombatants('NPC')">Somente NPCs</button>
                 <button (click)="clearCombatants('PLAYER')">Somente Jogadores</button>
                 <button (click)="clearCombatants('ALL')">Todos</button>
-                <button (click)="closeClearModal()">Cancelar</button>
+                <button (click)="closeClearFieldModal()">Cancelar</button>
             </div>
         </div>
     </div>
+}
+
+@if (showConfirmationDialog) {
+    <app-confirmation-dialog
+        [confimationMessage]="'Tem certeza de que deseja remover este combatente?'"
+        (actionConfirmed)="removeCombatant()"
+        (actionRejected)="this.showConfirmationDialog = false; this.combatantToRemove = undefined;"
+    ></app-confirmation-dialog>
 }
