@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ConfirmationDialog {
 
-    @Input() confimationMessage: string = "Tem certeza?";
+    @Input() confirmationMessage: string = "Tem certeza?";
     @Input() acceptLabel: string = "Sim";
     @Input() rejectLabel: string = "Não";
 

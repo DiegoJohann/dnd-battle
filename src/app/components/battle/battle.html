@@ -49,7 +49,7 @@
 
 @if (showConfirmationDialog) {
     <app-confirmation-dialog
-        [confimationMessage]="'Tem certeza de que deseja remover este combatente?'"
+        [confirmationMessage]="'Tem certeza de que deseja remover este combatente?'"
         (actionConfirmed)="removeCombatant()"
         (actionRejected)="this.showConfirmationDialog = false; this.combatantToRemove = undefined;"
     ></app-confirmation-dialog>
