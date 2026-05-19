@@ -31,6 +31,20 @@
       "all": "Todos"
     }
   },
+  "turn": {
+    "active": "Turno",
+    "current": "Atual",
+    "next": "Próximo turno",
+    "nextShort": "Próximo",
+    "none": "Sem combatentes",
+    "previous": "Turno anterior",
+    "previousShort": "Anterior",
+    "reset": "Reiniciar turno e rodada",
+    "resetConfirm": "Reiniciar",
+    "resetPrompt": "Voltar para a rodada 1 e selecionar o primeiro combatente da iniciativa?",
+    "resetTitle": "Reiniciar turnos",
+    "round": "Rodada"
+  },
   "combatant": {
     "ac": "CA",
     "damage": "Dano",
@@ -39,6 +53,15 @@
     "initiativeShort": "Ini",
     "tempHp": "HP temp.",
     "tempHpShort": "temp",
+    "clearTempHp": "Limpar HP temporário",
+    "actions": {
+      "more": "Mais ações",
+      "remove": "Remover"
+    },
+    "status": {
+      "dead": "Morto",
+      "unconscious": "Inconsciente"
+    },
     "type": {
       "npc": "NPC",
       "player": "Jogador"
@@ -61,6 +84,7 @@
     "remaining": "Restantes",
     "resetLevel": "Restaurar nível",
     "restoreAll": "Restaurar todos",
+    "spendOne": "Gastar 1 slot",
     "summary": "Slots {{ remaining }}/{{ total }} - {{ levels }}",
     "title": "Slots de magia",
     "total": "Total"

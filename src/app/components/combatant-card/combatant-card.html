@@ -4,8 +4,31 @@
     [class.dead]="!combatant.alive"
     [class.player]="combatant.type === 'PLAYER'"
     [class.npc]="combatant.type === 'NPC'"
+    [class.active-turn]="activeTurn"
 >
-    <button class="delete-btn" type="button" (click)="remove.emit()">✕</button>
+    @if (activeTurn) {
+        <div class="turn-ribbon">{{ 'turn.active' | translate }}</div>
+    }
+
+    <div class="card-actions">
+        <button
+            class="card-actions-toggle"
+            type="button"
+            (click)="onActionMenuClick($event)"
+            [title]="'combatant.actions.more' | translate"
+        >
+            <lucide-icon [img]="MoreVerticalIcon" [size]="15"></lucide-icon>
+        </button>
+
+        @if (actionMenuOpen) {
+            <div class="card-actions-menu theme-popover" (click)="$event.stopPropagation()">
+                <button type="button" class="danger-action" (click)="onRemoveClick($event)">
+                    <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
+                    {{ 'combatant.actions.remove' | translate }}
+                </button>
+            </div>
+        }
+    </div>
 
     <h3>{{ combatant.name }}</h3>
 
@@ -18,6 +41,8 @@
                 type="number"
                 [value]="combatant.initiative"
                 #initiativeInput
+                (focus)="selectNumberValue($event)"
+                (click)="selectNumberValue($event)"
                 (keyup.enter)="updateInitiative(initiativeInput.value)"
             />
         </label>
@@ -44,6 +69,12 @@
             <span class="temp-hp-text">+{{ temporaryHp }} {{ 'combatant.tempHpShort' | translate }}</span>
         }
     </div>
+
+    @if (!combatant.alive) {
+        <div class="defeated-status">
+            {{ defeatedStatusKey | translate }}
+        </div>
+    }
 
     <div class="spell-slots-section">
         <button
@@ -76,6 +107,15 @@
                                 ></div>
                             </div>
                             <strong>{{ slot.remaining }}/{{ slot.total }}</strong>
+                            <button
+                                class="spell-spend-btn"
+                                type="button"
+                                [disabled]="slot.remaining <= 0"
+                                (click)="spendSpellSlot(slot.level, $event)"
+                                [title]="'spells.spendOne' | translate"
+                            >
+                                <lucide-icon [img]="MinusIcon" [size]="12"></lucide-icon>
+                            </button>
                         </div>
                     }
                 </div>
@@ -148,22 +188,47 @@
         }
     </div>
 
-    <input
-        class="health-input"
-        type="number"
-        [placeholder]="'combatant.damage' | translate"
-        (keyup.enter)="applyDamage(damageInput.value); damageInput.value=''"
-        #damageInput
-        [disabled]="!combatant.alive"
-    />
+    <div class="health-action-row">
+        <input
+            class="health-input"
+            type="number"
+            [placeholder]="'combatant.damage' | translate"
+            (focus)="selectNumberValue($event)"
+            (click)="selectNumberValue($event)"
+            (keyup.enter)="applyDamage(damageInput.value); damageInput.value=''"
+            #damageInput
+            [disabled]="!combatant.alive"
+        />
 
-    <input
-        class="health-input"
-        type="number"
-        [placeholder]="'combatant.healing' | translate"
-        (keyup.enter)="applyHealing(healingInput.value); healingInput.value=''"
-        #healingInput
-    />
+        <button
+            class="health-action-button damage-button"
+            type="button"
+            [disabled]="!combatant.alive"
+            (click)="applyDamage(damageInput.value); damageInput.value=''"
+        >
+            {{ 'common.apply' | translate }}
+        </button>
+    </div>
+
+    <div class="health-action-row">
+        <input
+            class="health-input"
+            type="number"
+            [placeholder]="'combatant.healing' | translate"
+            (focus)="selectNumberValue($event)"
+            (click)="selectNumberValue($event)"
+            (keyup.enter)="applyHealing(healingInput.value); healingInput.value=''"
+            #healingInput
+        />
+
+        <button
+            class="health-action-button healing-button"
+            type="button"
+            (click)="applyHealing(healingInput.value); healingInput.value=''"
+        >
+            {{ 'common.apply' | translate }}
+        </button>
+    </div>
 
     <div class="temp-hp-section">
         <div class="temp-hp-row">
@@ -172,6 +237,8 @@
                 type="number"
                 [placeholder]="'combatant.tempHp' | translate"
                 #tempHpInput
+                (focus)="selectNumberValue($event)"
+                (click)="selectNumberValue($event)"
                 (keyup.enter)="applyTemporaryHp(tempHpInput.value); tempHpInput.value=''"
             />
 
@@ -182,6 +249,17 @@
             >
                 {{ 'common.apply' | translate }}
             </button>
+
+            @if (temporaryHp > 0) {
+                <button
+                    class="temp-hp-clear-button"
+                    type="button"
+                    (click)="clearTemporaryHp()"
+                    [title]="'combatant.clearTempHp' | translate"
+                >
+                    <lucide-icon [img]="XIcon" [size]="13"></lucide-icon>
+                </button>
+            }
         </div>
     </div>
 </div>

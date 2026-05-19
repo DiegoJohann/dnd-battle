@@ -9,21 +9,10 @@
     padding: 12px;
     border-radius: var(--radius-md);
     color: var(--color-text);
-}
-
-.delete-btn {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: transparent;
-    border: none;
-    color: var(--color-text-subtle);
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.delete-btn:hover {
-    color: var(--color-danger-400);
+    transition:
+        border-color var(--duration-normal) ease,
+        box-shadow var(--duration-normal) ease,
+        transform var(--duration-normal) ease;
 }
 
 .card.player {

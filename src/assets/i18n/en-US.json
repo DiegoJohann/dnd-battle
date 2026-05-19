@@ -31,6 +31,20 @@
       "all": "All"
     }
   },
+  "turn": {
+    "active": "Turn",
+    "current": "Current",
+    "next": "Next turn",
+    "nextShort": "Next",
+    "none": "No combatants",
+    "previous": "Previous turn",
+    "previousShort": "Previous",
+    "reset": "Reset turn and round",
+    "resetConfirm": "Reset",
+    "resetPrompt": "Go back to round 1 and select the first combatant in initiative order?",
+    "resetTitle": "Reset turns",
+    "round": "Round"
+  },
   "combatant": {
     "ac": "AC",
     "damage": "Damage",
@@ -39,6 +53,15 @@
     "initiativeShort": "Init",
     "tempHp": "Temp HP",
     "tempHpShort": "temp",
+    "clearTempHp": "Clear temporary HP",
+    "actions": {
+      "more": "More actions",
+      "remove": "Remove"
+    },
+    "status": {
+      "dead": "Dead",
+      "unconscious": "Unconscious"
+    },
     "type": {
       "npc": "NPC",
       "player": "Player"
@@ -61,6 +84,7 @@
     "remaining": "Remaining",
     "resetLevel": "Reset level",
     "restoreAll": "Restore all",
+    "spendOne": "Spend 1 slot",
     "summary": "Slots {{ remaining }}/{{ total }} - {{ levels }}",
     "title": "Spell slots",
     "total": "Total"

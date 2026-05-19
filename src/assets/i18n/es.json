@@ -31,6 +31,20 @@
       "all": "Todos"
     }
   },
+  "turn": {
+    "active": "Turno",
+    "current": "Actual",
+    "next": "Siguiente turno",
+    "nextShort": "Siguiente",
+    "none": "Sin combatientes",
+    "previous": "Turno anterior",
+    "previousShort": "Anterior",
+    "reset": "Reiniciar turno y ronda",
+    "resetConfirm": "Reiniciar",
+    "resetPrompt": "¿Volver a la ronda 1 y seleccionar el primer combatiente de la iniciativa?",
+    "resetTitle": "Reiniciar turnos",
+    "round": "Ronda"
+  },
   "combatant": {
     "ac": "CA",
     "damage": "Daño",
@@ -39,6 +53,15 @@
     "initiativeShort": "Ini",
     "tempHp": "PG temp.",
     "tempHpShort": "temp",
+    "clearTempHp": "Limpiar PG temporales",
+    "actions": {
+      "more": "Más acciones",
+      "remove": "Eliminar"
+    },
+    "status": {
+      "dead": "Muerto",
+      "unconscious": "Inconsciente"
+    },
     "type": {
       "npc": "PNJ",
       "player": "Jugador"
@@ -61,6 +84,7 @@
     "remaining": "Restantes",
     "resetLevel": "Restaurar nivel",
     "restoreAll": "Restaurar todos",
+    "spendOne": "Gastar 1 espacio",
     "summary": "Espacios {{ remaining }}/{{ total }} - {{ levels }}",
     "title": "Espacios de conjuro",
     "total": "Total"

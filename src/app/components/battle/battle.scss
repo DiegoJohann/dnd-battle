@@ -30,7 +30,7 @@
     align-content: center;
 
     min-height: 100dvh;
-    padding: 24px;
+    padding: 112px 24px 88px;
 
 }
 
@@ -102,6 +102,35 @@
     color: var(--color-text-muted);
     font-size: 0.72rem;
     font-weight: 700;
+}
+
+@media (max-width: 780px) {
+    .grid {
+        padding-top: 148px;
+    }
+
+    .turn-tracker {
+        left: 12px;
+        right: 12px;
+        max-width: none;
+        grid-template-columns: auto minmax(0, 1fr);
+        border-radius: var(--radius-lg);
+        transform: none;
+    }
+
+    .turn-actions {
+        grid-column: 1 / -1;
+    }
+
+    .turn-actions button {
+        flex: 1;
+    }
+
+    .language-select {
+        top: auto;
+        right: 18px;
+        bottom: 76px;
+    }
 }
 
 .language-select select {

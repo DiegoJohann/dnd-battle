@@ -3,6 +3,7 @@
         <app-combatant-card
             [combatant]="combatant"
             [conditionsOpen]="openConditionsForId === combatant.id"
+            [activeTurn]="activeCombatantId === combatant.id"
 
             (toggleConditions)="toggleConditionsPopover(combatant.id)"
             (closeConditions)="closeAllConditions()"
@@ -14,9 +15,56 @@
             (initiativeChange)="updateInitiative(combatant, $event)"
             (conditionsChange)="combatant.conditions = $event; save()"
             (openSpellSlots)="openSpellSlotsModal(combatant)"
+            (spellSlotsChange)="combatant.spellSlots = $event; save()"
+            (click)="setActiveCombatant(combatant)"
         />
     }
 </div>
+
+<section class="turn-tracker" [class.empty]="!combatants.length">
+    <button
+        type="button"
+        class="turn-reset-icon"
+        (click)="openResetTurnModal()"
+        [disabled]="!combatants.length"
+        [title]="'turn.reset' | translate"
+    >
+        <lucide-icon [img]="RotateCcwIcon" [size]="14"></lucide-icon>
+    </button>
+
+    <div class="round-box">
+        <span>{{ 'turn.round' | translate }}</span>
+        <strong>{{ round }}</strong>
+    </div>
+
+    <div class="turn-current">
+        <span>{{ 'turn.current' | translate }}</span>
+        <strong>{{ activeCombatant?.name ?? ('turn.none' | translate) }}</strong>
+    </div>
+
+    <div class="turn-actions">
+        <button
+            type="button"
+            (click)="previousTurn()"
+            [disabled]="!combatants.length"
+            [title]="'turn.previous' | translate"
+        >
+            <lucide-icon [img]="ChevronLeftIcon" [size]="18"></lucide-icon>
+            <span>{{ 'turn.previousShort' | translate }}</span>
+        </button>
+
+        <button
+            type="button"
+            class="next-turn-btn"
+            (click)="nextTurn()"
+            [disabled]="!combatants.length"
+            [title]="'turn.next' | translate"
+        >
+            <span>{{ 'turn.nextShort' | translate }}</span>
+            <lucide-icon [img]="ChevronRightIcon" [size]="18"></lucide-icon>
+        </button>
+    </div>
+</section>
 
 <label class="language-select">
     <span>{{ 'language.label' | translate }}</span>
@@ -59,6 +107,20 @@
                 <button (click)="clearCombatants('PLAYER')">{{ 'battle.clear.players' | translate }}</button>
                 <button (click)="clearCombatants('ALL')">{{ 'battle.clear.all' | translate }}</button>
                 <button (click)="closeClearFieldModal()">{{ 'common.cancel' | translate }}</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showResetTurnModal) {
+    <div class="overlay">
+        <div class="modal">
+            <h2>{{ 'turn.resetTitle' | translate }}</h2>
+            <p>{{ 'turn.resetPrompt' | translate }}</p>
+
+            <div class="actions">
+                <button (click)="resetTurnTracker()">{{ 'turn.resetConfirm' | translate }}</button>
+                <button (click)="closeResetTurnModal()">{{ 'common.cancel' | translate }}</button>
             </div>
         </div>
     </div>

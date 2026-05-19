@@ -8,7 +8,7 @@ import {
 } from '../../core/entities/combatant';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NgStyle } from '@angular/common';
-import { LucideAngularModule, SparklesIcon } from 'lucide-angular';
+import { LucideAngularModule, MinusIcon, MoreVerticalIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -40,6 +40,7 @@ export class CombatantCard {
 
     @Input() combatant!: Combatant;
     @Input() conditionsOpen = false;
+    @Input() activeTurn = false;
 
     @Output() toggleConditions = new EventEmitter<void>();
     @Output() closeConditions = new EventEmitter<void>();
@@ -51,8 +52,10 @@ export class CombatantCard {
     @Output() initiativeChange = new EventEmitter<number>();
     @Output() conditionsChange = new EventEmitter<CombatantConditionKey[]>();
     @Output() openSpellSlots = new EventEmitter<void>();
+    @Output() spellSlotsChange = new EventEmitter<CombatantSpellSlotLevel[]>();
 
     readonly conditionCatalog = COMBATANT_CONDITION_CATALOG;
+    actionMenuOpen = false;
 
     constructor(private translate: TranslateService) {
     }
@@ -73,6 +76,10 @@ export class CombatantCard {
         const temp = Number(value);
         if (isNaN(temp) || temp <= 0) return;
         this.temporaryHpChange.emit(temp);
+    }
+
+    clearTemporaryHp() {
+        this.temporaryHpChange.emit(0);
     }
 
     updateInitiative(value: string) {
@@ -148,6 +155,12 @@ export class CombatantCard {
         return this.configuredSpellSlots.reduce((sum, slot) => sum + slot.total, 0);
     }
 
+    get defeatedStatusKey(): string {
+        return this.combatant.type === 'PLAYER'
+            ? 'combatant.status.unconscious'
+            : 'combatant.status.dead';
+    }
+
     isConditionActive(key: CombatantConditionKey): boolean {
         return (this.combatant.conditions ?? []).includes(key);
     }
@@ -178,16 +191,52 @@ export class CombatantCard {
         this.closeConditions.emit();
     }
 
+    spendSpellSlot(level: number, event: MouseEvent) {
+        event.stopPropagation();
+
+        const slots = this.normalizedSpellSlots;
+        const target = slots.find(slot => slot.level === level);
+
+        if (!target || target.remaining <= 0) return;
+
+        const next = slots.map(slot => slot.level === level
+            ? { ...slot, remaining: slot.remaining - 1 }
+            : slot
+        );
+
+        this.combatant.spellSlots = next;
+        this.spellSlotsChange.emit(next);
+    }
+
     @HostListener('document:click')
     onOutsideClick() {
         if (this.conditionsOpen) {
             this.closeConditions.emit();
         }
+
+        this.actionMenuOpen = false;
     }
 
     onToggleClick(event: MouseEvent) {
         event.stopPropagation();
         this.toggleConditions.emit();
+    }
+
+    onActionMenuClick(event: MouseEvent) {
+        event.stopPropagation();
+        this.actionMenuOpen = !this.actionMenuOpen;
+    }
+
+    onRemoveClick(event: MouseEvent) {
+        event.stopPropagation();
+        this.actionMenuOpen = false;
+        this.remove.emit();
+    }
+
+    selectNumberValue(event: FocusEvent | MouseEvent) {
+        const input = event.target as HTMLInputElement;
+
+        input.select();
     }
 
     getConditionStyle(condition: CombatantConditionDefinition) {
@@ -211,4 +260,8 @@ export class CombatantCard {
     }
 
     protected readonly SparklesIcon = SparklesIcon;
+    protected readonly MinusIcon = MinusIcon;
+    protected readonly MoreVerticalIcon = MoreVerticalIcon;
+    protected readonly Trash2Icon = Trash2Icon;
+    protected readonly XIcon = XIcon;
 }
