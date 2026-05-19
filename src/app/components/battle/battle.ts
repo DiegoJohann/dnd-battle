@@ -15,20 +15,10 @@ import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmatio
     animations: [
         trigger('listAnim', [
             transition('* <=> *', [
-                query(
-                    ':enter, :leave',
-                    style({opacity: 0}),
-                    {optional: true}
-                ),
-                query(
-                    ':enter',
-                    stagger(50, [
-                        animate('200ms ease-out',
-                            style({opacity: 1})
-                        )
-                    ]),
-                    {optional: true}
-                )
+                query(':enter, :leave', style({ opacity: 0 }), { optional: true }),
+                query(':enter', stagger(50, [
+                    animate('200ms ease-out', style({ opacity: 1 }))
+                ]), { optional: true })
             ])
         ])
     ]
@@ -36,6 +26,9 @@ import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmatio
 export class Battle implements OnInit {
 
     combatants: Combatant[] = [];
+
+    openConditionsForId: string | null = null;
+
     showAddCombatantModal = false;
     showClearFieldModal = false;
 
@@ -53,7 +46,8 @@ export class Battle implements OnInit {
     addCombatant(combatant: Combatant) {
         this.combatants.push({
             ...combatant,
-            initiative: combatant.initiative ?? 0
+            initiative: combatant.initiative ?? 0,
+            temporaryHp: combatant.temporaryHp ?? 0
         });
 
         this.sortByInitiative();
@@ -66,10 +60,28 @@ export class Battle implements OnInit {
         this.save();
     }
 
+    updateTemporaryHp(combatant: Combatant, temporaryHp: number) {
+        if (isNaN(temporaryHp) || temporaryHp <= 0) return;
+
+        combatant.temporaryHp = Math.max(combatant.temporaryHp ?? 0, temporaryHp);
+        this.save();
+    }
+
     applyDamage(combatant: Combatant, damage: number) {
         if (!combatant.alive) return;
 
-        combatant.currentHp = Math.max(combatant.currentHp - damage, 0);
+        let remainingDamage = damage;
+
+        if ((combatant.temporaryHp ?? 0) > 0) {
+            const tempUsed = Math.min(combatant.temporaryHp ?? 0, remainingDamage);
+            combatant.temporaryHp = Math.max((combatant.temporaryHp ?? 0) - tempUsed, 0);
+            remainingDamage -= tempUsed;
+        }
+
+        if (remainingDamage > 0) {
+            combatant.currentHp = Math.max(combatant.currentHp - remainingDamage, 0);
+        }
+
         combatant.alive = combatant.currentHp > 0;
         this.save();
     }
@@ -90,6 +102,14 @@ export class Battle implements OnInit {
         this.save();
         this.showConfirmationDialog = false;
         this.combatantToRemove = undefined;
+    }
+
+    toggleConditionsPopover(id: string) {
+        this.openConditionsForId = this.openConditionsForId === id ? null : id;
+    }
+
+    closeAllConditions() {
+        this.openConditionsForId = null;
     }
 
     openClearFieldModal() {
@@ -118,12 +138,22 @@ export class Battle implements OnInit {
         const saved = localStorage.getItem('battle');
         if (!saved) return;
 
-        this.combatants = JSON.parse(saved).map((e: Combatant) => ({
-            ...e,
-            initiative: e.initiative ?? 0
-        }));
+        try {
+            const parsed = JSON.parse(saved) as Partial<Combatant>[];
 
-        this.sortByInitiative();
+            this.combatants = parsed.map((e) => ({
+                ...e,
+                initiative: e.initiative ?? 0,
+                temporaryHp: e.temporaryHp ?? 0,
+                alive: typeof e.alive === 'boolean' ? e.alive : (e.currentHp ?? 0) > 0,
+                conditions: Array.isArray(e.conditions) ? e.conditions : []
+            })) as Combatant[];
+
+            this.sortByInitiative();
+        } catch {
+            localStorage.removeItem('battle');
+            this.combatants = [];
+        }
     }
 
     ngOnInit() {
@@ -141,10 +171,10 @@ export class Battle implements OnInit {
         if (keyboardEvent.key === 'Escape') {
             keyboardEvent.preventDefault();
             this.closeClearFieldModal();
+            this.closeAllConditions();
         }
 
         if (keyboardEvent.key.toLowerCase() !== 'a') return;
-
         if ((keyboardEvent.target as HTMLElement).tagName === 'INPUT') return;
 
         keyboardEvent.preventDefault();

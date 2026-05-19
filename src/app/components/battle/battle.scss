@@ -1,3 +1,28 @@
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3a3a3a, #2a2a2a);
+    border-radius: 8px;
+    border: 2px solid #121212;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #4a4a4a, #3a3a3a);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a3a #121212;
+}
+
 :host {
     display: block;
     min-height: 100dvh;

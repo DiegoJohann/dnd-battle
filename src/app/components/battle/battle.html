@@ -2,19 +2,22 @@
     @for (combatant of combatants; track combatant.id) {
         <app-combatant-card
             [combatant]="combatant"
+            [conditionsOpen]="openConditionsForId === combatant.id"
+
+            (toggleConditions)="toggleConditionsPopover(combatant.id)"
+            (closeConditions)="closeAllConditions()"
+
             (damage)="applyDamage(combatant, $event)"
             (healing)="applyHealing(combatant, $event)"
+            (temporaryHpChange)="updateTemporaryHp(combatant, $event)"
             (remove)="onClickRemoveCombatant(combatant)"
             (initiativeChange)="updateInitiative(combatant, $event)"
+            (conditionsChange)="combatant.conditions = $event; save()"
         />
     }
 </div>
 
-<button
-    class="add-btn"
-    [class.pulse]="combatants.length === 0"
-    (click)="openAddCombatantModal()"
->
+<button class="add-btn" [class.pulse]="combatants.length === 0" (click)="openAddCombatantModal()">
     <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
     <span class="label">Adicionar combatente</span>
 </button>

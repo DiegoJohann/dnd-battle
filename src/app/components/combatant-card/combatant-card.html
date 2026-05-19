@@ -5,8 +5,7 @@
     [class.player]="combatant.type === 'PLAYER'"
     [class.npc]="combatant.type === 'NPC'"
 >
-
-    <button class="delete-btn" (click)="remove.emit()">✕</button>
+    <button class="delete-btn" type="button" (click)="remove.emit()">✕</button>
 
     <h3>{{ combatant.name }}</h3>
 
@@ -27,12 +26,86 @@
     <div class="hp-bar">
         <div
             class="hp-fill"
-            [style.width.%]="(combatant.currentHp / combatant.maxHp) * 100"
+            [style.width.%]="healthPercent"
         ></div>
+
+        @if (temporaryHp > 0) {
+            <div
+                class="temp-hp-fill"
+                [style.left.%]="healthPercent"
+                [style.width.%]="tempHpVisiblePercent"
+            ></div>
+        }
     </div>
 
     <div class="hp-text">
         HP {{ combatant.currentHp }} / {{ combatant.maxHp }}
+        @if (temporaryHp > 0) {
+            <span class="temp-hp-text">+{{ temporaryHp }} temp</span>
+        }
+    </div>
+
+    <!-- CONDITIONS -->
+    <div class="conditions-section">
+        <div class="conditions-header">
+            <span>Condições</span>
+
+            <button
+                type="button"
+                class="conditions-toggle"
+                (click)="onToggleClick($event)"
+            >
+                ⚙
+            </button>
+        </div>
+
+        @if (activeConditions.length) {
+            <div class="condition-badges">
+                @for (condition of activeConditions; track condition.key) {
+                    <button
+                        type="button"
+                        class="condition-badge"
+                        [ngStyle]="getConditionStyle(condition)"
+                        [title]="condition.label"
+                        (click)="toggleCondition(condition.key)"
+                    >
+                        {{ condition.icon }}
+                    </button>
+                }
+            </div>
+        } @else {
+            <p class="condition-empty">Sem condições</p>
+        }
+
+        <!-- POPOVER -->
+        @if (conditionsOpen) {
+            <div class="condition-popover" (click)="$event.stopPropagation()">
+                <div class="condition-picker">
+                    @for (condition of conditionCatalog; track condition.key) {
+                        <button
+                            type="button"
+                            class="condition-option"
+                            [ngStyle]="getConditionStyle(condition)"
+                            [class.active]="isConditionActive(condition.key)"
+                            (click)="toggleCondition(condition.key)"
+                            [title]="condition.label"
+                        >
+                            <span class="icon">{{ condition.icon }}</span>
+                            @if (isConditionActive(condition.key)) {
+                                <span class="check">✓</span>
+                            }
+                            <span class="label">{{ condition.label }}</span>
+                        </button>
+                    }
+                </div>
+
+                @if (activeConditions.length) {
+                    <button class="condition-clear" (click)="clearConditions()">
+                        Limpar
+                    </button>
+                }
+            </div>
+        }
     </div>
 
     <input
@@ -51,4 +124,24 @@
         (keyup.enter)="applyHealing(healingInput.value); healingInput.value=''"
         #healingInput
     />
+
+    <div class="temp-hp-section">
+        <div class="temp-hp-row">
+            <input
+                class="health-input temp-hp-input"
+                type="number"
+                placeholder="HP temp."
+                #tempHpInput
+                (keyup.enter)="applyTemporaryHp(tempHpInput.value); tempHpInput.value=''"
+            />
+
+            <button
+                class="temp-hp-button"
+                type="button"
+                (click)="applyTemporaryHp(tempHpInput.value); tempHpInput.value=''"
+            >
+                Aplicar
+            </button>
+        </div>
+    </div>
 </div>
