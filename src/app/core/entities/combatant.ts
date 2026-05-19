@@ -32,6 +32,12 @@ export interface CombatantConditionDefinition {
     color: string;
 }
 
+export interface CombatantSpellSlotLevel {
+    level: number;
+    total: number;
+    remaining: number;
+}
+
 export const COMBATANT_CONDITION_CATALOG: CombatantConditionDefinition[] = [
     { key: 'BLINDED', label: 'Cego', icon: '👁️', tone: 'info', color: '#60a5fa' },
     { key: 'CHARMED', label: 'Enfeitiçado', icon: '💘', tone: 'warning', color: '#f472b6' },
@@ -67,4 +73,5 @@ export interface Combatant {
     temporaryHp?: number;
     alive: boolean;
     conditions?: CombatantConditionKey[];
+    spellSlots?: CombatantSpellSlotLevel[];
 }

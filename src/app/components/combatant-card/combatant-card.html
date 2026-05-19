@@ -32,7 +32,7 @@
         @if (temporaryHp > 0) {
             <div
                 class="temp-hp-fill"
-                [style.left.%]="healthPercent"
+                [style.left.%]="tempHpLeftPercent"
                 [style.width.%]="tempHpVisiblePercent"
             ></div>
         }
@@ -43,6 +43,44 @@
         @if (temporaryHp > 0) {
             <span class="temp-hp-text">+{{ temporaryHp }} temp</span>
         }
+    </div>
+
+    <div class="spell-slots-section">
+        <button
+            class="spell-slots-btn"
+            type="button"
+            [class.configured]="hasSpellSlots"
+            [attr.aria-label]="spellSlotSummary"
+            (click)="openSpellSlots.emit()"
+        >
+            <lucide-icon [img]="SparklesIcon" [size]="14"></lucide-icon>
+        </button>
+
+        <div class="spell-slots-popover">
+            <div class="spell-popover-header">
+                <span>Slots de magia</span>
+                <strong>{{ spellSlotsRemaining }} / {{ spellSlotsTotal }}</strong>
+            </div>
+
+            @if (configuredSpellSlots.length) {
+                <div class="spell-slot-list">
+                    @for (slot of configuredSpellSlots; track slot.level) {
+                        <div class="spell-slot-summary-row">
+                            <span class="spell-level">N{{ slot.level }}</span>
+                            <div class="spell-slot-meter">
+                                <div
+                                    class="spell-slot-meter-fill"
+                                    [style.width.%]="slot.total ? (slot.remaining / slot.total) * 100 : 0"
+                                ></div>
+                            </div>
+                            <strong>{{ slot.remaining }}/{{ slot.total }}</strong>
+                        </div>
+                    }
+                </div>
+            } @else {
+                <p class="spell-empty">Sem slots configurados</p>
+            }
+        </div>
     </div>
 
     <!-- CONDITIONS -->

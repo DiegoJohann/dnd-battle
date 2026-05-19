@@ -1,0 +1,76 @@
+<div class="overlay" (click)="close.emit()">
+    <section class="modal" (click)="$event.stopPropagation()">
+        <header class="modal-header">
+            <div>
+                <p>Slots de magia</p>
+                <h2>{{ combatant.name }}</h2>
+            </div>
+
+            <button class="close-btn" type="button" (click)="close.emit()" title="Fechar">
+                <lucide-icon [img]="XIcon" [size]="16"></lucide-icon>
+            </button>
+        </header>
+
+        <div class="slots-table">
+            <div class="table-head">
+                <span>Nivel</span>
+                <span>Total</span>
+                <span>Restantes</span>
+                <span></span>
+            </div>
+
+            @for (level of spellLevels; track level) {
+                @let slot = getSlot(level);
+
+                <div class="slot-row">
+                    <strong>{{ level }}</strong>
+
+                    <input
+                        type="number"
+                        min="0"
+                        [value]="slot.total"
+                        (focus)="selectNumberValue($event)"
+                        (click)="selectNumberValue($event)"
+                        (change)="updateTotal(level, totalInput.value)"
+                        (keyup.enter)="updateTotal(level, totalInput.value)"
+                        #totalInput
+                    />
+
+                    <input
+                        type="number"
+                        min="0"
+                        [max]="slot.total"
+                        [value]="slot.remaining"
+                        (focus)="selectNumberValue($event)"
+                        (click)="selectNumberValue($event)"
+                        (change)="updateRemaining(level, remainingInput.value)"
+                        (keyup.enter)="updateRemaining(level, remainingInput.value)"
+                        #remainingInput
+                    />
+
+                    <div class="row-actions">
+                        <button type="button" (click)="resetRemaining(level)" title="Restaurar nivel">
+                            <lucide-icon [img]="RotateCcwIcon" [size]="13"></lucide-icon>
+                            Reset
+                        </button>
+                        <button type="button" (click)="clearLevel(level)" title="Zerar nivel">
+                            <lucide-icon [img]="EraserIcon" [size]="13"></lucide-icon>
+                            Zerar
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <footer class="modal-actions">
+            <button type="button" class="ghost-btn" (click)="resetAllRemaining()">
+                <lucide-icon [img]="RotateCcwIcon" [size]="14"></lucide-icon>
+                Restaurar todos
+            </button>
+            <button type="button" class="primary-btn" (click)="close.emit()">
+                <lucide-icon [img]="CheckIcon" [size]="14"></lucide-icon>
+                Concluir
+            </button>
+        </footer>
+    </section>
+</div>

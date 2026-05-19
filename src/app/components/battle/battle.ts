@@ -6,10 +6,18 @@ import { CombatantCard } from '../combatant-card/combatant-card';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { LucideAngularModule, PlusIcon, Trash2Icon } from 'lucide-angular';
 import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog';
+import { SpellSlotsModal } from '../spell-slots-modal/spell-slots-modal';
 
 @Component({
     selector: 'app-battle',
-    imports: [CommonModule, AddCombatantModal, CombatantCard, LucideAngularModule, ConfirmationDialog],
+    imports: [
+        CommonModule,
+        AddCombatantModal,
+        CombatantCard,
+        LucideAngularModule,
+        ConfirmationDialog,
+        SpellSlotsModal
+    ],
     templateUrl: './battle.html',
     styleUrl: './battle.scss',
     animations: [
@@ -34,6 +42,7 @@ export class Battle implements OnInit {
 
     showConfirmationDialog = false;
     combatantToRemove: Combatant | undefined;
+    spellSlotsCombatant: Combatant | undefined;
 
     openAddCombatantModal() {
         this.showAddCombatantModal = true;
@@ -112,6 +121,15 @@ export class Battle implements OnInit {
         this.openConditionsForId = null;
     }
 
+    openSpellSlotsModal(combatant: Combatant) {
+        this.spellSlotsCombatant = combatant;
+        this.closeAllConditions();
+    }
+
+    closeSpellSlotsModal() {
+        this.spellSlotsCombatant = undefined;
+    }
+
     openClearFieldModal() {
         this.showClearFieldModal = true;
     }
@@ -146,7 +164,21 @@ export class Battle implements OnInit {
                 initiative: e.initiative ?? 0,
                 temporaryHp: e.temporaryHp ?? 0,
                 alive: typeof e.alive === 'boolean' ? e.alive : (e.currentHp ?? 0) > 0,
-                conditions: Array.isArray(e.conditions) ? e.conditions : []
+                conditions: Array.isArray(e.conditions) ? e.conditions : [],
+                spellSlots: Array.isArray(e.spellSlots)
+                    ? e.spellSlots
+                        .map(slot => {
+                            const level = Math.floor(Number(slot.level));
+                            const total = Math.max(0, Math.floor(Number(slot.total)));
+                            const remaining = Math.max(
+                                0,
+                                Math.min(Math.floor(Number(slot.remaining)), total)
+                            );
+
+                            return { level, total, remaining };
+                        })
+                        .filter(slot => slot.level >= 1 && slot.level <= 9)
+                    : []
             })) as Combatant[];
 
             this.sortByInitiative();
@@ -172,6 +204,7 @@ export class Battle implements OnInit {
             keyboardEvent.preventDefault();
             this.closeClearFieldModal();
             this.closeAllConditions();
+            this.closeSpellSlotsModal();
         }
 
         if (keyboardEvent.key.toLowerCase() !== 'a') return;

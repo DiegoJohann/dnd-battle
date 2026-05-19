@@ -13,6 +13,7 @@
             (remove)="onClickRemoveCombatant(combatant)"
             (initiativeChange)="updateInitiative(combatant, $event)"
             (conditionsChange)="combatant.conditions = $event; save()"
+            (openSpellSlots)="openSpellSlotsModal(combatant)"
         />
     }
 </div>
@@ -48,6 +49,14 @@
             </div>
         </div>
     </div>
+}
+
+@if (spellSlotsCombatant) {
+    <app-spell-slots-modal
+        [combatant]="spellSlotsCombatant"
+        (close)="closeSpellSlotsModal()"
+        (spellSlotsChange)="spellSlotsCombatant.spellSlots = $event; save()"
+    />
 }
 
 @if (showConfirmationDialog) {

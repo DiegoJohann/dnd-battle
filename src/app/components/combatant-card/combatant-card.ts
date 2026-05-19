@@ -3,15 +3,18 @@ import {
     Combatant,
     COMBATANT_CONDITION_CATALOG,
     CombatantConditionDefinition,
-    CombatantConditionKey
+    CombatantConditionKey,
+    CombatantSpellSlotLevel
 } from '../../core/entities/combatant';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NgStyle } from '@angular/common';
+import { LucideAngularModule, SparklesIcon } from 'lucide-angular';
 
 @Component({
     selector: 'app-combatant-card',
     imports: [
-        NgStyle
+        NgStyle,
+        LucideAngularModule
     ],
     templateUrl: './combatant-card.html',
     styleUrl: './combatant-card.scss',
@@ -45,6 +48,7 @@ export class CombatantCard {
     @Output() remove = new EventEmitter<void>();
     @Output() initiativeChange = new EventEmitter<number>();
     @Output() conditionsChange = new EventEmitter<CombatantConditionKey[]>();
+    @Output() openSpellSlots = new EventEmitter<void>();
 
     readonly conditionCatalog = COMBATANT_CONDITION_CATALOG;
 
@@ -88,13 +92,51 @@ export class CombatantCard {
         return Math.max(0, Math.min((this.temporaryHp / maxHp) * 100, 100));
     }
 
+    get tempHpLeftPercent(): number {
+        if (this.healthPercent >= 100) {
+            return 100 - this.tempHpPercent;
+        }
+
+        return this.healthPercent;
+    }
+
     get tempHpVisiblePercent(): number {
-        return Math.max(0, Math.min(this.tempHpPercent, 100 - this.healthPercent));
+        return this.tempHpPercent;
     }
 
     get activeConditions(): CombatantConditionDefinition[] {
         const current = this.combatant.conditions ?? [];
         return this.conditionCatalog.filter(condition => current.includes(condition.key));
+    }
+
+    get spellSlotSummary(): string {
+        const slots = this.configuredSpellSlots;
+
+        if (!slots.length) return 'Sem slots de magia configurados';
+
+        const remaining = slots.reduce((sum, slot) => sum + slot.remaining, 0);
+        const total = slots.reduce((sum, slot) => sum + slot.total, 0);
+        const levels = slots
+            .map(slot => `${slot.level}: ${slot.remaining}/${slot.total}`)
+            .join(' | ');
+
+        return `Slots ${remaining}/${total} - ${levels}`;
+    }
+
+    get hasSpellSlots(): boolean {
+        return this.normalizedSpellSlots.some(slot => slot.total > 0);
+    }
+
+    get configuredSpellSlots(): CombatantSpellSlotLevel[] {
+        return this.normalizedSpellSlots.filter(slot => slot.total > 0);
+    }
+
+    get spellSlotsRemaining(): number {
+        return this.configuredSpellSlots.reduce((sum, slot) => sum + slot.remaining, 0);
+    }
+
+    get spellSlotsTotal(): number {
+        return this.configuredSpellSlots.reduce((sum, slot) => sum + slot.total, 0);
     }
 
     isConditionActive(key: CombatantConditionKey): boolean {
@@ -150,4 +192,14 @@ export class CombatantCard {
             color: '#fff'
         };
     }
+
+    private get normalizedSpellSlots(): CombatantSpellSlotLevel[] {
+        return (this.combatant.spellSlots ?? []).map(slot => ({
+            level: slot.level,
+            total: Math.max(0, slot.total),
+            remaining: Math.max(0, Math.min(slot.remaining, slot.total))
+        }));
+    }
+
+    protected readonly SparklesIcon = SparklesIcon;
 }
