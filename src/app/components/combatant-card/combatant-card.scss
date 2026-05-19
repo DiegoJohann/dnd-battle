@@ -32,16 +32,21 @@
     gap: 12px;
 }
 
-.initiative {
+.stat-edit {
     display: flex;
     gap: 4px;
     align-items: center;
 }
 
-.initiative input {
+.stat-edit input,
+.max-hp-input {
     width: 50px;
     padding: 2px 4px;
     font-size: 0.8rem;
+}
+
+.armor-class input {
+    width: 42px;
 }
 
 .hp-bar {
@@ -88,10 +93,14 @@
 .hp-text {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 
     font-size: 0.85rem;
     color: var(--color-text-muted);
+}
+
+.max-hp-input {
+    width: 54px;
 }
 
 .temp-hp-text {
@@ -112,8 +121,8 @@
     position: absolute;
     left: 50%;
     bottom: 100%;
-    width: 220px;
-    height: 14px;
+    width: 46px;
+    height: 10px;
     transform: translateX(-50%);
 }
 
@@ -233,11 +242,6 @@
     transform: translateY(-1px) scale(1.04);
     border-color: rgba(214, 168, 79, 0.42);
     background: rgba(214, 168, 79, 0.1);
-    filter: brightness(1.08);
-}
-
-.temp-hp-section {
-    position: relative;
 }
 
 .temp-hp-input {

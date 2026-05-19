@@ -33,9 +33,20 @@
     <h3>{{ combatant.name }}</h3>
 
     <div class="row">
-        <span>{{ 'combatant.ac' | translate }}: {{ combatant.armorClass }}</span>
+        <label class="stat-edit armor-class">
+            {{ 'combatant.ac' | translate }}:
+            <input
+                type="number"
+                [value]="combatant.armorClass"
+                #armorClassInput
+                (focus)="selectNumberValue($event)"
+                (click)="selectNumberValue($event)"
+                (blur)="updateArmorClass(armorClassInput.value)"
+                (keyup.enter)="updateArmorClass(armorClassInput.value); armorClassInput.blur()"
+            />
+        </label>
 
-        <label class="initiative">
+        <label class="stat-edit initiative">
             {{ 'combatant.initiativeShort' | translate }}:
             <input
                 type="number"
@@ -64,7 +75,17 @@
     </div>
 
     <div class="hp-text">
-        {{ 'combatant.hp' | translate }} {{ combatant.currentHp }} / {{ combatant.maxHp }}
+        <span>{{ 'combatant.hp' | translate }} {{ combatant.currentHp }} /</span>
+        <input
+            class="max-hp-input"
+            type="number"
+            [value]="combatant.maxHp"
+            #maxHpInput
+            (focus)="selectNumberValue($event)"
+            (click)="selectNumberValue($event)"
+            (blur)="updateMaxHp(maxHpInput.value)"
+            (keyup.enter)="updateMaxHp(maxHpInput.value); maxHpInput.blur()"
+        />
         @if (temporaryHp > 0) {
             <span class="temp-hp-text">
                 +{{ temporaryHp }} {{ 'combatant.tempHpShort' | translate }}

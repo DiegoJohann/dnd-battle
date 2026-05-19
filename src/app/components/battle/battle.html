@@ -13,6 +13,8 @@
             (temporaryHpChange)="updateTemporaryHp(combatant, $event)"
             (remove)="onClickRemoveCombatant(combatant)"
             (initiativeChange)="updateInitiative(combatant, $event)"
+            (armorClassChange)="updateArmorClass(combatant, $event)"
+            (maxHpChange)="updateMaxHp(combatant, $event)"
             (conditionsChange)="combatant.conditions = $event; save()"
             (conditionStatesChange)="combatant.conditionStates = $event; save()"
             (openSpellSlots)="openSpellSlotsModal(combatant)"

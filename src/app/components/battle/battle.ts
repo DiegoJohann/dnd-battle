@@ -102,6 +102,22 @@ export class Battle implements OnInit {
         this.save();
     }
 
+    updateArmorClass(combatant: Combatant, armorClass: number) {
+        if (isNaN(armorClass) || armorClass <= 0) return;
+
+        combatant.armorClass = Math.floor(armorClass);
+        this.save();
+    }
+
+    updateMaxHp(combatant: Combatant, maxHp: number) {
+        if (isNaN(maxHp) || maxHp <= 0) return;
+
+        combatant.maxHp = Math.floor(maxHp);
+        combatant.currentHp = Math.min(combatant.currentHp, combatant.maxHp);
+        combatant.alive = combatant.currentHp > 0;
+        this.save();
+    }
+
     updateTemporaryHp(combatant: Combatant, temporaryHp: number) {
         if (isNaN(temporaryHp) || temporaryHp < 0) return;
 

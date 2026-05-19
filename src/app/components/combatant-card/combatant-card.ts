@@ -50,6 +50,8 @@ export class CombatantCard {
     @Output() temporaryHpChange = new EventEmitter<number>();
     @Output() remove = new EventEmitter<void>();
     @Output() initiativeChange = new EventEmitter<number>();
+    @Output() armorClassChange = new EventEmitter<number>();
+    @Output() maxHpChange = new EventEmitter<number>();
     @Output() conditionsChange = new EventEmitter<CombatantConditionKey[]>();
     @Output() conditionStatesChange = new EventEmitter<CombatantConditionState[]>();
     @Output() openSpellSlots = new EventEmitter<void>();
@@ -91,6 +93,24 @@ export class CombatantCard {
 
         this.combatant.initiative = init;
         this.initiativeChange.emit(init);
+    }
+
+    updateArmorClass(value: string) {
+        const armorClass = Math.floor(Number(value));
+        if (isNaN(armorClass) || armorClass <= 0) return;
+
+        this.combatant.armorClass = armorClass;
+        this.armorClassChange.emit(armorClass);
+    }
+
+    updateMaxHp(value: string) {
+        const maxHp = Math.floor(Number(value));
+        if (isNaN(maxHp) || maxHp <= 0) return;
+
+        this.combatant.maxHp = maxHp;
+        this.combatant.currentHp = Math.min(this.combatant.currentHp, maxHp);
+        this.combatant.alive = this.combatant.currentHp > 0;
+        this.maxHpChange.emit(maxHp);
     }
 
     get healthPercent(): number {
