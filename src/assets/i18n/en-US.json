@@ -1,0 +1,92 @@
+{
+  "language": {
+    "label": "Language",
+    "options": {
+      "pt-BR": "PT-BR",
+      "es": "ES",
+      "en-US": "EN"
+    }
+  },
+  "common": {
+    "add": "Add",
+    "apply": "Apply",
+    "areYouSure": "Are you sure?",
+    "cancel": "Cancel",
+    "clear": "Clear",
+    "close": "Close",
+    "done": "Done",
+    "no": "No",
+    "reset": "Reset",
+    "yes": "Yes",
+    "zero": "Zero"
+  },
+  "battle": {
+    "addCombatant": "Add combatant",
+    "removeConfirmation": "Are you sure you want to remove this combatant?",
+    "clear": {
+      "title": "Clear battlefield",
+      "prompt": "What do you want to delete?",
+      "npcs": "NPCs only",
+      "players": "Players only",
+      "all": "All"
+    }
+  },
+  "combatant": {
+    "ac": "AC",
+    "damage": "Damage",
+    "healing": "Healing",
+    "hp": "HP",
+    "initiativeShort": "Init",
+    "tempHp": "Temp HP",
+    "tempHpShort": "temp",
+    "type": {
+      "npc": "NPC",
+      "player": "Player"
+    }
+  },
+  "combatantModal": {
+    "armorClass": "Armor Class (AC)",
+    "initiative": "Initiative",
+    "maxHp": "Max HP",
+    "name": "Name / Description",
+    "title": "New Combatant",
+    "type": "Type"
+  },
+  "spells": {
+    "clearLevel": "Zero level",
+    "level": "Level",
+    "levelShort": "L{{ level }}",
+    "noneConfigured": "No spell slots configured",
+    "noneConfiguredShort": "No slots configured",
+    "remaining": "Remaining",
+    "resetLevel": "Reset level",
+    "restoreAll": "Restore all",
+    "summary": "Slots {{ remaining }}/{{ total }} - {{ levels }}",
+    "title": "Spell slots",
+    "total": "Total"
+  },
+  "conditions": {
+    "title": "Conditions",
+    "none": "No conditions",
+    "BLINDED": "Blinded",
+    "CHARMED": "Charmed",
+    "DEAFENED": "Deafened",
+    "FRIGHTENED": "Frightened",
+    "GRAPPLED": "Grappled",
+    "INCAPACITATED": "Incapacitated",
+    "INVISIBLE": "Invisible",
+    "PARALYZED": "Paralyzed",
+    "PETRIFIED": "Petrified",
+    "POISONED": "Poisoned",
+    "PRONE": "Prone",
+    "RESTRAINED": "Restrained",
+    "STUNNED": "Stunned",
+    "UNCONSCIOUS": "Unconscious",
+    "EXHAUSTION_1": "Exhaustion 1",
+    "EXHAUSTION_2": "Exhaustion 2",
+    "EXHAUSTION_3": "Exhaustion 3",
+    "EXHAUSTION_4": "Exhaustion 4",
+    "EXHAUSTION_5": "Exhaustion 5",
+    "EXHAUSTION_6": "Exhaustion 6"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "language": {
+    "label": "Idioma",
+    "options": {
+      "pt-BR": "PT-BR",
+      "es": "ES",
+      "en-US": "EN"
+    }
+  },
+  "common": {
+    "add": "Adicionar",
+    "apply": "Aplicar",
+    "areYouSure": "Tem certeza?",
+    "cancel": "Cancelar",
+    "clear": "Limpar",
+    "close": "Fechar",
+    "done": "Concluir",
+    "no": "Não",
+    "reset": "Reset",
+    "yes": "Sim",
+    "zero": "Zerar"
+  },
+  "battle": {
+    "addCombatant": "Adicionar combatente",
+    "removeConfirmation": "Tem certeza de que deseja remover este combatente?",
+    "clear": {
+      "title": "Limpar campo de batalha",
+      "prompt": "O que você deseja excluir?",
+      "npcs": "Somente NPCs",
+      "players": "Somente Jogadores",
+      "all": "Todos"
+    }
+  },
+  "combatant": {
+    "ac": "CA",
+    "damage": "Dano",
+    "healing": "Cura",
+    "hp": "HP",
+    "initiativeShort": "Ini",
+    "tempHp": "HP temp.",
+    "tempHpShort": "temp",
+    "type": {
+      "npc": "NPC",
+      "player": "Jogador"
+    }
+  },
+  "combatantModal": {
+    "armorClass": "Classe de Armadura (CA)",
+    "initiative": "Iniciativa",
+    "maxHp": "HP Máximo",
+    "name": "Nome / Descrição",
+    "title": "Novo Combatente",
+    "type": "Tipo"
+  },
+  "spells": {
+    "clearLevel": "Zerar nível",
+    "level": "Nível",
+    "levelShort": "N{{ level }}",
+    "noneConfigured": "Sem slots de magia configurados",
+    "noneConfiguredShort": "Sem slots configurados",
+    "remaining": "Restantes",
+    "resetLevel": "Restaurar nível",
+    "restoreAll": "Restaurar todos",
+    "summary": "Slots {{ remaining }}/{{ total }} - {{ levels }}",
+    "title": "Slots de magia",
+    "total": "Total"
+  },
+  "conditions": {
+    "title": "Condições",
+    "none": "Sem condições",
+    "BLINDED": "Cego",
+    "CHARMED": "Enfeitiçado",
+    "DEAFENED": "Surdo",
+    "FRIGHTENED": "Assustado",
+    "GRAPPLED": "Agarrado",
+    "INCAPACITATED": "Incapacitado",
+    "INVISIBLE": "Invisível",
+    "PARALYZED": "Paralisado",
+    "PETRIFIED": "Petrificado",
+    "POISONED": "Envenenado",
+    "PRONE": "Caído",
+    "RESTRAINED": "Contido",
+    "STUNNED": "Atordoado",
+    "UNCONSCIOUS": "Inconsciente",
+    "EXHAUSTION_1": "Exaustão 1",
+    "EXHAUSTION_2": "Exaustão 2",
+    "EXHAUSTION_3": "Exaustão 3",
+    "EXHAUSTION_4": "Exaustão 4",
+    "EXHAUSTION_5": "Exaustão 5",
+    "EXHAUSTION_6": "Exaustão 6"
+  }
+}

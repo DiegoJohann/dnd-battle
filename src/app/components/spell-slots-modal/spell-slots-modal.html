@@ -2,20 +2,20 @@
     <section class="modal" (click)="$event.stopPropagation()">
         <header class="modal-header">
             <div>
-                <p>Slots de magia</p>
+                <p>{{ 'spells.title' | translate }}</p>
                 <h2>{{ combatant.name }}</h2>
             </div>
 
-            <button class="close-btn" type="button" (click)="close.emit()" title="Fechar">
+            <button class="close-btn" type="button" (click)="close.emit()" [title]="'common.close' | translate">
                 <lucide-icon [img]="XIcon" [size]="16"></lucide-icon>
             </button>
         </header>
 
         <div class="slots-table">
             <div class="table-head">
-                <span>Nivel</span>
-                <span>Total</span>
-                <span>Restantes</span>
+                <span>{{ 'spells.level' | translate }}</span>
+                <span>{{ 'spells.total' | translate }}</span>
+                <span>{{ 'spells.remaining' | translate }}</span>
                 <span></span>
             </div>
 
@@ -49,13 +49,13 @@
                     />
 
                     <div class="row-actions">
-                        <button type="button" (click)="resetRemaining(level)" title="Restaurar nivel">
+                        <button type="button" (click)="resetRemaining(level)" [title]="'spells.resetLevel' | translate">
                             <lucide-icon [img]="RotateCcwIcon" [size]="13"></lucide-icon>
-                            Reset
+                            {{ 'common.reset' | translate }}
                         </button>
-                        <button type="button" (click)="clearLevel(level)" title="Zerar nivel">
+                        <button type="button" (click)="clearLevel(level)" [title]="'spells.clearLevel' | translate">
                             <lucide-icon [img]="EraserIcon" [size]="13"></lucide-icon>
-                            Zerar
+                            {{ 'common.zero' | translate }}
                         </button>
                     </div>
                 </div>
@@ -65,11 +65,11 @@
         <footer class="modal-actions">
             <button type="button" class="ghost-btn" (click)="resetAllRemaining()">
                 <lucide-icon [img]="RotateCcwIcon" [size]="14"></lucide-icon>
-                Restaurar todos
+                {{ 'spells.restoreAll' | translate }}
             </button>
             <button type="button" class="primary-btn" (click)="close.emit()">
                 <lucide-icon [img]="CheckIcon" [size]="14"></lucide-icon>
-                Concluir
+                {{ 'common.done' | translate }}
             </button>
         </footer>
     </section>

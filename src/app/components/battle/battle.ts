@@ -7,6 +7,9 @@ import { animate, query, stagger, style, transition, trigger } from '@angular/an
 import { LucideAngularModule, PlusIcon, Trash2Icon } from 'lucide-angular';
 import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog';
 import { SpellSlotsModal } from '../spell-slots-modal/spell-slots-modal';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LanguageService } from '../../core/i18n/language.service';
+import { SupportedLanguage } from '../../core/i18n/i18n';
 
 @Component({
     selector: 'app-battle',
@@ -16,7 +19,8 @@ import { SpellSlotsModal } from '../spell-slots-modal/spell-slots-modal';
         CombatantCard,
         LucideAngularModule,
         ConfirmationDialog,
-        SpellSlotsModal
+        SpellSlotsModal,
+        TranslatePipe
     ],
     templateUrl: './battle.html',
     styleUrl: './battle.scss',
@@ -43,6 +47,13 @@ export class Battle implements OnInit {
     showConfirmationDialog = false;
     combatantToRemove: Combatant | undefined;
     spellSlotsCombatant: Combatant | undefined;
+
+    constructor(protected languageService: LanguageService) {
+    }
+
+    changeLanguage(value: string) {
+        this.languageService.use(value as SupportedLanguage);
+    }
 
     openAddCombatantModal() {
         this.showAddCombatantModal = true;

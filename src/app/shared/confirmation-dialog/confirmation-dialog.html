@@ -1,10 +1,10 @@
 <div class="overlay">
     <div class="modal">
-        <p>{{ confirmationMessage }}</p>
+        <p>{{ confirmationMessage | translate }}</p>
 
         <div class="actions">
-            <button (click)="confirm()">{{ acceptLabel }}</button>
-            <button (click)="reject()">{{ rejectLabel }}</button>
+            <button (click)="confirm()">{{ acceptLabel | translate }}</button>
+            <button (click)="reject()">{{ rejectLabel | translate }}</button>
         </div>
     </div>
 </div>

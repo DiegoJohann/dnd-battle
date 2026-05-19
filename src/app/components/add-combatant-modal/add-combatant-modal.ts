@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Combatant, CombatantType } from '../../core/entities/combatant';
 import { BugIcon, LucideAngularModule, UserIcon } from 'lucide-angular';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-add-combatant-modal',
-    imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
+    imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, TranslatePipe],
     templateUrl: './add-combatant-modal.html',
     styleUrl: './add-combatant-modal.scss',
 })

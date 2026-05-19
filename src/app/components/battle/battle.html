@@ -18,14 +18,27 @@
     }
 </div>
 
+<label class="language-select">
+    <span>{{ 'language.label' | translate }}</span>
+    <select
+        [value]="languageService.currentLanguage"
+        (change)="changeLanguage(languageInput.value)"
+        #languageInput
+    >
+        @for (language of languageService.supportedLanguages; track language) {
+            <option [value]="language">{{ ('language.options.' + language) | translate }}</option>
+        }
+    </select>
+</label>
+
 <button class="add-btn" [class.pulse]="combatants.length === 0" (click)="openAddCombatantModal()">
     <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
-    <span class="label">Adicionar combatente</span>
+    <span class="label">{{ 'battle.addCombatant' | translate }}</span>
 </button>
 
 <button class="clear-btn" (click)="openClearFieldModal()">
     <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
-    Limpar
+    {{ 'common.clear' | translate }}
 </button>
 
 @if (showAddCombatantModal) {
@@ -38,14 +51,14 @@
 @if (showClearFieldModal) {
     <div class="overlay">
         <div class="modal">
-            <h2>Limpar campo de batalha</h2>
-            <p>O que você deseja excluir?</p>
+            <h2>{{ 'battle.clear.title' | translate }}</h2>
+            <p>{{ 'battle.clear.prompt' | translate }}</p>
 
             <div class="actions">
-                <button (click)="clearCombatants('NPC')">Somente NPCs</button>
-                <button (click)="clearCombatants('PLAYER')">Somente Jogadores</button>
-                <button (click)="clearCombatants('ALL')">Todos</button>
-                <button (click)="closeClearFieldModal()">Cancelar</button>
+                <button (click)="clearCombatants('NPC')">{{ 'battle.clear.npcs' | translate }}</button>
+                <button (click)="clearCombatants('PLAYER')">{{ 'battle.clear.players' | translate }}</button>
+                <button (click)="clearCombatants('ALL')">{{ 'battle.clear.all' | translate }}</button>
+                <button (click)="closeClearFieldModal()">{{ 'common.cancel' | translate }}</button>
             </div>
         </div>
     </div>
@@ -61,7 +74,7 @@
 
 @if (showConfirmationDialog) {
     <app-confirmation-dialog
-        [confirmationMessage]="'Tem certeza de que deseja remover este combatente?'"
+        confirmationMessage="battle.removeConfirmation"
         (actionConfirmed)="removeCombatant()"
         (actionRejected)="this.showConfirmationDialog = false; this.combatantToRemove = undefined;"
     ></app-confirmation-dialog>

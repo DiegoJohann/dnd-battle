@@ -2,10 +2,11 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { Combatant, CombatantSpellSlotLevel } from '../../core/entities/combatant';
 import { CheckIcon, EraserIcon, LucideAngularModule, RotateCcwIcon, XIcon } from 'lucide-angular';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-spell-slots-modal',
-    imports: [CommonModule, LucideAngularModule],
+    imports: [CommonModule, LucideAngularModule, TranslatePipe],
     templateUrl: './spell-slots-modal.html',
     styleUrl: './spell-slots-modal.scss'
 })

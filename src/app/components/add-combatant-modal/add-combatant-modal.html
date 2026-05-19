@@ -1,11 +1,11 @@
 <div class="overlay">
     <div class="modal">
-        <h2>Novo Combatente</h2>
+        <h2>{{ 'combatantModal.title' | translate }}</h2>
 
         <form [formGroup]="form" (ngSubmit)="submit()">
 
             <div class="form-field">
-                <label for="name">Nome / Descrição</label>
+                <label for="name">{{ 'combatantModal.name' | translate }}</label>
                 <input
                     #nameInput
                     id="name"
@@ -15,7 +15,7 @@
             </div>
 
             <div class="form-field">
-                <label for="hp">HP Máximo</label>
+                <label for="hp">{{ 'combatantModal.maxHp' | translate }}</label>
                 <input
                     #hpInput
                     id="hp"
@@ -25,7 +25,7 @@
             </div>
 
             <div class="form-field">
-                <label for="ac">Classe de Armadura (CA)</label>
+                <label for="ac">{{ 'combatantModal.armorClass' | translate }}</label>
                 <input
                     #acInput
                     id="ac"
@@ -35,7 +35,7 @@
             </div>
 
             <div class="form-field">
-                <label for="initiative">Iniciativa</label>
+                <label for="initiative">{{ 'combatantModal.initiative' | translate }}</label>
                 <input
                     #initInput
                     id="initiative"
@@ -44,7 +44,7 @@
             </div>
 
             <div class="form-field">
-                <label>Tipo</label>
+                <label>{{ 'combatantModal.type' | translate }}</label>
 
                 <div class="type-toggle">
                     <button
@@ -54,7 +54,7 @@
                         (click)="form.patchValue({ type: 'NPC' })"
                     >
                         <lucide-icon [img]="BugIcon" [size]="16"></lucide-icon>
-                        NPC
+                        {{ 'combatant.type.npc' | translate }}
                     </button>
 
                     <button
@@ -64,15 +64,15 @@
                         (click)="form.patchValue({ type: 'PLAYER' })"
                     >
                         <lucide-icon [img]="UserIcon" [size]="16"></lucide-icon>
-                        Jogador
+                        {{ 'combatant.type.player' | translate }}
                     </button>
                 </div>
             </div>
 
             <div class="actions">
-                <button type="button" (click)="close.emit()">Cancelar</button>
+                <button type="button" (click)="close.emit()">{{ 'common.cancel' | translate }}</button>
                 <button type="submit" [disabled]="form.invalid">
-                    Adicionar
+                    {{ 'common.add' | translate }}
                 </button>
             </div>
 

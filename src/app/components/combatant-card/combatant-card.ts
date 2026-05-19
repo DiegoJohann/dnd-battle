@@ -9,12 +9,14 @@ import {
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NgStyle } from '@angular/common';
 import { LucideAngularModule, SparklesIcon } from 'lucide-angular';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-combatant-card',
     imports: [
         NgStyle,
-        LucideAngularModule
+        LucideAngularModule,
+        TranslatePipe
     ],
     templateUrl: './combatant-card.html',
     styleUrl: './combatant-card.scss',
@@ -51,6 +53,9 @@ export class CombatantCard {
     @Output() openSpellSlots = new EventEmitter<void>();
 
     readonly conditionCatalog = COMBATANT_CONDITION_CATALOG;
+
+    constructor(private translate: TranslateService) {
+    }
 
     applyDamage(value: string) {
         const dmg = Number(value);
@@ -112,7 +117,7 @@ export class CombatantCard {
     get spellSlotSummary(): string {
         const slots = this.configuredSpellSlots;
 
-        if (!slots.length) return 'Sem slots de magia configurados';
+        if (!slots.length) return this.translate.instant('spells.noneConfigured');
 
         const remaining = slots.reduce((sum, slot) => sum + slot.remaining, 0);
         const total = slots.reduce((sum, slot) => sum + slot.total, 0);
@@ -120,7 +125,11 @@ export class CombatantCard {
             .map(slot => `${slot.level}: ${slot.remaining}/${slot.total}`)
             .join(' | ');
 
-        return `Slots ${remaining}/${total} - ${levels}`;
+        return this.translate.instant('spells.summary', {
+            remaining,
+            total,
+            levels
+        });
     }
 
     get hasSpellSlots(): boolean {
