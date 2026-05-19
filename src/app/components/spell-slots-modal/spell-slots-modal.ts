@@ -77,7 +77,7 @@ export class SpellSlotsModal {
 
     @HostListener('document:keydown', ['$event'])
     handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'Escape') {
+        if (event.key === 'Escape' || event.key === 'Enter') {
             event.preventDefault();
             this.close.emit();
         }

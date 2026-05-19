@@ -1,5 +1,66 @@
-/* You can add global styles to this file, and also import other style files */
-html, body {
+/* Global theme */
+:root {
+    color-scheme: dark;
+
+    --font-ui: Arial, Helvetica, sans-serif;
+
+    --color-bg: #121212;
+    --color-bg-elevated: #1f1f1f;
+    --color-bg-elevated-rgb: 31, 31, 31;
+    --color-bg-panel: #1a1a1a;
+    --color-bg-control: #2a2a2a;
+    --color-bg-control-hover: #3a3a3a;
+    --color-bg-muted: #555;
+
+    --color-text: #f5f5f5;
+    --color-text-muted: #ccc;
+    --color-text-subtle: #aaa;
+    --color-border: #444;
+    --color-border-soft: rgba(255, 255, 255, 0.14);
+
+    --color-danger-700: #b71c1c;
+    --color-danger-600: #c62828;
+    --color-danger-500: #e53935;
+    --color-danger-400: #f44336;
+    --color-accent-700: #b00020;
+    --color-accent-500: #ff1744;
+    --color-player-700: #1565c0;
+    --color-player-600: #1976d2;
+    --color-player-500: #1e88e5;
+    --color-player-300: #64b5f6;
+    --color-temp-hp: #67e8f9;
+    --color-temp-hp-strong: #22d3ee;
+
+    --gradient-danger: linear-gradient(135deg, var(--color-danger-700), var(--color-danger-500));
+    --gradient-danger-hover: linear-gradient(135deg, var(--color-danger-600), var(--color-danger-400));
+    --gradient-accent: linear-gradient(135deg, var(--color-accent-700), var(--color-accent-500));
+    --gradient-player: linear-gradient(135deg, var(--color-player-700), var(--color-player-500));
+    --gradient-app-bg: radial-gradient(circle at top, #2a2a2a 0%, #161616 60%, var(--color-bg) 100%);
+
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-pill: 999px;
+
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.4);
+    --shadow-popover: 0 12px 32px rgba(0, 0, 0, 0.7);
+    --shadow-modal: 0 18px 48px rgba(0, 0, 0, 0.6);
+
+    --duration-fast: 0.12s;
+    --duration-normal: 0.15s;
+
+    --z-popover: 1000;
+    --z-overlay: 10000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -7,4 +68,300 @@ html, body {
 
 html {
     font-size: 20px;
+}
+
+body {
+    min-height: 100dvh;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-ui);
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+input {
+    border: 1px solid var(--color-bg-muted);
+    border-radius: var(--radius-xs);
+    background: var(--color-bg-control);
+    color: var(--color-text);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--color-danger-600);
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-bg-control-hover), var(--color-bg-control));
+    border: 2px solid var(--color-bg);
+    border-radius: var(--radius-md);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #4a4a4a, var(--color-bg-control-hover));
+}
+
+/* Firefox */
+* {
+    scrollbar-color: var(--color-bg-control-hover) var(--color-bg);
+    scrollbar-width: thin;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.modal {
+    background: var(--color-bg-elevated);
+    color: var(--color-text);
+    border-radius: var(--radius-md);
+    padding: 20px;
+}
+
+.modal p {
+    color: var(--color-text-muted);
+}
+
+.theme-popover {
+    z-index: var(--z-popover);
+
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    box-shadow: var(--shadow-popover);
+}
+
+.theme-popover::before {
+    content: "";
+    position: absolute;
+
+    width: 10px;
+    height: 10px;
+    background: var(--color-bg-panel);
+}
+
+.label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.dead {
+    opacity: 0.4;
+}
+
+.spell-slots-popover {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+
+    width: 220px;
+    padding: 12px;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 4px);
+    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.spell-slots-popover::before {
+    left: 50%;
+    bottom: -6px;
+
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.spell-slots-section:hover .spell-slots-popover,
+.spell-slots-section:focus-within .spell-slots-popover {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.spell-popover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #cfcfcf;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.spell-popover-header strong {
+    color: #ffd0cd;
+    font-size: 0.82rem;
+}
+
+.spell-slot-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.spell-slot-summary-row {
+    display: grid;
+    grid-template-columns: 34px 1fr 42px;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.74rem;
+}
+
+.spell-level {
+    color: #ffb4b0;
+    font-weight: 700;
+}
+
+.spell-slot-meter {
+    height: 7px;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    background: #3a2424;
+}
+
+.spell-slot-meter-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: var(--gradient-danger);
+}
+
+.spell-slot-summary-row strong {
+    color: var(--color-text);
+    text-align: right;
+}
+
+.spell-empty {
+    margin: 0;
+    color: var(--color-text-subtle);
+    font-size: 0.76rem;
+    font-style: italic;
+}
+
+.condition-popover {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+
+    width: 320px;
+    max-height: 280px;
+    padding: 14px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    transform: translateX(8px);
+}
+
+.condition-popover::before {
+    top: -6px;
+    right: 16px;
+
+    border-left: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-border);
+    transform: rotate(45deg);
+}
+
+.condition-picker {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.condition-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 40px;
+    min-width: 0;
+    padding: 8px 26px 8px 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 600;
+    opacity: 0.9;
+    text-align: left;
+    transition: all var(--duration-fast) ease;
+}
+
+.condition-option .check {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+
+    padding: 2px 4px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+
+    font-size: 0.65rem;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.condition-option:hover {
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+.condition-option.active {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px) scale(1.02);
+    opacity: 1;
+}
+
+.condition-clear {
+    border: none;
+    background: transparent;
+    color: #cfcfcf;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 4px;
+}
+
+.condition-clear:hover {
+    color: #fff;
 }
