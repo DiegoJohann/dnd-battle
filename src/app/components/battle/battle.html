@@ -98,7 +98,7 @@
 
 @if (showClearFieldModal) {
     <div class="overlay">
-        <div class="modal">
+        <div class="modal" #clearFieldModal (keydown.tab)="trapModalTab($event, clearFieldModal)">
             <h2>{{ 'battle.clear.title' | translate }}</h2>
             <p>{{ 'battle.clear.prompt' | translate }}</p>
 
@@ -106,7 +106,7 @@
                 <button (click)="clearCombatants('NPC')">{{ 'battle.clear.npcs' | translate }}</button>
                 <button (click)="clearCombatants('PLAYER')">{{ 'battle.clear.players' | translate }}</button>
                 <button (click)="clearCombatants('ALL')">{{ 'battle.clear.all' | translate }}</button>
-                <button (click)="closeClearFieldModal()">{{ 'common.cancel' | translate }}</button>
+                <button #clearCancelButton (click)="closeClearFieldModal()">{{ 'common.cancel' | translate }}</button>
             </div>
         </div>
     </div>
@@ -114,13 +114,13 @@
 
 @if (showResetTurnModal) {
     <div class="overlay">
-        <div class="modal">
+        <div class="modal" #resetTurnModal (keydown.tab)="trapModalTab($event, resetTurnModal)">
             <h2>{{ 'turn.resetTitle' | translate }}</h2>
             <p>{{ 'turn.resetPrompt' | translate }}</p>
 
             <div class="actions">
                 <button (click)="resetTurnTracker()">{{ 'turn.resetConfirm' | translate }}</button>
-                <button (click)="closeResetTurnModal()">{{ 'common.cancel' | translate }}</button>
+                <button #resetCancelButton (click)="closeResetTurnModal()">{{ 'common.cancel' | translate }}</button>
             </div>
         </div>
     </div>

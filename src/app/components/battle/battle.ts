@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Combatant, CombatantConditionKey, CombatantConditionState } from '../../core/entities/combatant';
 import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
@@ -11,6 +11,7 @@ import { SpellSlotsModal } from '../spell-slots-modal/spell-slots-modal';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../core/i18n/language.service';
 import { SupportedLanguage } from '../../core/i18n/i18n';
+import { HotkeysService } from '../../core/hotkeys/hotkeys.service';
 
 @Component({
     selector: 'app-battle',
@@ -52,7 +53,18 @@ export class Battle implements OnInit {
     combatantToRemove: Combatant | undefined;
     spellSlotsCombatant: Combatant | undefined;
 
-    constructor(protected languageService: LanguageService) {
+    @ViewChild('clearCancelButton') set clearCancelButton(button: ElementRef<HTMLButtonElement> | undefined) {
+        this.focusDefaultModalAction(button);
+    }
+
+    @ViewChild('resetCancelButton') set resetCancelButton(button: ElementRef<HTMLButtonElement> | undefined) {
+        this.focusDefaultModalAction(button);
+    }
+
+    constructor(
+        protected languageService: LanguageService,
+        private hotkeysService: HotkeysService
+    ) {
     }
 
     changeLanguage(value: string) {
@@ -60,6 +72,7 @@ export class Battle implements OnInit {
     }
 
     openAddCombatantModal() {
+        this.closeAllConditions();
         this.showAddCombatantModal = true;
     }
 
@@ -166,6 +179,7 @@ export class Battle implements OnInit {
     }
 
     openClearFieldModal() {
+        this.closeAllConditions();
         this.showClearFieldModal = true;
     }
 
@@ -256,6 +270,8 @@ export class Battle implements OnInit {
     nextTurn() {
         if (!this.combatants.length) return;
 
+        this.closeAllConditions();
+
         const nextIndex = this.activeCombatantIndex + 1;
         const wrappedRound = nextIndex >= this.combatants.length;
 
@@ -273,6 +289,8 @@ export class Battle implements OnInit {
 
     previousTurn() {
         if (!this.combatants.length) return;
+
+        this.closeAllConditions();
 
         if (this.activeCombatantIndex <= 0) {
             this.round = Math.max(1, this.round - 1);
@@ -294,6 +312,7 @@ export class Battle implements OnInit {
     openResetTurnModal() {
         if (!this.combatants.length) return;
 
+        this.closeAllConditions();
         this.showResetTurnModal = true;
     }
 
@@ -438,37 +457,90 @@ export class Battle implements OnInit {
         }
     }
 
-    @HostListener('window:keydown', ['$event'])
-    handleKeydown(event: Event) {
+    private get hasBlockingModal(): boolean {
+        return this.showAddCombatantModal
+            || this.showClearFieldModal
+            || this.showResetTurnModal
+            || this.showConfirmationDialog
+            || !!this.spellSlotsCombatant;
+    }
+
+    private closeOverlays() {
+        this.closeAddCombatantModal();
+        this.closeClearFieldModal();
+        this.closeResetTurnModal();
+        this.closeAllConditions();
+        this.closeSpellSlotsModal();
+        this.showConfirmationDialog = false;
+        this.combatantToRemove = undefined;
+    }
+
+    trapModalTab(event: Event, modal: HTMLElement) {
         const keyboardEvent = event as KeyboardEvent;
+        const focusableElements = Array.from(
+            modal.querySelectorAll<HTMLElement>(
+                'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )
+        ).filter(element => !element.hasAttribute('disabled') && element.offsetParent !== null);
 
-        if (keyboardEvent.key === 'Escape') {
+        if (!focusableElements.length) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        const activeElement = document.activeElement;
+
+        if (keyboardEvent.shiftKey && activeElement === firstElement) {
             keyboardEvent.preventDefault();
-            this.closeClearFieldModal();
-            this.closeResetTurnModal();
-            this.closeAllConditions();
-            this.closeSpellSlotsModal();
-        }
-
-        if ((keyboardEvent.target as HTMLElement).tagName === 'INPUT') return;
-        if ((keyboardEvent.target as HTMLElement).tagName === 'SELECT') return;
-
-        if (keyboardEvent.key === 'ArrowRight') {
-            keyboardEvent.preventDefault();
-            this.nextTurn();
+            lastElement.focus();
             return;
         }
 
-        if (keyboardEvent.key === 'ArrowLeft') {
+        if (!keyboardEvent.shiftKey && activeElement === lastElement) {
             keyboardEvent.preventDefault();
-            this.previousTurn();
+            firstElement.focus();
+        }
+    }
+
+    private focusDefaultModalAction(button: ElementRef<HTMLButtonElement> | undefined) {
+        if (!button) return;
+
+        setTimeout(() => button.nativeElement.focus());
+    }
+
+    @HostListener('window:keydown', ['$event'])
+    handleKeydown(event: KeyboardEvent) {
+        const match = this.hotkeysService.matchBattleHotkey(event);
+
+        if (!match) return;
+
+        if (match.preventDefault) {
+            event.preventDefault();
+        }
+
+        if (match.action === 'CLOSE_OVERLAYS') {
+            this.closeOverlays();
             return;
         }
 
-        if (keyboardEvent.key.toLowerCase() !== 'a') return;
+        if (this.hasBlockingModal) return;
 
-        keyboardEvent.preventDefault();
-        this.openAddCombatantModal();
+        switch (match.action) {
+            case 'ADD_COMBATANT':
+                this.openAddCombatantModal();
+                break;
+            case 'CLEAR_BATTLEFIELD':
+                this.openClearFieldModal();
+                break;
+            case 'NEXT_TURN':
+                this.nextTurn();
+                break;
+            case 'PREVIOUS_TURN':
+                this.previousTurn();
+                break;
+            case 'RESET_TURN':
+                this.openResetTurnModal();
+                break;
+        }
     }
 
     protected readonly ChevronLeftIcon = ChevronLeftIcon;
