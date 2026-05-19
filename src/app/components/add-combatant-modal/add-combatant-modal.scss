@@ -16,10 +16,36 @@
     margin-bottom: 12px;
 }
 
+.field-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
 label {
     font-size: 0.85rem;
-    margin-bottom: 4px;
     color: var(--color-text-muted);
+}
+
+.info-tip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: help;
+    flex: 0 0 auto;
+}
+
+.info-tip:hover {
+    color: #fff;
 }
 
 input {

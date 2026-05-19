@@ -15,7 +15,17 @@
             </div>
 
             <div class="form-field">
-                <label for="hp">{{ 'combatantModal.maxHp' | translate }}</label>
+                <div class="field-label">
+                    <label for="hp">{{ 'combatantModal.maxHp' | translate }}</label>
+                    <button
+                        type="button"
+                        class="info-tip"
+                        [attr.title]="'combatantModal.maxHpHelp' | translate"
+                        [attr.aria-label]="'combatantModal.maxHpHelp' | translate"
+                    >
+                        <lucide-icon [img]="CircleQuestionMark" [size]="14"></lucide-icon>
+                    </button>
+                </div>
                 <input
                     #hpInput
                     id="hp"
@@ -25,7 +35,17 @@
             </div>
 
             <div class="form-field">
-                <label for="ac">{{ 'combatantModal.armorClass' | translate }}</label>
+                <div class="field-label">
+                    <label for="ac">{{ 'combatantModal.armorClass' | translate }}</label>
+                    <button
+                        type="button"
+                        class="info-tip"
+                        [attr.title]="'combatantModal.armorClassHelp' | translate"
+                        [attr.aria-label]="'combatantModal.armorClassHelp' | translate"
+                    >
+                        <lucide-icon [img]="CircleQuestionMark" [size]="14"></lucide-icon>
+                    </button>
+                </div>
                 <input
                     #acInput
                     id="ac"
@@ -35,7 +55,17 @@
             </div>
 
             <div class="form-field">
-                <label for="initiative">{{ 'combatantModal.initiative' | translate }}</label>
+                <div class="field-label">
+                    <label for="initiative">{{ 'combatantModal.initiative' | translate }}</label>
+                    <button
+                        type="button"
+                        class="info-tip"
+                        [attr.title]="'combatantModal.initiativeHelp' | translate"
+                        [attr.aria-label]="'combatantModal.initiativeHelp' | translate"
+                    >
+                        <lucide-icon [img]="CircleQuestionMark" [size]="14"></lucide-icon>
+                    </button>
+                </div>
                 <input
                     #initInput
                     id="initiative"

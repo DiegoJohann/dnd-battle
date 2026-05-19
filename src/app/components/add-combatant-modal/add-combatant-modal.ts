@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Outpu
 import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Combatant, CombatantType } from '../../core/entities/combatant';
-import { BugIcon, LucideAngularModule, UserIcon } from 'lucide-angular';
+import { BugIcon, CircleQuestionMark, LucideAngularModule, UserIcon } from 'lucide-angular';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -61,5 +61,6 @@ export class AddCombatantModal implements AfterViewInit {
     }
 
     protected readonly BugIcon = BugIcon;
+    protected readonly CircleQuestionMark = CircleQuestionMark;
     protected readonly UserIcon = UserIcon;
 }

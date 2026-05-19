@@ -1,125 +1,128 @@
 {
-  "language": {
-    "label": "Idioma",
-    "options": {
-      "pt-BR": "PT-BR",
-      "es": "ES",
-      "en-US": "EN"
-    }
-  },
-  "common": {
-    "add": "Añadir",
-    "apply": "Aplicar",
-    "areYouSure": "¿Estás seguro?",
-    "cancel": "Cancelar",
-    "clear": "Limpiar",
-    "close": "Cerrar",
-    "done": "Terminar",
-    "no": "No",
-    "reset": "Restaurar",
-    "yes": "Sí",
-    "zero": "Poner a cero"
-  },
-  "battle": {
-    "addCombatant": "Añadir combatiente",
-    "removeConfirmation": "¿Estás seguro de que quieres eliminar este combatiente?",
-    "clear": {
-      "title": "Limpiar campo de batalla",
-      "prompt": "¿Qué quieres eliminar?",
-      "npcs": "Solo PNJ",
-      "players": "Solo Jugadores",
-      "all": "Todos"
-    }
-  },
-  "turn": {
-    "active": "Turno",
-    "current": "Actual",
-    "next": "Siguiente turno",
-    "nextShort": "Siguiente",
-    "none": "Sin combatientes",
-    "previous": "Turno anterior",
-    "previousShort": "Anterior",
-    "reset": "Reiniciar turno y ronda",
-    "resetConfirm": "Reiniciar",
-    "resetPrompt": "¿Volver a la ronda 1 y seleccionar el primer combatiente de la iniciativa?",
-    "resetTitle": "Reiniciar turnos",
-    "round": "Ronda"
-  },
-  "combatant": {
-    "ac": "CA",
-    "damage": "Daño",
-    "healing": "Curación",
-    "hp": "PG",
-    "initiativeShort": "Ini",
-    "tempHp": "PG temp.",
-    "tempHpShort": "temp",
-    "clearTempHp": "Limpiar PG temporales",
-    "actions": {
-      "more": "Más acciones",
-      "remove": "Eliminar"
+    "language": {
+        "label": "Idioma",
+        "options": {
+            "pt-BR": "PT-BR",
+            "es": "ES",
+            "en-US": "EN"
+        }
     },
-    "status": {
-      "dead": "Muerto",
-      "unconscious": "Inconsciente"
+    "common": {
+        "add": "Añadir",
+        "apply": "Aplicar",
+        "areYouSure": "¿Estás seguro?",
+        "cancel": "Cancelar",
+        "clear": "Limpiar",
+        "close": "Cerrar",
+        "done": "Terminar",
+        "no": "No",
+        "reset": "Restaurar",
+        "yes": "Sí",
+        "zero": "Poner a cero"
     },
-    "type": {
-      "npc": "PNJ",
-      "player": "Jugador"
+    "battle": {
+        "addCombatant": "Añadir combatiente",
+        "removeConfirmation": "¿Estás seguro de que quieres eliminar este combatiente?",
+        "clear": {
+            "title": "Limpiar campo de batalla",
+            "prompt": "¿Qué quieres eliminar?",
+            "npcs": "Solo PNJ",
+            "players": "Solo Jugadores",
+            "all": "Todos"
+        }
+    },
+    "turn": {
+        "active": "Turno",
+        "current": "Actual",
+        "next": "Siguiente turno",
+        "nextShort": "Siguiente",
+        "none": "Sin combatientes",
+        "previous": "Turno anterior",
+        "previousShort": "Anterior",
+        "reset": "Reiniciar turno y ronda",
+        "resetConfirm": "Reiniciar",
+        "resetPrompt": "¿Volver a la ronda 1 y seleccionar el primer combatiente de la iniciativa?",
+        "resetTitle": "Reiniciar turnos",
+        "round": "Ronda"
+    },
+    "combatant": {
+        "ac": "CA",
+        "damage": "Daño",
+        "healing": "Curación",
+        "hp": "PG",
+        "initiativeShort": "Ini",
+        "tempHp": "PG temp.",
+        "tempHpShort": "temp",
+        "clearTempHp": "Limpiar PG temporales",
+        "actions": {
+            "more": "Más acciones",
+            "remove": "Eliminar"
+        },
+        "status": {
+            "dead": "Muerto",
+            "unconscious": "Inconsciente"
+        },
+        "type": {
+            "npc": "PNJ",
+            "player": "Jugador"
+        }
+    },
+    "combatantModal": {
+        "armorClass": "Clase de Armadura (CA)",
+        "armorClassHelp": "Valor que dificulta que el combatiente sea golpeado.",
+        "initiative": "Iniciativa",
+        "initiativeHelp": "Valor que determina el orden del combate.",
+        "maxHp": "PG Máximos",
+        "maxHpHelp": "Total de puntos de vida del combatiente.",
+        "name": "Nombre / Descripción",
+        "title": "Nuevo Combatiente",
+        "type": "Tipo"
+    },
+    "spells": {
+        "clearLevel": "Poner nivel a cero",
+        "level": "Nivel",
+        "levelShort": "N{{ level }}",
+        "noneConfigured": "Sin espacios de conjuro configurados",
+        "noneConfiguredShort": "Sin espacios configurados",
+        "remaining": "Restantes",
+        "resetLevel": "Restaurar nivel",
+        "restoreAll": "Restaurar todos",
+        "spendOne": "Gastar 1 espacio",
+        "summary": "Espacios {{ remaining }}/{{ total }} - {{ levels }}",
+        "title": "Espacios de conjuro",
+        "total": "Total"
+    },
+    "conditions": {
+        "title": "Estados",
+        "none": "Sin estados",
+        "duration": {
+            "indefinite": "Indefinida",
+            "rounds": "{{ count }} turno(s) de este combatiente",
+            "startTurn": "Hasta el inicio del próximo turno",
+            "startTurnShort": "Ini.",
+            "titleIndefinite": "{{ condition }} - duración indefinida",
+            "titleUntilStart": "{{ condition }} - hasta el inicio del próximo turno",
+            "titleWithTurns": "{{ condition }} - {{ count }} turno(s) restante(s)"
+        },
+        "BLINDED": "Cegado",
+        "CHARMED": "Hechizado",
+        "DEAFENED": "Ensordecido",
+        "FRIGHTENED": "Asustado",
+        "GRAPPLED": "Agarrado",
+        "INCAPACITATED": "Incapacitado",
+        "INVISIBLE": "Invisible",
+        "PARALYZED": "Paralizado",
+        "PETRIFIED": "Petrificado",
+        "POISONED": "Envenenado",
+        "PRONE": "Derribado",
+        "RESTRAINED": "Apresado",
+        "STUNNED": "Aturdido",
+        "UNCONSCIOUS": "Inconsciente",
+        "EXHAUSTION_1": "Agotamiento 1",
+        "EXHAUSTION_2": "Agotamiento 2",
+        "EXHAUSTION_3": "Agotamiento 3",
+        "EXHAUSTION_4": "Agotamiento 4",
+        "EXHAUSTION_5": "Agotamiento 5",
+        "EXHAUSTION_6": "Agotamiento 6"
     }
-  },
-  "combatantModal": {
-    "armorClass": "Clase de Armadura (CA)",
-    "initiative": "Iniciativa",
-    "maxHp": "PG Máximos",
-    "name": "Nombre / Descripción",
-    "title": "Nuevo Combatiente",
-    "type": "Tipo"
-  },
-  "spells": {
-    "clearLevel": "Poner nivel a cero",
-    "level": "Nivel",
-    "levelShort": "N{{ level }}",
-    "noneConfigured": "Sin espacios de conjuro configurados",
-    "noneConfiguredShort": "Sin espacios configurados",
-    "remaining": "Restantes",
-    "resetLevel": "Restaurar nivel",
-    "restoreAll": "Restaurar todos",
-    "spendOne": "Gastar 1 espacio",
-    "summary": "Espacios {{ remaining }}/{{ total }} - {{ levels }}",
-    "title": "Espacios de conjuro",
-    "total": "Total"
-  },
-  "conditions": {
-    "title": "Estados",
-    "none": "Sin estados",
-    "duration": {
-      "indefinite": "Indefinida",
-      "rounds": "{{ count }} turno(s) de este combatiente",
-      "startTurn": "Hasta el inicio del próximo turno",
-      "startTurnShort": "Ini.",
-      "titleIndefinite": "{{ condition }} - duración indefinida",
-      "titleUntilStart": "{{ condition }} - hasta el inicio del próximo turno",
-      "titleWithTurns": "{{ condition }} - {{ count }} turno(s) restante(s)"
-    },
-    "BLINDED": "Cegado",
-    "CHARMED": "Hechizado",
-    "DEAFENED": "Ensordecido",
-    "FRIGHTENED": "Asustado",
-    "GRAPPLED": "Agarrado",
-    "INCAPACITATED": "Incapacitado",
-    "INVISIBLE": "Invisible",
-    "PARALYZED": "Paralizado",
-    "PETRIFIED": "Petrificado",
-    "POISONED": "Envenenado",
-    "PRONE": "Derribado",
-    "RESTRAINED": "Apresado",
-    "STUNNED": "Aturdido",
-    "UNCONSCIOUS": "Inconsciente",
-    "EXHAUSTION_1": "Agotamiento 1",
-    "EXHAUSTION_2": "Agotamiento 2",
-    "EXHAUSTION_3": "Agotamiento 3",
-    "EXHAUSTION_4": "Agotamiento 4",
-    "EXHAUSTION_5": "Agotamiento 5",
-    "EXHAUSTION_6": "Agotamiento 6"
-  }
 }

@@ -1,125 +1,128 @@
 {
-  "language": {
-    "label": "Idioma",
-    "options": {
-      "pt-BR": "PT-BR",
-      "es": "ES",
-      "en-US": "EN"
-    }
-  },
-  "common": {
-    "add": "Adicionar",
-    "apply": "Aplicar",
-    "areYouSure": "Tem certeza?",
-    "cancel": "Cancelar",
-    "clear": "Limpar",
-    "close": "Fechar",
-    "done": "Concluir",
-    "no": "Não",
-    "reset": "Reset",
-    "yes": "Sim",
-    "zero": "Zerar"
-  },
-  "battle": {
-    "addCombatant": "Adicionar combatente",
-    "removeConfirmation": "Tem certeza de que deseja remover este combatente?",
-    "clear": {
-      "title": "Limpar campo de batalha",
-      "prompt": "O que você deseja excluir?",
-      "npcs": "Somente NPCs",
-      "players": "Somente Jogadores",
-      "all": "Todos"
-    }
-  },
-  "turn": {
-    "active": "Turno",
-    "current": "Atual",
-    "next": "Próximo turno",
-    "nextShort": "Próximo",
-    "none": "Sem combatentes",
-    "previous": "Turno anterior",
-    "previousShort": "Anterior",
-    "reset": "Reiniciar turno e rodada",
-    "resetConfirm": "Reiniciar",
-    "resetPrompt": "Voltar para a rodada 1 e selecionar o primeiro combatente da iniciativa?",
-    "resetTitle": "Reiniciar turnos",
-    "round": "Rodada"
-  },
-  "combatant": {
-    "ac": "CA",
-    "damage": "Dano",
-    "healing": "Cura",
-    "hp": "HP",
-    "initiativeShort": "Ini",
-    "tempHp": "HP temp.",
-    "tempHpShort": "temp",
-    "clearTempHp": "Limpar HP temporário",
-    "actions": {
-      "more": "Mais ações",
-      "remove": "Remover"
+    "language": {
+        "label": "Idioma",
+        "options": {
+            "pt-BR": "PT-BR",
+            "es": "ES",
+            "en-US": "EN"
+        }
     },
-    "status": {
-      "dead": "Morto",
-      "unconscious": "Inconsciente"
+    "common": {
+        "add": "Adicionar",
+        "apply": "Aplicar",
+        "areYouSure": "Tem certeza?",
+        "cancel": "Cancelar",
+        "clear": "Limpar",
+        "close": "Fechar",
+        "done": "Concluir",
+        "no": "Não",
+        "reset": "Reset",
+        "yes": "Sim",
+        "zero": "Zerar"
     },
-    "type": {
-      "npc": "NPC",
-      "player": "Jogador"
+    "battle": {
+        "addCombatant": "Adicionar combatente",
+        "removeConfirmation": "Tem certeza de que deseja remover este combatente?",
+        "clear": {
+            "title": "Limpar campo de batalha",
+            "prompt": "O que você deseja excluir?",
+            "npcs": "Somente NPCs",
+            "players": "Somente Jogadores",
+            "all": "Todos"
+        }
+    },
+    "turn": {
+        "active": "Turno",
+        "current": "Atual",
+        "next": "Próximo turno",
+        "nextShort": "Próximo",
+        "none": "Sem combatentes",
+        "previous": "Turno anterior",
+        "previousShort": "Anterior",
+        "reset": "Reiniciar turno e rodada",
+        "resetConfirm": "Reiniciar",
+        "resetPrompt": "Voltar para a rodada 1 e selecionar o primeiro combatente da iniciativa?",
+        "resetTitle": "Reiniciar turnos",
+        "round": "Rodada"
+    },
+    "combatant": {
+        "ac": "CA",
+        "damage": "Dano",
+        "healing": "Cura",
+        "hp": "PV",
+        "initiativeShort": "Ini",
+        "tempHp": "PV temp.",
+        "tempHpShort": "temp",
+        "clearTempHp": "Limpar PV temporário",
+        "actions": {
+            "more": "Mais ações",
+            "remove": "Remover"
+        },
+        "status": {
+            "dead": "Morto",
+            "unconscious": "Inconsciente"
+        },
+        "type": {
+            "npc": "NPC",
+            "player": "Jogador"
+        }
+    },
+    "combatantModal": {
+        "armorClass": "Classe de Armadura (CA)",
+        "armorClassHelp": "Valor que dificulta ser atingido em combate.",
+        "initiative": "Iniciativa",
+        "initiativeHelp": "Valor que define a ordem do combate.",
+        "maxHp": "PV Máximo",
+        "maxHpHelp": "Total de pontos de vida do combatente.",
+        "name": "Nome / Descrição",
+        "title": "Novo Combatente",
+        "type": "Tipo"
+    },
+    "spells": {
+        "clearLevel": "Zerar nível",
+        "level": "Nível",
+        "levelShort": "N{{ level }}",
+        "noneConfigured": "Sem slots de magia configurados",
+        "noneConfiguredShort": "Sem slots configurados",
+        "remaining": "Restantes",
+        "resetLevel": "Restaurar nível",
+        "restoreAll": "Restaurar todos",
+        "spendOne": "Gastar 1 slot",
+        "summary": "Slots {{ remaining }}/{{ total }} - {{ levels }}",
+        "title": "Slots de magia",
+        "total": "Total"
+    },
+    "conditions": {
+        "title": "Condições",
+        "none": "Sem condições",
+        "duration": {
+            "indefinite": "Indefinida",
+            "rounds": "{{ count }} turno(s) deste combatente",
+            "startTurn": "Até o início do próximo turno",
+            "startTurnShort": "Iníc.",
+            "titleIndefinite": "{{ condition }} - duração indefinida",
+            "titleUntilStart": "{{ condition }} - até o início do próximo turno",
+            "titleWithTurns": "{{ condition }} - {{ count }} turno(s) restante(s)"
+        },
+        "BLINDED": "Cego",
+        "CHARMED": "Enfeitiçado",
+        "DEAFENED": "Surdo",
+        "FRIGHTENED": "Assustado",
+        "GRAPPLED": "Agarrado",
+        "INCAPACITATED": "Incapacitado",
+        "INVISIBLE": "Invisível",
+        "PARALYZED": "Paralisado",
+        "PETRIFIED": "Petrificado",
+        "POISONED": "Envenenado",
+        "PRONE": "Caído",
+        "RESTRAINED": "Contido",
+        "STUNNED": "Atordoado",
+        "UNCONSCIOUS": "Inconsciente",
+        "EXHAUSTION_1": "Exaustão 1",
+        "EXHAUSTION_2": "Exaustão 2",
+        "EXHAUSTION_3": "Exaustão 3",
+        "EXHAUSTION_4": "Exaustão 4",
+        "EXHAUSTION_5": "Exaustão 5",
+        "EXHAUSTION_6": "Exaustão 6"
     }
-  },
-  "combatantModal": {
-    "armorClass": "Classe de Armadura (CA)",
-    "initiative": "Iniciativa",
-    "maxHp": "HP Máximo",
-    "name": "Nome / Descrição",
-    "title": "Novo Combatente",
-    "type": "Tipo"
-  },
-  "spells": {
-    "clearLevel": "Zerar nível",
-    "level": "Nível",
-    "levelShort": "N{{ level }}",
-    "noneConfigured": "Sem slots de magia configurados",
-    "noneConfiguredShort": "Sem slots configurados",
-    "remaining": "Restantes",
-    "resetLevel": "Restaurar nível",
-    "restoreAll": "Restaurar todos",
-    "spendOne": "Gastar 1 slot",
-    "summary": "Slots {{ remaining }}/{{ total }} - {{ levels }}",
-    "title": "Slots de magia",
-    "total": "Total"
-  },
-  "conditions": {
-    "title": "Condições",
-    "none": "Sem condições",
-    "duration": {
-      "indefinite": "Indefinida",
-      "rounds": "{{ count }} turno(s) deste combatente",
-      "startTurn": "Até o início do próximo turno",
-      "startTurnShort": "Iníc.",
-      "titleIndefinite": "{{ condition }} - duração indefinida",
-      "titleUntilStart": "{{ condition }} - até o início do próximo turno",
-      "titleWithTurns": "{{ condition }} - {{ count }} turno(s) restante(s)"
-    },
-    "BLINDED": "Cego",
-    "CHARMED": "Enfeitiçado",
-    "DEAFENED": "Surdo",
-    "FRIGHTENED": "Assustado",
-    "GRAPPLED": "Agarrado",
-    "INCAPACITATED": "Incapacitado",
-    "INVISIBLE": "Invisível",
-    "PARALYZED": "Paralisado",
-    "PETRIFIED": "Petrificado",
-    "POISONED": "Envenenado",
-    "PRONE": "Caído",
-    "RESTRAINED": "Contido",
-    "STUNNED": "Atordoado",
-    "UNCONSCIOUS": "Inconsciente",
-    "EXHAUSTION_1": "Exaustão 1",
-    "EXHAUSTION_2": "Exaustão 2",
-    "EXHAUSTION_3": "Exaustão 3",
-    "EXHAUSTION_4": "Exaustão 4",
-    "EXHAUSTION_5": "Exaustão 5",
-    "EXHAUSTION_6": "Exaustão 6"
-  }
 }
