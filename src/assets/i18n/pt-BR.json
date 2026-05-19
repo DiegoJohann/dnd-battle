@@ -68,13 +68,22 @@
         }
     },
     "combatantModal": {
+        "addGroup": "Adicionar grupo",
         "armorClass": "Classe de Armadura (CA)",
         "armorClassHelp": "Valor que dificulta ser atingido em combate.",
+        "baseName": "Nome base",
+        "group": "Grupo",
+        "individualInitiative": "Rolar iniciativa individual (d20 + iniciativa)",
         "initiative": "Iniciativa",
         "initiativeHelp": "Valor que define a ordem do combate.",
+        "initiativeModifier": "Modificador de iniciativa",
+        "initiativeModifierHelp": "Valor somado ao d20 para cada combatente do grupo.",
         "maxHp": "PV Máximo",
         "maxHpHelp": "Total de pontos de vida do combatente.",
+        "mode": "Criação",
         "name": "Nome / Descrição",
+        "quantity": "Quantidade",
+        "single": "Único",
         "title": "Novo Combatente",
         "type": "Tipo"
     },

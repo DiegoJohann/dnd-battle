@@ -68,13 +68,22 @@
         }
     },
     "combatantModal": {
+        "addGroup": "Add group",
         "armorClass": "Armor Class (AC)",
         "armorClassHelp": "The value that makes the combatant harder to hit.",
+        "baseName": "Base name",
+        "group": "Group",
+        "individualInitiative": "Roll individual initiative (d20 + initiative)",
         "initiative": "Initiative",
         "initiativeHelp": "Value that determines the combat order.",
+        "initiativeModifier": "Initiative modifier",
+        "initiativeModifierHelp": "Value added to the d20 roll for each combatant in the group.",
         "maxHp": "Max HP",
         "maxHpHelp": "The combatant's total pool of hit points.",
+        "mode": "Creation",
         "name": "Name / Description",
+        "quantity": "Quantity",
+        "single": "Single",
         "title": "New Combatant",
         "type": "Type"
     },

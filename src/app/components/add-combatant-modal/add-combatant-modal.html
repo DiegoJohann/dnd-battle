@@ -3,9 +3,36 @@
         <h2>{{ 'combatantModal.title' | translate }}</h2>
 
         <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="form-field">
+                <label>{{ 'combatantModal.mode' | translate }}</label>
+
+                <div class="type-toggle mode-toggle">
+                    <button
+                        type="button"
+                        class="type-btn"
+                        [class.active]="form.value.mode === 'single'"
+                        (click)="form.patchValue({ mode: 'single' })"
+                    >
+                        <lucide-icon [img]="UserIcon" [size]="16"></lucide-icon>
+                        {{ 'combatantModal.single' | translate }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="type-btn"
+                        [class.active]="form.value.mode === 'group'"
+                        (click)="form.patchValue({ mode: 'group' })"
+                    >
+                        <lucide-icon [img]="UsersIcon" [size]="16"></lucide-icon>
+                        {{ 'combatantModal.group' | translate }}
+                    </button>
+                </div>
+            </div>
 
             <div class="form-field">
-                <label for="name">{{ 'combatantModal.name' | translate }}</label>
+                <label for="name">
+                    {{ (form.value.mode === 'group' ? 'combatantModal.baseName' : 'combatantModal.name') | translate }}
+                </label>
                 <input
                     #nameInput
                     id="name"
@@ -13,6 +40,19 @@
                     formControlName="name"
                     (keyup.enter)="hpInput.focus()" />
             </div>
+
+            @if (form.value.mode === 'group') {
+                <div class="form-field">
+                    <label for="quantity">{{ 'combatantModal.quantity' | translate }}</label>
+                    <input
+                        id="quantity"
+                        type="number"
+                        formControlName="quantity"
+                        min="1"
+                        max="50"
+                        (keyup.enter)="hpInput.focus()" />
+                </div>
+            }
 
             <div class="form-field">
                 <div class="field-label">
@@ -58,13 +98,33 @@
 
             <div class="form-field">
                 <div class="field-label">
-                    <label for="initiative">{{ 'combatantModal.initiative' | translate }}</label>
+                    <label for="initiative">
+                        {{
+                            (
+                                form.value.mode === 'group' && form.value.individualInitiative
+                                    ? 'combatantModal.initiativeModifier'
+                                    : 'combatantModal.initiative'
+                            ) | translate
+                        }}
+                    </label>
                     <button
                         type="button"
                         class="info-tip"
                         tabindex="-1"
-                        [attr.title]="'combatantModal.initiativeHelp' | translate"
-                        [attr.aria-label]="'combatantModal.initiativeHelp' | translate"
+                        [attr.title]="
+                            (
+                                form.value.mode === 'group' && form.value.individualInitiative
+                                    ? 'combatantModal.initiativeModifierHelp'
+                                    : 'combatantModal.initiativeHelp'
+                            ) | translate
+                        "
+                        [attr.aria-label]="
+                            (
+                                form.value.mode === 'group' && form.value.individualInitiative
+                                    ? 'combatantModal.initiativeModifierHelp'
+                                    : 'combatantModal.initiativeHelp'
+                            ) | translate
+                        "
                     >
                         <lucide-icon [img]="CircleQuestionMark" [size]="14"></lucide-icon>
                     </button>
@@ -75,6 +135,13 @@
                     type="number"
                     formControlName="initiative" />
             </div>
+
+            @if (form.value.mode === 'group') {
+                <label class="check-field">
+                    <input type="checkbox" formControlName="individualInitiative" />
+                    <span>{{ 'combatantModal.individualInitiative' | translate }}</span>
+                </label>
+            }
 
             <div class="form-field">
                 <label>{{ 'combatantModal.type' | translate }}</label>
@@ -105,7 +172,10 @@
             <div class="actions">
                 <button type="button" (click)="close.emit()">{{ 'common.cancel' | translate }}</button>
                 <button type="submit" [disabled]="form.invalid">
-                    {{ 'common.add' | translate }}
+                    {{
+                        (form.value.mode === 'group' ? 'combatantModal.addGroup' : 'common.add')
+                            | translate
+                    }}
                 </button>
             </div>
 

@@ -80,13 +80,15 @@ export class Battle implements OnInit {
         this.showAddCombatantModal = false;
     }
 
-    addCombatant(combatant: Combatant) {
-        this.combatants.push({
+    addCombatants(combatants: Combatant[]) {
+        this.combatants.push(...combatants.map(combatant => ({
             ...combatant,
             initiative: combatant.initiative ?? 0,
             temporaryHp: combatant.temporaryHp ?? 0,
-            conditionStates: combatant.conditionStates ?? []
-        });
+            conditions: combatant.conditions ?? [],
+            conditionStates: combatant.conditionStates ?? [],
+            spellSlots: combatant.spellSlots ?? []
+        })));
 
         this.sortByInitiative();
         this.ensureActiveCombatant();

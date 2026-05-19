@@ -5,6 +5,7 @@ Aplicação web para controle rápido de encontros de Dungeons & Dragons durante
 ## Funcionalidades
 
 - Cadastro de combatentes jogadores e NPCs com nome, HP, CA, iniciativa e tipo.
+- Adição de grupos de monstros com nomes sequenciais, atributos compartilhados e iniciativa individual opcional.
 - Ordenação automática por iniciativa.
 - Rastreador de turno ativo com rodada atual, avanço, retorno e reset com confirmação.
 - Destaque visual do combatente ativo.
@@ -45,6 +46,8 @@ npm run build
 ### Combatentes
 
 Use **Adicionar Combatente** para inserir jogadores ou NPCs. A lista é ordenada automaticamente pela iniciativa, da maior para a menor. A iniciativa ainda pode ser editada diretamente no card, e a ordem é recalculada após a alteração.
+
+No cadastro, alterne entre **Único** e **Grupo** para criar vários monstros de uma vez. Em grupo, informe nome base e quantidade para gerar combatentes como `Goblin 1`, `Goblin 2`, etc. HP, CA e tipo são compartilhados. A iniciativa pode ser igual para todos ou rolada individualmente como `d20 + modificador de iniciativa`.
 
 ### Turnos e Rodadas
 
