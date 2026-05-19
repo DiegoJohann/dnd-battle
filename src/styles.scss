@@ -295,7 +295,7 @@ input:focus {
     top: calc(100% + 6px);
     right: 0;
 
-    width: 320px;
+    width: 360px;
     max-height: 280px;
     padding: 14px;
 
@@ -329,6 +329,7 @@ input:focus {
     position: relative;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
 
     min-height: 40px;
@@ -345,6 +346,56 @@ input:focus {
     opacity: 0.9;
     text-align: left;
     transition: all var(--duration-fast) ease;
+}
+
+.condition-duration-badge {
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+
+    min-width: 18px;
+    height: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.45);
+    border-radius: var(--radius-pill);
+    padding: 0 4px;
+    background: rgba(0, 0, 0, 0.62);
+    color: #fff;
+    font-size: 0.5rem;
+    font-weight: 800;
+    line-height: 16px;
+}
+
+.condition-duration-actions {
+    display: flex;
+    flex-basis: 100%;
+    gap: 5px;
+    margin-top: 2px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.condition-duration-actions::-webkit-scrollbar {
+    display: none;
+}
+
+.condition-duration-actions button {
+    flex: 0 0 auto;
+    min-width: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-pill);
+    padding: 3px 6px;
+    background: rgba(0, 0, 0, 0.22);
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.62rem;
+    font-weight: 800;
+}
+
+.condition-duration-actions button.active {
+    border-color: rgba(250, 204, 21, 0.48);
+    background: rgba(250, 204, 21, 0.22);
+    color: #fde68a;
 }
 
 .condition-option .check {
@@ -367,6 +418,7 @@ input:focus {
 }
 
 .condition-option.active {
+    grid-column: 1 / -1;
     border-color: rgba(255, 255, 255, 0.6);
     box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.15) inset,

@@ -92,6 +92,15 @@
   "conditions": {
     "title": "Condições",
     "none": "Sem condições",
+    "duration": {
+      "indefinite": "Indefinida",
+      "rounds": "{{ count }} turno(s) deste combatente",
+      "startTurn": "Até o início do próximo turno",
+      "startTurnShort": "Iníc.",
+      "titleIndefinite": "{{ condition }} - duração indefinida",
+      "titleUntilStart": "{{ condition }} - até o início do próximo turno",
+      "titleWithTurns": "{{ condition }} - {{ count }} turno(s) restante(s)"
+    },
     "BLINDED": "Cego",
     "CHARMED": "Enfeitiçado",
     "DEAFENED": "Surdo",

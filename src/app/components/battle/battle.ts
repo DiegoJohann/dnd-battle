@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Combatant } from '../../core/entities/combatant';
+import { Combatant, CombatantConditionKey, CombatantConditionState } from '../../core/entities/combatant';
 import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
 import { CombatantCard } from '../combatant-card/combatant-card';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
@@ -71,7 +71,8 @@ export class Battle implements OnInit {
         this.combatants.push({
             ...combatant,
             initiative: combatant.initiative ?? 0,
-            temporaryHp: combatant.temporaryHp ?? 0
+            temporaryHp: combatant.temporaryHp ?? 0,
+            conditionStates: combatant.conditionStates ?? []
         });
 
         this.sortByInitiative();
@@ -218,6 +219,7 @@ export class Battle implements OnInit {
                 temporaryHp: e.temporaryHp ?? 0,
                 alive: typeof e.alive === 'boolean' ? e.alive : (e.currentHp ?? 0) > 0,
                 conditions: Array.isArray(e.conditions) ? e.conditions : [],
+                conditionStates: this.normalizeConditionStates(e),
                 spellSlots: Array.isArray(e.spellSlots)
                     ? e.spellSlots
                         .map(slot => {
@@ -255,14 +257,17 @@ export class Battle implements OnInit {
         if (!this.combatants.length) return;
 
         const nextIndex = this.activeCombatantIndex + 1;
+        const wrappedRound = nextIndex >= this.combatants.length;
 
-        if (nextIndex >= this.combatants.length) {
+        if (wrappedRound) {
             this.round += 1;
             this.activeCombatantId = this.combatants[0].id;
         } else {
             this.activeCombatantId = this.combatants[nextIndex].id;
         }
 
+        this.tickStartOfTurnConditions(this.activeCombatantId);
+        this.save();
         this.saveTurnState();
     }
 
@@ -314,6 +319,92 @@ export class Battle implements OnInit {
 
     private sortByInitiative() {
         this.combatants.sort((a, b) => b.initiative - a.initiative);
+    }
+
+    private normalizeConditionStates(combatant: Partial<Combatant>): CombatantConditionState[] {
+        const activeConditions = Array.isArray(combatant.conditions)
+            ? combatant.conditions
+            : [];
+        const activeKeys = new Set(activeConditions);
+        const currentStates = Array.isArray(combatant.conditionStates)
+            ? combatant.conditionStates
+            : [];
+
+        return activeConditions.map(key => {
+            const state = currentStates.find(currentState => currentState.key === key);
+            const durationMode = String(state?.durationMode ?? 'INDEFINITE');
+
+            if (!state) {
+                return {
+                    key,
+                    durationMode: 'INDEFINITE' as const
+                };
+            }
+
+            if (durationMode === 'ROUNDS') {
+                return {
+                    key,
+                    durationMode: 'ROUNDS' as const,
+                    remainingRounds: Math.max(1, Math.floor(Number(state.remainingRounds)) || 1)
+                };
+            }
+
+            if (durationMode === 'TURN_START' || durationMode === 'TURN_END') {
+                return {
+                    key,
+                    durationMode: 'TURN_START' as const,
+                    expiresOnCombatantId: state.expiresOnCombatantId ?? combatant.id
+                };
+            }
+
+            return {
+                key,
+                durationMode: 'INDEFINITE' as const
+            };
+        }).filter(state => activeKeys.has(state.key));
+    }
+
+    private tickStartOfTurnConditions(combatantId: string | null) {
+        if (!combatantId) return;
+
+        this.combatants.forEach(combatant => {
+            const expiringKeys = new Set<CombatantConditionKey>();
+
+            combatant.conditionStates = (combatant.conditionStates ?? []).map(state => {
+                const expiresOnCombatantId = state.expiresOnCombatantId ?? combatant.id;
+
+                if (expiresOnCombatantId !== combatantId) return state;
+
+                if (state.durationMode === 'TURN_START') {
+                    expiringKeys.add(state.key);
+                    return state;
+                }
+
+                if (state.durationMode === 'ROUNDS') {
+                    const remainingRounds = Math.max(0, (state.remainingRounds ?? 1) - 1);
+
+                    if (remainingRounds <= 0) {
+                        expiringKeys.add(state.key);
+                    }
+
+                    return {
+                        ...state,
+                        remainingRounds
+                    };
+                }
+
+                return state;
+            });
+
+            if (!expiringKeys.size) return;
+
+            this.removeConditions(combatant, expiringKeys);
+        });
+    }
+
+    private removeConditions(combatant: Combatant, keys: Set<CombatantConditionKey>) {
+        combatant.conditions = (combatant.conditions ?? []).filter(key => !keys.has(key));
+        combatant.conditionStates = (combatant.conditionStates ?? []).filter(state => !keys.has(state.key));
     }
 
     private loadTurnState() {

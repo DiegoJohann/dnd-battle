@@ -23,6 +23,7 @@ export type CombatantConditionKey =
     | 'EXHAUSTION_6';
 
 export type CombatantConditionTone = 'info' | 'warning' | 'danger' | 'neutral';
+export type CombatantConditionDurationMode = 'INDEFINITE' | 'TURN_START' | 'ROUNDS';
 
 export interface CombatantConditionDefinition {
     key: CombatantConditionKey;
@@ -36,6 +37,13 @@ export interface CombatantSpellSlotLevel {
     level: number;
     total: number;
     remaining: number;
+}
+
+export interface CombatantConditionState {
+    key: CombatantConditionKey;
+    durationMode: CombatantConditionDurationMode;
+    remainingRounds?: number;
+    expiresOnCombatantId?: string;
 }
 
 export const COMBATANT_CONDITION_CATALOG: CombatantConditionDefinition[] = [
@@ -73,5 +81,6 @@ export interface Combatant {
     temporaryHp?: number;
     alive: boolean;
     conditions?: CombatantConditionKey[];
+    conditionStates?: CombatantConditionState[];
     spellSlots?: CombatantSpellSlotLevel[];
 }

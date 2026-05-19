@@ -146,10 +146,13 @@
                         type="button"
                         class="condition-badge"
                         [ngStyle]="getConditionStyle(condition)"
-                        [title]="condition.labelKey | translate"
+                        [title]="getConditionTitle(condition)"
                         (click)="toggleCondition(condition.key)"
                     >
                         {{ condition.icon }}
+                        <span class="condition-duration-badge">
+                            {{ getConditionDurationText(condition.key) }}
+                        </span>
                     </button>
                 }
             </div>
@@ -162,8 +165,9 @@
             <div class="condition-popover theme-popover" (click)="$event.stopPropagation()">
                 <div class="condition-picker">
                     @for (condition of conditionCatalog; track condition.key) {
-                        <button
-                            type="button"
+                        <div
+                            role="button"
+                            tabindex="0"
                             class="condition-option"
                             [ngStyle]="getConditionStyle(condition)"
                             [class.active]="isConditionActive(condition.key)"
@@ -175,7 +179,42 @@
                                 <span class="check">✓</span>
                             }
                             <span class="label">{{ condition.labelKey | translate }}</span>
-                        </button>
+
+                            @if (isConditionActive(condition.key)) {
+                                <div
+                                    class="condition-duration-actions"
+                                    (wheel)="scrollDurationOptions($event)"
+                                >
+                                    <button
+                                        type="button"
+                                        [class.active]="isConditionDurationActive(condition.key, 'INDEFINITE')"
+                                        (click)="setConditionDuration(condition.key, 'INDEFINITE', $event)"
+                                        [title]="'conditions.duration.indefinite' | translate"
+                                    >
+                                        ∞
+                                    </button>
+                                    <button
+                                        type="button"
+                                        [class.active]="isConditionDurationActive(condition.key, 'TURN_START')"
+                                        (click)="setConditionDuration(condition.key, 'TURN_START', $event)"
+                                        [title]="'conditions.duration.startTurn' | translate"
+                                    >
+                                        {{ 'conditions.duration.startTurnShort' | translate }}
+                                    </button>
+
+                                    @for (rounds of conditionRoundOptions; track rounds) {
+                                        <button
+                                            type="button"
+                                            [class.active]="isConditionDurationActive(condition.key, 'ROUNDS', rounds)"
+                                            (click)="setConditionDuration(condition.key, 'ROUNDS', $event, rounds)"
+                                            [title]="'conditions.duration.rounds' | translate: { count: rounds }"
+                                        >
+                                            {{ rounds }}
+                                        </button>
+                                    }
+                                </div>
+                            }
+                        </div>
                     }
                 </div>
 

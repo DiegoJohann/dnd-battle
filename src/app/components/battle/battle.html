@@ -14,9 +14,9 @@
             (remove)="onClickRemoveCombatant(combatant)"
             (initiativeChange)="updateInitiative(combatant, $event)"
             (conditionsChange)="combatant.conditions = $event; save()"
+            (conditionStatesChange)="combatant.conditionStates = $event; save()"
             (openSpellSlots)="openSpellSlotsModal(combatant)"
             (spellSlotsChange)="combatant.spellSlots = $event; save()"
-            (click)="setActiveCombatant(combatant)"
         />
     }
 </div>

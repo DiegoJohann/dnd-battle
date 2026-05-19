@@ -92,6 +92,15 @@
   "conditions": {
     "title": "Conditions",
     "none": "No conditions",
+    "duration": {
+      "indefinite": "Indefinite",
+      "rounds": "{{ count }} turn(s) for this combatant",
+      "startTurn": "Until the start of the next turn",
+      "startTurnShort": "Start",
+      "titleIndefinite": "{{ condition }} - indefinite duration",
+      "titleUntilStart": "{{ condition }} - until the start of the next turn",
+      "titleWithTurns": "{{ condition }} - {{ count }} turn(s) remaining"
+    },
     "BLINDED": "Blinded",
     "CHARMED": "Charmed",
     "DEAFENED": "Deafened",

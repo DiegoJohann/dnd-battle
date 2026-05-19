@@ -3,7 +3,9 @@ import {
     Combatant,
     COMBATANT_CONDITION_CATALOG,
     CombatantConditionDefinition,
+    CombatantConditionDurationMode,
     CombatantConditionKey,
+    CombatantConditionState,
     CombatantSpellSlotLevel
 } from '../../core/entities/combatant';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -51,10 +53,12 @@ export class CombatantCard {
     @Output() remove = new EventEmitter<void>();
     @Output() initiativeChange = new EventEmitter<number>();
     @Output() conditionsChange = new EventEmitter<CombatantConditionKey[]>();
+    @Output() conditionStatesChange = new EventEmitter<CombatantConditionState[]>();
     @Output() openSpellSlots = new EventEmitter<void>();
     @Output() spellSlotsChange = new EventEmitter<CombatantSpellSlotLevel[]>();
 
     readonly conditionCatalog = COMBATANT_CONDITION_CATALOG;
+    readonly conditionRoundOptions = Array.from({ length: 10 }, (_, index) => index + 1);
     actionMenuOpen = false;
 
     constructor(private translate: TranslateService) {
@@ -167,11 +171,16 @@ export class CombatantCard {
 
     toggleCondition(key: CombatantConditionKey) {
         const current = new Set(this.combatant.conditions ?? []);
+        const states = this.normalizedConditionStates;
 
         if (current.has(key)) {
             current.delete(key);
         } else {
             current.add(key);
+            states.push({
+                key,
+                durationMode: 'INDEFINITE'
+            });
         }
 
         const next = this.conditionCatalog
@@ -179,16 +188,104 @@ export class CombatantCard {
             .filter(conditionKey => current.has(conditionKey));
 
         this.combatant.conditions = next;
+        this.combatant.conditionStates = states.filter(state => next.includes(state.key));
         this.conditionsChange.emit(next);
-
-        this.closeConditions.emit();
+        this.conditionStatesChange.emit(this.combatant.conditionStates);
     }
 
     clearConditions() {
         this.combatant.conditions = [];
+        this.combatant.conditionStates = [];
         this.conditionsChange.emit([]);
+        this.conditionStatesChange.emit([]);
+    }
 
-        this.closeConditions.emit();
+    setConditionDuration(
+        key: CombatantConditionKey,
+        mode: CombatantConditionDurationMode,
+        event: MouseEvent,
+        remainingRounds?: number
+    ) {
+        event.stopPropagation();
+
+        const conditions = new Set(this.combatant.conditions ?? []);
+        conditions.add(key);
+
+        const nextConditions = this.conditionCatalog
+            .map(condition => condition.key)
+            .filter(conditionKey => conditions.has(conditionKey));
+        const nextState: CombatantConditionState = {
+            key,
+            durationMode: mode,
+            remainingRounds: mode === 'ROUNDS' ? remainingRounds : undefined,
+            expiresOnCombatantId: mode === 'TURN_START' || mode === 'ROUNDS'
+                ? this.combatant.id
+                : undefined
+        };
+        const nextStates = this.normalizedConditionStates
+            .filter(state => state.key !== key)
+            .concat(nextState)
+            .filter(state => nextConditions.includes(state.key));
+
+        this.combatant.conditions = nextConditions;
+        this.combatant.conditionStates = nextStates;
+        this.conditionsChange.emit(nextConditions);
+        this.conditionStatesChange.emit(nextStates);
+    }
+
+    getConditionState(key: CombatantConditionKey): CombatantConditionState {
+        return this.normalizedConditionStates.find(state => state.key === key) ?? {
+            key,
+            durationMode: 'INDEFINITE'
+        };
+    }
+
+    getConditionDurationText(key: CombatantConditionKey): string {
+        const state = this.getConditionState(key);
+
+        if (state.durationMode === 'TURN_START') {
+            return this.translate.instant('conditions.duration.startTurnShort');
+        }
+
+        if (state.durationMode === 'ROUNDS') {
+            return String(state.remainingRounds ?? 1);
+        }
+
+        return '∞';
+    }
+
+    getConditionTitle(condition: CombatantConditionDefinition): string {
+        const label = this.translate.instant(condition.labelKey);
+        const state = this.getConditionState(condition.key);
+
+        if (state.durationMode === 'ROUNDS') {
+            return this.translate.instant('conditions.duration.titleWithTurns', {
+                condition: label,
+                count: state.remainingRounds ?? 1
+            });
+        }
+
+        if (state.durationMode === 'TURN_START') {
+            return this.translate.instant('conditions.duration.titleUntilStart', {
+                condition: label
+            });
+        }
+
+        return this.translate.instant('conditions.duration.titleIndefinite', {
+            condition: label
+        });
+    }
+
+
+    isConditionDurationActive(
+        key: CombatantConditionKey,
+        mode: CombatantConditionDurationMode,
+        remainingRounds?: number
+    ): boolean {
+        const state = this.getConditionState(key);
+
+        return state.durationMode === mode
+            && (mode !== 'ROUNDS' || state.remainingRounds === remainingRounds);
     }
 
     spendSpellSlot(level: number, event: MouseEvent) {
@@ -239,6 +336,19 @@ export class CombatantCard {
         input.select();
     }
 
+    scrollDurationOptions(event: WheelEvent) {
+        const container = event.currentTarget as HTMLElement;
+        const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX)
+            ? event.deltaY
+            : event.deltaX;
+
+        if (!delta) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        container.scrollLeft += delta;
+    }
+
     getConditionStyle(condition: CombatantConditionDefinition) {
         const isActive = this.isConditionActive(condition.key);
 
@@ -257,6 +367,34 @@ export class CombatantCard {
             total: Math.max(0, slot.total),
             remaining: Math.max(0, Math.min(slot.remaining, slot.total))
         }));
+    }
+
+    private get normalizedConditionStates(): CombatantConditionState[] {
+        const activeKeys = new Set(this.combatant.conditions ?? []);
+        const currentStates = this.combatant.conditionStates ?? [];
+
+        return [...activeKeys].map(key => {
+            const state = currentStates.find(currentState => currentState.key === key);
+
+            if (!state) {
+                return {
+                    key,
+                    durationMode: 'INDEFINITE' as const
+                };
+            }
+
+            return {
+                key,
+                durationMode: state.durationMode,
+                remainingRounds: state.durationMode === 'ROUNDS'
+                    ? Math.max(1, Math.floor(Number(state.remainingRounds)) || 1)
+                    : undefined,
+                expiresOnCombatantId: state.durationMode === 'TURN_START'
+                    || state.durationMode === 'ROUNDS'
+                    ? state.expiresOnCombatantId ?? this.combatant.id
+                    : undefined
+            };
+        });
     }
 
     protected readonly SparklesIcon = SparklesIcon;

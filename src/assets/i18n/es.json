@@ -92,6 +92,15 @@
   "conditions": {
     "title": "Estados",
     "none": "Sin estados",
+    "duration": {
+      "indefinite": "Indefinida",
+      "rounds": "{{ count }} turno(s) de este combatiente",
+      "startTurn": "Hasta el inicio del próximo turno",
+      "startTurnShort": "Ini.",
+      "titleIndefinite": "{{ condition }} - duración indefinida",
+      "titleUntilStart": "{{ condition }} - hasta el inicio del próximo turno",
+      "titleWithTurns": "{{ condition }} - {{ count }} turno(s) restante(s)"
+    },
     "BLINDED": "Cegado",
     "CHARMED": "Hechizado",
     "DEAFENED": "Ensordecido",
