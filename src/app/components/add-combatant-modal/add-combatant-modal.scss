@@ -127,12 +127,12 @@ input {
 
 .type-btn.npc.active {
     background: var(--gradient-danger);
-    border-color: #ef5350;
+    border-color: var(--color-danger-400);
     color: #fff;
 }
 
 .type-btn.player.active {
-    background: var(--gradient-player);
+    background: rgba(65, 107, 138, 0.32);
     border-color: var(--color-player-300);
     color: #fff;
 }

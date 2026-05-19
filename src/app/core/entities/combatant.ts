@@ -30,7 +30,6 @@ export interface CombatantConditionDefinition {
     labelKey: string;
     icon: string;
     tone: CombatantConditionTone;
-    color: string;
 }
 
 export interface CombatantSpellSlotLevel {
@@ -47,27 +46,27 @@ export interface CombatantConditionState {
 }
 
 export const COMBATANT_CONDITION_CATALOG: CombatantConditionDefinition[] = [
-    { key: 'BLINDED', labelKey: 'conditions.BLINDED', icon: '👁️', tone: 'info', color: '#60a5fa' },
-    { key: 'CHARMED', labelKey: 'conditions.CHARMED', icon: '💘', tone: 'warning', color: '#f472b6' },
-    { key: 'DEAFENED', labelKey: 'conditions.DEAFENED', icon: '🔇', tone: 'info', color: '#93c5fd' },
-    { key: 'FRIGHTENED', labelKey: 'conditions.FRIGHTENED', icon: '😱', tone: 'warning', color: '#facc15' },
-    { key: 'GRAPPLED', labelKey: 'conditions.GRAPPLED', icon: '✋', tone: 'warning', color: '#fb923c' },
-    { key: 'INCAPACITATED', labelKey: 'conditions.INCAPACITATED', icon: '⛔', tone: 'danger', color: '#f87171' },
-    { key: 'INVISIBLE', labelKey: 'conditions.INVISIBLE', icon: '👻', tone: 'info', color: '#a5b4fc' },
-    { key: 'PARALYZED', labelKey: 'conditions.PARALYZED', icon: '🧊', tone: 'danger', color: '#67e8f9' },
-    { key: 'PETRIFIED', labelKey: 'conditions.PETRIFIED', icon: '🪨', tone: 'danger', color: '#a3a3a3' },
-    { key: 'POISONED', labelKey: 'conditions.POISONED', icon: '☠️', tone: 'danger', color: '#4ade80' },
-    { key: 'PRONE', labelKey: 'conditions.PRONE', icon: '⬇️', tone: 'neutral', color: '#cbd5f5' },
-    { key: 'RESTRAINED', labelKey: 'conditions.RESTRAINED', icon: '🪢', tone: 'warning', color: '#fdba74' },
-    { key: 'STUNNED', labelKey: 'conditions.STUNNED', icon: '💫', tone: 'danger', color: '#fde047' },
-    { key: 'UNCONSCIOUS', labelKey: 'conditions.UNCONSCIOUS', icon: '💤', tone: 'danger', color: '#c4b5fd' },
+    { key: 'BLINDED', labelKey: 'conditions.BLINDED', icon: '👁️', tone: 'info' },
+    { key: 'CHARMED', labelKey: 'conditions.CHARMED', icon: '💘', tone: 'warning' },
+    { key: 'DEAFENED', labelKey: 'conditions.DEAFENED', icon: '🔇', tone: 'info' },
+    { key: 'FRIGHTENED', labelKey: 'conditions.FRIGHTENED', icon: '😱', tone: 'warning' },
+    { key: 'GRAPPLED', labelKey: 'conditions.GRAPPLED', icon: '✋', tone: 'warning' },
+    { key: 'INCAPACITATED', labelKey: 'conditions.INCAPACITATED', icon: '⛔', tone: 'danger' },
+    { key: 'INVISIBLE', labelKey: 'conditions.INVISIBLE', icon: '👻', tone: 'info' },
+    { key: 'PARALYZED', labelKey: 'conditions.PARALYZED', icon: '🧊', tone: 'danger' },
+    { key: 'PETRIFIED', labelKey: 'conditions.PETRIFIED', icon: '🪨', tone: 'danger' },
+    { key: 'POISONED', labelKey: 'conditions.POISONED', icon: '☠️', tone: 'danger' },
+    { key: 'PRONE', labelKey: 'conditions.PRONE', icon: '⬇️', tone: 'neutral' },
+    { key: 'RESTRAINED', labelKey: 'conditions.RESTRAINED', icon: '🪢', tone: 'warning' },
+    { key: 'STUNNED', labelKey: 'conditions.STUNNED', icon: '💫', tone: 'danger' },
+    { key: 'UNCONSCIOUS', labelKey: 'conditions.UNCONSCIOUS', icon: '💤', tone: 'danger' },
 
-    { key: 'EXHAUSTION_1', labelKey: 'conditions.EXHAUSTION_1', icon: '⚡', tone: 'neutral', color: '#fde68a' },
-    { key: 'EXHAUSTION_2', labelKey: 'conditions.EXHAUSTION_2', icon: '⚡', tone: 'warning', color: '#fcd34d' },
-    { key: 'EXHAUSTION_3', labelKey: 'conditions.EXHAUSTION_3', icon: '⚡', tone: 'warning', color: '#fbbf24' },
-    { key: 'EXHAUSTION_4', labelKey: 'conditions.EXHAUSTION_4', icon: '⚡', tone: 'danger', color: '#fb923c' },
-    { key: 'EXHAUSTION_5', labelKey: 'conditions.EXHAUSTION_5', icon: '⚡', tone: 'danger', color: '#f87171' },
-    { key: 'EXHAUSTION_6', labelKey: 'conditions.EXHAUSTION_6', icon: '⚡', tone: 'danger', color: '#ef4444' }
+    { key: 'EXHAUSTION_1', labelKey: 'conditions.EXHAUSTION_1', icon: '⚡', tone: 'neutral' },
+    { key: 'EXHAUSTION_2', labelKey: 'conditions.EXHAUSTION_2', icon: '⚡', tone: 'warning' },
+    { key: 'EXHAUSTION_3', labelKey: 'conditions.EXHAUSTION_3', icon: '⚡', tone: 'warning' },
+    { key: 'EXHAUSTION_4', labelKey: 'conditions.EXHAUSTION_4', icon: '⚡', tone: 'danger' },
+    { key: 'EXHAUSTION_5', labelKey: 'conditions.EXHAUSTION_5', icon: '⚡', tone: 'danger' },
+    { key: 'EXHAUSTION_6', labelKey: 'conditions.EXHAUSTION_6', icon: '⚡', tone: 'danger' }
 ];
 
 export interface Combatant {

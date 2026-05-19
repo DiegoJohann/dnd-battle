@@ -92,8 +92,8 @@
     width: 32px;
     height: 32px;
     border-radius: var(--radius-pill);
-    background: rgba(229, 57, 53, 0.18);
-    color: #ffb4b0;
+    background: rgba(214, 168, 79, 0.14);
+    color: var(--color-gold-soft);
 }
 
 input {
@@ -133,8 +133,8 @@ input:focus {
 }
 
 .row-actions button {
-    background: #303030;
-    color: #d8d8d8;
+    background: var(--color-bg-control);
+    color: var(--color-text-muted);
 }
 
 .row-actions button:hover,

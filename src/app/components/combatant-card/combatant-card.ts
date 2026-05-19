@@ -9,14 +9,12 @@ import {
     CombatantSpellSlotLevel
 } from '../../core/entities/combatant';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NgStyle } from '@angular/common';
-import { LucideAngularModule, MinusIcon, MoreVerticalIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
+import { CheckIcon, LucideAngularModule, MinusIcon, MoreVerticalIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-combatant-card',
     imports: [
-        NgStyle,
         LucideAngularModule,
         TranslatePipe
     ],
@@ -59,6 +57,7 @@ export class CombatantCard {
 
     readonly conditionCatalog = COMBATANT_CONDITION_CATALOG;
     readonly conditionRoundOptions = Array.from({ length: 10 }, (_, index) => index + 1);
+    readonly CheckIcon = CheckIcon;
     actionMenuOpen = false;
 
     constructor(private translate: TranslateService) {
@@ -347,18 +346,6 @@ export class CombatantCard {
         event.preventDefault();
         event.stopPropagation();
         container.scrollLeft += delta;
-    }
-
-    getConditionStyle(condition: CombatantConditionDefinition) {
-        const isActive = this.isConditionActive(condition.key);
-
-        return {
-            background: isActive
-                ? `${condition.color}55`
-                : `${condition.color}22`,
-            border: `1px solid ${condition.color}66`,
-            color: '#fff'
-        };
     }
 
     private get normalizedSpellSlots(): CombatantSpellSlotLevel[] {
