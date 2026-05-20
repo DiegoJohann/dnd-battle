@@ -1,0 +1,158 @@
+.add-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background: var(--gradient-accent);
+    color: white;
+
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 14px 20px;
+
+    font-size: 0.788rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+
+    transition: transform var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
+}
+
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.add-btn:active {
+    transform: translateY(0);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(184, 59, 47, 0.58);
+    }
+    70% {
+        box-shadow: 0 0 0 16px rgba(184, 59, 47, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(184, 59, 47, 0);
+    }
+}
+
+.add-btn.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+.language-select {
+    position: fixed;
+    top: 18px;
+    right: 24px;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.encounter-btn {
+    position: fixed;
+    top: 18px;
+    left: 24px;
+    z-index: 10;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-pill);
+    background: rgba(var(--color-bg-elevated-rgb), 0.88);
+    color: var(--color-text-muted);
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    font-weight: 800;
+
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(8px);
+    transition:
+        transform var(--duration-fast) ease,
+        background var(--duration-fast) ease,
+        border-color var(--duration-fast) ease,
+        color var(--duration-fast) ease;
+}
+
+.encounter-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(214, 168, 79, 0.38);
+    background: rgba(var(--color-bg-elevated-rgb), 0.96);
+    color: var(--color-gold-soft);
+}
+
+.language-select select {
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-control);
+    color: var(--color-text);
+    padding: 6px 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.add-btn lucide-icon,
+.clear-btn lucide-icon,
+.encounter-btn lucide-icon {
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.clear-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 24px;
+
+    background: var(--color-bg-control);
+    color: var(--color-text-muted);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 12px 16px;
+    font-size: 0.699rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background var(--duration-normal) ease, transform 0.1s ease;
+}
+
+.clear-btn:hover {
+    background: var(--color-bg-control-hover);
+    transform: translateY(-1px);
+}
+
+.clear-btn:active {
+    transform: scale(0.97);
+}
+
+@media (max-width: 780px) {
+    .language-select {
+        top: auto;
+        right: 18px;
+        bottom: 76px;
+    }
+
+    .encounter-btn {
+        top: 18px;
+        left: 12px;
+        padding: 8px 10px;
+    }
+}

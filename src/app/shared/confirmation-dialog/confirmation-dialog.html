@@ -1,5 +1,5 @@
 <div class="overlay">
-    <div class="modal" #confirmationModal (keydown.tab)="trapModalTab($event, confirmationModal)">
+    <div class="modal" appModalFocusTrap>
         <p>{{ confirmationMessage | translate }}</p>
 
         <div class="actions">

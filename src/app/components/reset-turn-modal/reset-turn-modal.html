@@ -1,0 +1,11 @@
+<div class="overlay">
+    <div class="modal" appModalFocusTrap>
+        <h2>{{ 'turn.resetTitle' | translate }}</h2>
+        <p>{{ 'turn.resetPrompt' | translate }}</p>
+
+        <div class="actions">
+            <button (click)="reset.emit()">{{ 'turn.resetConfirm' | translate }}</button>
+            <button #cancelButton (click)="close.emit()">{{ 'common.cancel' | translate }}</button>
+        </div>
+    </div>
+</div>

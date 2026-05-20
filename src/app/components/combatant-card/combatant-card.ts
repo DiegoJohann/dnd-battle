@@ -11,6 +11,7 @@ import {
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CheckIcon, LucideAngularModule, MinusIcon, MoreVerticalIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.service';
 
 @Component({
     selector: 'app-combatant-card',
@@ -62,7 +63,10 @@ export class CombatantCard {
     readonly CheckIcon = CheckIcon;
     actionMenuOpen = false;
 
-    constructor(private translate: TranslateService) {
+    constructor(
+        private translate: TranslateService,
+        private combatantNormalizer: CombatantNormalizer
+    ) {
     }
 
     applyDamage(value: string) {
@@ -91,7 +95,6 @@ export class CombatantCard {
         const init = Number(value);
         if (isNaN(init)) return;
 
-        this.combatant.initiative = init;
         this.initiativeChange.emit(init);
     }
 
@@ -99,7 +102,6 @@ export class CombatantCard {
         const armorClass = Math.floor(Number(value));
         if (isNaN(armorClass) || armorClass <= 0) return;
 
-        this.combatant.armorClass = armorClass;
         this.armorClassChange.emit(armorClass);
     }
 
@@ -107,9 +109,6 @@ export class CombatantCard {
         const maxHp = Math.floor(Number(value));
         if (isNaN(maxHp) || maxHp <= 0) return;
 
-        this.combatant.maxHp = maxHp;
-        this.combatant.currentHp = Math.min(this.combatant.currentHp, maxHp);
-        this.combatant.alive = this.combatant.currentHp > 0;
         this.maxHpChange.emit(maxHp);
     }
 
@@ -206,15 +205,13 @@ export class CombatantCard {
             .map(condition => condition.key)
             .filter(conditionKey => current.has(conditionKey));
 
-        this.combatant.conditions = next;
-        this.combatant.conditionStates = states.filter(state => next.includes(state.key));
+        const nextStates = states.filter(state => next.includes(state.key));
+
         this.conditionsChange.emit(next);
-        this.conditionStatesChange.emit(this.combatant.conditionStates);
+        this.conditionStatesChange.emit(nextStates);
     }
 
     clearConditions() {
-        this.combatant.conditions = [];
-        this.combatant.conditionStates = [];
         this.conditionsChange.emit([]);
         this.conditionStatesChange.emit([]);
     }
@@ -246,8 +243,6 @@ export class CombatantCard {
             .concat(nextState)
             .filter(state => nextConditions.includes(state.key));
 
-        this.combatant.conditions = nextConditions;
-        this.combatant.conditionStates = nextStates;
         this.conditionsChange.emit(nextConditions);
         this.conditionStatesChange.emit(nextStates);
     }
@@ -320,7 +315,6 @@ export class CombatantCard {
             : slot
         );
 
-        this.combatant.spellSlots = next;
         this.spellSlotsChange.emit(next);
     }
 
@@ -369,39 +363,11 @@ export class CombatantCard {
     }
 
     private get normalizedSpellSlots(): CombatantSpellSlotLevel[] {
-        return (this.combatant.spellSlots ?? []).map(slot => ({
-            level: slot.level,
-            total: Math.max(0, slot.total),
-            remaining: Math.max(0, Math.min(slot.remaining, slot.total))
-        }));
+        return this.combatantNormalizer.normalizeConfiguredSpellSlots(this.combatant.spellSlots);
     }
 
     private get normalizedConditionStates(): CombatantConditionState[] {
-        const activeKeys = new Set(this.combatant.conditions ?? []);
-        const currentStates = this.combatant.conditionStates ?? [];
-
-        return [...activeKeys].map(key => {
-            const state = currentStates.find(currentState => currentState.key === key);
-
-            if (!state) {
-                return {
-                    key,
-                    durationMode: 'INDEFINITE' as const
-                };
-            }
-
-            return {
-                key,
-                durationMode: state.durationMode,
-                remainingRounds: state.durationMode === 'ROUNDS'
-                    ? Math.max(1, Math.floor(Number(state.remainingRounds)) || 1)
-                    : undefined,
-                expiresOnCombatantId: state.durationMode === 'TURN_START'
-                    || state.durationMode === 'ROUNDS'
-                    ? state.expiresOnCombatantId ?? this.combatant.id
-                    : undefined
-            };
-        });
+        return this.combatantNormalizer.normalizeConditionStates(this.combatant);
     }
 
     protected readonly SparklesIcon = SparklesIcon;

@@ -1,0 +1,44 @@
+<section class="turn-tracker" [class.empty]="!hasCombatants">
+    <button
+        type="button"
+        class="turn-reset-icon"
+        (click)="resetTurn.emit()"
+        [disabled]="!hasCombatants"
+        [title]="'turn.reset' | translate"
+    >
+        <lucide-icon [img]="RotateCcwIcon" [size]="14"></lucide-icon>
+    </button>
+
+    <div class="round-box">
+        <span>{{ 'turn.round' | translate }}</span>
+        <strong>{{ round }}</strong>
+    </div>
+
+    <div class="turn-current">
+        <span>{{ 'turn.current' | translate }}</span>
+        <strong>{{ activeCombatantName ?? ('turn.none' | translate) }}</strong>
+    </div>
+
+    <div class="turn-actions">
+        <button
+            type="button"
+            (click)="previousTurn.emit()"
+            [disabled]="!hasCombatants"
+            [title]="'turn.previous' | translate"
+        >
+            <lucide-icon [img]="ChevronLeftIcon" [size]="18"></lucide-icon>
+            <span>{{ 'turn.previousShort' | translate }}</span>
+        </button>
+
+        <button
+            type="button"
+            class="next-turn-btn"
+            (click)="nextTurn.emit()"
+            [disabled]="!hasCombatants"
+            [title]="'turn.next' | translate"
+        >
+            <span>{{ 'turn.nextShort' | translate }}</span>
+            <lucide-icon [img]="ChevronRightIcon" [size]="18"></lucide-icon>
+        </button>
+    </div>
+</section>

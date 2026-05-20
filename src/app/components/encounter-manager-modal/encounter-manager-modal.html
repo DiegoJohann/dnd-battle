@@ -1,0 +1,87 @@
+<div class="overlay encounter-overlay">
+    <div class="modal encounter-modal" appModalFocusTrap>
+        <div class="encounter-header">
+            <h2>{{ 'encounter.title' | translate }}</h2>
+            <button type="button" class="icon-button" (click)="close.emit()" [title]="'common.close' | translate">
+                {{ 'common.close' | translate }}
+            </button>
+        </div>
+
+        <div class="encounter-field">
+            <label for="encounter-name">{{ 'encounter.name' | translate }}</label>
+            <input
+                #encounterNameInput
+                id="encounter-name"
+                type="text"
+                [value]="encounterName"
+                [placeholder]="'encounter.namePlaceholder' | translate"
+                (input)="encounterName = encounterNameInput.value"
+                (keyup.enter)="saveNamedEncounter()" />
+        </div>
+
+        <div class="encounter-actions">
+            <button type="button" class="primary" (click)="saveNamedEncounter()">
+                <lucide-icon [img]="SaveIcon" [size]="15"></lucide-icon>
+                {{ 'encounter.saveCurrent' | translate }}
+            </button>
+
+            <button type="button" (click)="exportCurrentEncounter()">
+                <lucide-icon [img]="DownloadIcon" [size]="15"></lucide-icon>
+                {{ 'encounter.exportCurrent' | translate }}
+            </button>
+
+            <button type="button" (click)="encounterFileInput.click()">
+                <lucide-icon [img]="UploadIcon" [size]="15"></lucide-icon>
+                {{ 'encounter.importJson' | translate }}
+            </button>
+
+            <input
+                #encounterFileInput
+                class="hidden-file"
+                type="file"
+                accept="application/json,.json"
+                (change)="importEncounterFile($event)" />
+        </div>
+
+        @if (encounterMessageKey) {
+            <p class="encounter-message" [class.error]="encounterMessageTone === 'error'">
+                {{ encounterMessageKey | translate }}
+            </p>
+        }
+
+        <section class="saved-encounters">
+            <h3>{{ 'encounter.savedTitle' | translate }}</h3>
+
+            @if (savedEncounters.length) {
+                <div class="saved-encounter-list">
+                    @for (encounter of savedEncounters; track encounter.id) {
+                        <article class="saved-encounter">
+                            <div class="saved-encounter-info">
+                                <strong>{{ encounter.name }}</strong>
+                                <span>
+                                    {{ 'encounter.combatantsCount' | translate: { count: encounter.combatants.length } }}
+                                    ·
+                                    {{ formatEncounterDate(encounter.savedAt) }}
+                                </span>
+                            </div>
+
+                            <div class="saved-encounter-actions">
+                                <button type="button" (click)="loadNamedEncounter(encounter)" [title]="'encounter.load' | translate">
+                                    {{ 'encounter.load' | translate }}
+                                </button>
+                                <button type="button" (click)="exportNamedEncounter(encounter)" [title]="'encounter.export' | translate">
+                                    <lucide-icon [img]="DownloadIcon" [size]="14"></lucide-icon>
+                                </button>
+                                <button type="button" class="danger" (click)="deleteNamedEncounter(encounter.id)" [title]="'encounter.delete' | translate">
+                                    <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
+                                </button>
+                            </div>
+                        </article>
+                    }
+                </div>
+            } @else {
+                <p class="saved-empty">{{ 'encounter.empty' | translate }}</p>
+            }
+        </section>
+    </div>
+</div>

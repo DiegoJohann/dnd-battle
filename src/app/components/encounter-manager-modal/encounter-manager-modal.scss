@@ -1,0 +1,207 @@
+.encounter-overlay {
+    padding: 20px;
+}
+
+.encounter-modal {
+    width: min(560px, calc(100vw - 32px));
+    max-height: calc(100dvh - 40px);
+    overflow: auto;
+    text-align: left;
+    box-shadow: var(--shadow-modal);
+}
+
+.encounter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.encounter-header h2 {
+    margin: 0;
+}
+
+.icon-button {
+    border: 0;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.icon-button:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.encounter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+
+.encounter-field label {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.encounter-field input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+}
+
+.encounter-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.encounter-actions button,
+.saved-encounter-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-control);
+    color: var(--color-text);
+    padding: 8px 10px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        transform var(--duration-fast) ease,
+        background var(--duration-fast) ease,
+        border-color var(--duration-fast) ease;
+}
+
+.encounter-actions button:hover,
+.saved-encounter-actions button:hover {
+    transform: translateY(-1px);
+    background: var(--color-bg-control-hover);
+}
+
+.encounter-actions .primary {
+    border-color: rgba(214, 168, 79, 0.38);
+    background: rgba(214, 168, 79, 0.12);
+    color: var(--color-gold-soft);
+}
+
+.hidden-file {
+    display: none;
+}
+
+.encounter-message {
+    margin: 12px 0 0;
+    border: 1px solid rgba(214, 168, 79, 0.28);
+    border-radius: var(--radius-sm);
+    background: rgba(214, 168, 79, 0.1);
+    color: var(--color-gold-soft);
+    padding: 8px 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.encounter-message.error {
+    border-color: rgba(217, 107, 82, 0.4);
+    background: rgba(127, 29, 29, 0.26);
+    color: #f0b4a4;
+}
+
+.saved-encounters {
+    margin-top: 18px;
+}
+
+.saved-encounters h3 {
+    margin: 0 0 10px;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+}
+
+.saved-encounter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.saved-encounter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.035);
+    padding: 10px;
+}
+
+.saved-encounter-info {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.saved-encounter-info strong {
+    overflow: hidden;
+    color: var(--color-text);
+    font-size: 0.82rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.saved-encounter-info span,
+.saved-empty {
+    color: var(--color-text-subtle);
+    font-size: 0.68rem;
+}
+
+.saved-empty {
+    margin: 0;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    text-align: center;
+}
+
+.saved-encounter-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.saved-encounter-actions button {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 7px 9px;
+}
+
+.saved-encounter-actions .danger {
+    color: #f0b4a4;
+}
+
+.saved-encounter-actions .danger:hover {
+    border-color: rgba(217, 107, 82, 0.4);
+    background: rgba(127, 29, 29, 0.26);
+}
+
+@media (max-width: 560px) {
+    .encounter-actions,
+    .saved-encounter {
+        grid-template-columns: 1fr;
+    }
+
+    .saved-encounter-actions {
+        justify-content: stretch;
+    }
+
+    .saved-encounter-actions button {
+        flex: 1;
+    }
+}

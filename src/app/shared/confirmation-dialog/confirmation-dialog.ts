@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ModalFocusTrapDirective } from '../modal-focus-trap.directive';
 
 @Component({
     selector: 'app-confirmation-dialog',
-    imports: [TranslatePipe],
+    imports: [TranslatePipe, ModalFocusTrapDirective],
     templateUrl: './confirmation-dialog.html',
     styleUrl: './confirmation-dialog.scss',
 })
@@ -28,31 +29,5 @@ export class ConfirmationDialog implements AfterViewInit {
 
     reject() {
         this.actionRejected.emit();
-    }
-
-    trapModalTab(event: Event, modal: HTMLElement) {
-        const keyboardEvent = event as KeyboardEvent;
-        const focusableElements = Array.from(
-            modal.querySelectorAll<HTMLElement>(
-                'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-            )
-        ).filter(element => !element.hasAttribute('disabled') && element.offsetParent !== null);
-
-        if (!focusableElements.length) return;
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-        const activeElement = document.activeElement;
-
-        if (keyboardEvent.shiftKey && activeElement === firstElement) {
-            keyboardEvent.preventDefault();
-            lastElement.focus();
-            return;
-        }
-
-        if (!keyboardEvent.shiftKey && activeElement === lastElement) {
-            keyboardEvent.preventDefault();
-            firstElement.focus();
-        }
     }
 }

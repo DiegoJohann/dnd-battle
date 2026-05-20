@@ -15,8 +15,10 @@
         "clear": "Clear",
         "close": "Close",
         "done": "Done",
+        "delete": "Delete",
         "no": "No",
         "reset": "Reset",
+        "save": "Save",
         "yes": "Yes",
         "zero": "Zero"
     },
@@ -30,6 +32,27 @@
             "players": "Players only",
             "all": "All"
         }
+    },
+    "encounter": {
+        "combatantsCount": "{{ count }} combatant(s)",
+        "delete": "Delete encounter",
+        "deleted": "Encounter deleted.",
+        "empty": "No saved encounters.",
+        "export": "Export encounter",
+        "exportCurrent": "Export current",
+        "importJson": "Import JSON",
+        "imported": "Encounter imported.",
+        "invalidFile": "Invalid encounter file.",
+        "load": "Load",
+        "loaded": "Encounter loaded.",
+        "name": "Encounter name",
+        "namePlaceholder": "Example: Crimson Moon Crypt",
+        "nameRequired": "Enter a name before saving.",
+        "open": "Encounters",
+        "saveCurrent": "Save current",
+        "saved": "Encounter saved.",
+        "savedTitle": "Saved encounters",
+        "title": "Manage encounters"
     },
     "turn": {
         "active": "Turn",

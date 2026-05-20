@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Combatant, CombatantSpellSlotLevel } from '../../core/entities/combatant';
 import { CheckIcon, EraserIcon, LucideAngularModule, RotateCcwIcon, XIcon } from 'lucide-angular';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.service';
 
 @Component({
     selector: 'app-spell-slots-modal',
@@ -17,6 +18,9 @@ export class SpellSlotsModal {
     @Output() spellSlotsChange = new EventEmitter<CombatantSpellSlotLevel[]>();
 
     readonly spellLevels = Array.from({ length: 9 }, (_, index) => index + 1);
+
+    constructor(private combatantNormalizer: CombatantNormalizer) {
+    }
 
     getSlot(level: number): CombatantSpellSlotLevel {
         return this.combatant.spellSlots?.find(slot => slot.level === level) ?? {
@@ -65,7 +69,6 @@ export class SpellSlotsModal {
             remaining: slot.total
         }));
 
-        this.combatant.spellSlots = next;
         this.spellSlotsChange.emit(next);
     }
 
@@ -98,21 +101,14 @@ export class SpellSlotsModal {
             .map(slot => slot.level === level ? updated : slot)
             .filter(slot => slot.total > 0 || slot.remaining > 0);
 
-        this.combatant.spellSlots = next;
         this.spellSlotsChange.emit(next);
     }
 
     private normalizedSlots(): CombatantSpellSlotLevel[] {
-        return this.spellLevels.map(level => {
-            const slot = this.getSlot(level);
-            const total = Math.max(0, slot.total);
-
-            return {
-                level,
-                total,
-                remaining: Math.max(0, Math.min(slot.remaining, total))
-            };
-        });
+        return this.combatantNormalizer.normalizeSpellSlotsForLevels(
+            this.combatant.spellSlots,
+            this.spellLevels
+        );
     }
 
     private parseSlotValue(value: string): number {

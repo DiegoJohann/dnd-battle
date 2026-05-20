@@ -1,17 +1,27 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Combatant, CombatantConditionKey, CombatantConditionState } from '../../core/entities/combatant';
+import {
+    Combatant,
+    CombatantConditionKey,
+    CombatantConditionState,
+    CombatantSpellSlotLevel
+} from '../../core/entities/combatant';
 import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
 import { CombatantCard } from '../combatant-card/combatant-card';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
-import { LucideAngularModule, PlusIcon, Trash2Icon } from 'lucide-angular';
-import { ChevronLeftIcon, ChevronRightIcon, RotateCcwIcon } from 'lucide-angular';
 import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog';
 import { SpellSlotsModal } from '../spell-slots-modal/spell-slots-modal';
-import { TranslatePipe } from '@ngx-translate/core';
+import { EncounterManagerModal } from '../encounter-manager-modal/encounter-manager-modal';
 import { LanguageService } from '../../core/i18n/language.service';
 import { SupportedLanguage } from '../../core/i18n/i18n';
 import { HotkeysService } from '../../core/hotkeys/hotkeys.service';
+import { BattleStorageService } from '../../core/battle/battle-storage.service';
+import { EncounterData } from '../../core/encounters/encounter-serializer.service';
+import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.service';
+import { TurnTrackerComponent } from '../turn-tracker/turn-tracker';
+import { BattleToolbarComponent } from '../battle-toolbar/battle-toolbar';
+import { ClearBattleModal, ClearBattleType } from '../clear-battle-modal/clear-battle-modal';
+import { ResetTurnModal } from '../reset-turn-modal/reset-turn-modal';
 
 @Component({
     selector: 'app-battle',
@@ -19,10 +29,13 @@ import { HotkeysService } from '../../core/hotkeys/hotkeys.service';
         CommonModule,
         AddCombatantModal,
         CombatantCard,
-        LucideAngularModule,
         ConfirmationDialog,
         SpellSlotsModal,
-        TranslatePipe
+        EncounterManagerModal,
+        TurnTrackerComponent,
+        BattleToolbarComponent,
+        ClearBattleModal,
+        ResetTurnModal
     ],
     templateUrl: './battle.html',
     styleUrl: './battle.scss',
@@ -48,22 +61,17 @@ export class Battle implements OnInit {
     showAddCombatantModal = false;
     showClearFieldModal = false;
     showResetTurnModal = false;
+    showEncounterModal = false;
 
     showConfirmationDialog = false;
     combatantToRemove: Combatant | undefined;
     spellSlotsCombatant: Combatant | undefined;
 
-    @ViewChild('clearCancelButton') set clearCancelButton(button: ElementRef<HTMLButtonElement> | undefined) {
-        this.focusDefaultModalAction(button);
-    }
-
-    @ViewChild('resetCancelButton') set resetCancelButton(button: ElementRef<HTMLButtonElement> | undefined) {
-        this.focusDefaultModalAction(button);
-    }
-
     constructor(
         protected languageService: LanguageService,
-        private hotkeysService: HotkeysService
+        private hotkeysService: HotkeysService,
+        private battleStorage: BattleStorageService,
+        private combatantNormalizer: CombatantNormalizer
     ) {
     }
 
@@ -80,15 +88,19 @@ export class Battle implements OnInit {
         this.showAddCombatantModal = false;
     }
 
+    openEncounterModal() {
+        this.closeAllConditions();
+        this.showEncounterModal = true;
+    }
+
+    closeEncounterModal() {
+        this.showEncounterModal = false;
+    }
+
     addCombatants(combatants: Combatant[]) {
-        this.combatants.push(...combatants.map(combatant => ({
-            ...combatant,
-            initiative: combatant.initiative ?? 0,
-            temporaryHp: combatant.temporaryHp ?? 0,
-            conditions: combatant.conditions ?? [],
-            conditionStates: combatant.conditionStates ?? [],
-            spellSlots: combatant.spellSlots ?? []
-        })));
+        this.combatants.push(...combatants.map(combatant =>
+            this.combatantNormalizer.normalizeCombatant(combatant)
+        ));
 
         this.sortByInitiative();
         this.ensureActiveCombatant();
@@ -156,6 +168,21 @@ export class Battle implements OnInit {
         this.save();
     }
 
+    updateConditions(combatant: Combatant, conditions: CombatantConditionKey[]) {
+        combatant.conditions = conditions;
+        this.save();
+    }
+
+    updateConditionStates(combatant: Combatant, conditionStates: CombatantConditionState[]) {
+        combatant.conditionStates = conditionStates;
+        this.save();
+    }
+
+    updateSpellSlots(combatant: Combatant, spellSlots: CombatantSpellSlotLevel[]) {
+        combatant.spellSlots = spellSlots;
+        this.save();
+    }
+
     onClickRemoveCombatant(combatant: Combatant) {
         this.combatantToRemove = combatant;
         this.showConfirmationDialog = true;
@@ -205,7 +232,7 @@ export class Battle implements OnInit {
         this.showClearFieldModal = false;
     }
 
-    clearCombatants(type: 'NPC' | 'PLAYER' | 'ALL') {
+    clearCombatants(type: ClearBattleType) {
         const activeBeforeClear = this.activeCombatantId;
 
         if (type === 'ALL') {
@@ -228,56 +255,24 @@ export class Battle implements OnInit {
     }
 
     save() {
-        localStorage.setItem('battle', JSON.stringify(this.combatants));
+        this.battleStorage.saveBattle(this.combatants);
     }
 
     saveTurnState() {
-        localStorage.setItem('battle-turn', JSON.stringify({
+        this.battleStorage.saveTurn({
             round: this.round,
             activeCombatantId: this.activeCombatantId
-        }));
+        });
     }
 
     load() {
-        const saved = localStorage.getItem('battle');
-        if (!saved) return;
+        const combatants = this.battleStorage.loadBattle();
+        if (!combatants) return;
 
-        try {
-            const parsed = JSON.parse(saved) as Partial<Combatant>[];
-
-            this.combatants = parsed.map((e) => ({
-                ...e,
-                initiative: e.initiative ?? 0,
-                temporaryHp: e.temporaryHp ?? 0,
-                alive: typeof e.alive === 'boolean' ? e.alive : (e.currentHp ?? 0) > 0,
-                conditions: Array.isArray(e.conditions) ? e.conditions : [],
-                conditionStates: this.normalizeConditionStates(e),
-                spellSlots: Array.isArray(e.spellSlots)
-                    ? e.spellSlots
-                        .map(slot => {
-                            const level = Math.floor(Number(slot.level));
-                            const total = Math.max(0, Math.floor(Number(slot.total)));
-                            const remaining = Math.max(
-                                0,
-                                Math.min(Math.floor(Number(slot.remaining)), total)
-                            );
-
-                            return { level, total, remaining };
-                        })
-                        .filter(slot => slot.level >= 1 && slot.level <= 9)
-                    : []
-            })) as Combatant[];
-
-            this.sortByInitiative();
-            this.loadTurnState();
-            this.ensureActiveCombatant();
-        } catch {
-            localStorage.removeItem('battle');
-            localStorage.removeItem('battle-turn');
-            this.combatants = [];
-            this.round = 1;
-            this.activeCombatantId = null;
-        }
+        this.combatants = combatants;
+        this.sortByInitiative();
+        this.loadTurnState();
+        this.ensureActiveCombatant();
     }
 
     ngOnInit() {
@@ -358,49 +353,6 @@ export class Battle implements OnInit {
         this.combatants.sort((a, b) => b.initiative - a.initiative);
     }
 
-    private normalizeConditionStates(combatant: Partial<Combatant>): CombatantConditionState[] {
-        const activeConditions = Array.isArray(combatant.conditions)
-            ? combatant.conditions
-            : [];
-        const activeKeys = new Set(activeConditions);
-        const currentStates = Array.isArray(combatant.conditionStates)
-            ? combatant.conditionStates
-            : [];
-
-        return activeConditions.map(key => {
-            const state = currentStates.find(currentState => currentState.key === key);
-            const durationMode = String(state?.durationMode ?? 'INDEFINITE');
-
-            if (!state) {
-                return {
-                    key,
-                    durationMode: 'INDEFINITE' as const
-                };
-            }
-
-            if (durationMode === 'ROUNDS') {
-                return {
-                    key,
-                    durationMode: 'ROUNDS' as const,
-                    remainingRounds: Math.max(1, Math.floor(Number(state.remainingRounds)) || 1)
-                };
-            }
-
-            if (durationMode === 'TURN_START' || durationMode === 'TURN_END') {
-                return {
-                    key,
-                    durationMode: 'TURN_START' as const,
-                    expiresOnCombatantId: state.expiresOnCombatantId ?? combatant.id
-                };
-            }
-
-            return {
-                key,
-                durationMode: 'INDEFINITE' as const
-            };
-        }).filter(state => activeKeys.has(state.key));
-    }
-
     private tickStartOfTurnConditions(combatantId: string | null) {
         if (!combatantId) return;
 
@@ -445,22 +397,25 @@ export class Battle implements OnInit {
     }
 
     private loadTurnState() {
-        const saved = localStorage.getItem('battle-turn');
-        if (!saved) return;
+        const turn = this.battleStorage.loadTurn();
+        if (!turn) return;
 
-        try {
-            const parsed = JSON.parse(saved) as {
-                round?: number;
-                activeCombatantId?: string | null;
-            };
+        this.round = turn.round;
+        this.activeCombatantId = turn.activeCombatantId;
+    }
 
-            this.round = Math.max(1, Math.floor(Number(parsed.round)) || 1);
-            this.activeCombatantId = typeof parsed.activeCombatantId === 'string'
-                ? parsed.activeCombatantId
-                : null;
-        } catch {
-            localStorage.removeItem('battle-turn');
-        }
+    applyEncounterData(encounter: EncounterData) {
+        this.combatants = this.combatantNormalizer.normalizeCombatants(encounter.combatants);
+        this.round = Math.max(1, Math.floor(Number(encounter.turn.round)) || 1);
+        this.activeCombatantId = typeof encounter.turn.activeCombatantId === 'string'
+            ? encounter.turn.activeCombatantId
+            : null;
+
+        this.sortByInitiative();
+        this.ensureActiveCombatant();
+        this.save();
+        this.saveTurnState();
+        this.closeAllConditions();
     }
 
     private ensureActiveCombatant() {
@@ -479,6 +434,7 @@ export class Battle implements OnInit {
         return this.showAddCombatantModal
             || this.showClearFieldModal
             || this.showResetTurnModal
+            || this.showEncounterModal
             || this.showConfirmationDialog
             || !!this.spellSlotsCombatant;
     }
@@ -487,42 +443,11 @@ export class Battle implements OnInit {
         this.closeAddCombatantModal();
         this.closeClearFieldModal();
         this.closeResetTurnModal();
+        this.closeEncounterModal();
         this.closeAllConditions();
         this.closeSpellSlotsModal();
         this.showConfirmationDialog = false;
         this.combatantToRemove = undefined;
-    }
-
-    trapModalTab(event: Event, modal: HTMLElement) {
-        const keyboardEvent = event as KeyboardEvent;
-        const focusableElements = Array.from(
-            modal.querySelectorAll<HTMLElement>(
-                'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-            )
-        ).filter(element => !element.hasAttribute('disabled') && element.offsetParent !== null);
-
-        if (!focusableElements.length) return;
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-        const activeElement = document.activeElement;
-
-        if (keyboardEvent.shiftKey && activeElement === firstElement) {
-            keyboardEvent.preventDefault();
-            lastElement.focus();
-            return;
-        }
-
-        if (!keyboardEvent.shiftKey && activeElement === lastElement) {
-            keyboardEvent.preventDefault();
-            firstElement.focus();
-        }
-    }
-
-    private focusDefaultModalAction(button: ElementRef<HTMLButtonElement> | undefined) {
-        if (!button) return;
-
-        setTimeout(() => button.nativeElement.focus());
     }
 
     @HostListener('window:keydown', ['$event'])
@@ -560,10 +485,4 @@ export class Battle implements OnInit {
                 break;
         }
     }
-
-    protected readonly ChevronLeftIcon = ChevronLeftIcon;
-    protected readonly ChevronRightIcon = ChevronRightIcon;
-    protected readonly PlusIcon = PlusIcon;
-    protected readonly RotateCcwIcon = RotateCcwIcon;
-    protected readonly Trash2Icon = Trash2Icon;
 }

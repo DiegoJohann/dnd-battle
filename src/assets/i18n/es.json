@@ -15,8 +15,10 @@
         "clear": "Limpiar",
         "close": "Cerrar",
         "done": "Terminar",
+        "delete": "Eliminar",
         "no": "No",
         "reset": "Restaurar",
+        "save": "Guardar",
         "yes": "Sí",
         "zero": "Poner a cero"
     },
@@ -30,6 +32,27 @@
             "players": "Solo Jugadores",
             "all": "Todos"
         }
+    },
+    "encounter": {
+        "combatantsCount": "{{ count }} combatiente(s)",
+        "delete": "Eliminar encuentro",
+        "deleted": "Encuentro eliminado.",
+        "empty": "No hay encuentros guardados.",
+        "export": "Exportar encuentro",
+        "exportCurrent": "Exportar actual",
+        "importJson": "Importar JSON",
+        "imported": "Encuentro importado.",
+        "invalidFile": "Archivo de encuentro inválido.",
+        "load": "Cargar",
+        "loaded": "Encuentro cargado.",
+        "name": "Nombre del encuentro",
+        "namePlaceholder": "Ej.: Cripta de la Luna Carmesí",
+        "nameRequired": "Introduce un nombre antes de guardar.",
+        "open": "Encuentros",
+        "saveCurrent": "Guardar actual",
+        "saved": "Encuentro guardado.",
+        "savedTitle": "Encuentros guardados",
+        "title": "Gestionar encuentros"
     },
     "turn": {
         "active": "Turno",

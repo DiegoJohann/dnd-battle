@@ -15,8 +15,10 @@
         "clear": "Limpar",
         "close": "Fechar",
         "done": "Concluir",
+        "delete": "Excluir",
         "no": "Não",
         "reset": "Reset",
+        "save": "Salvar",
         "yes": "Sim",
         "zero": "Zerar"
     },
@@ -30,6 +32,27 @@
             "players": "Somente Jogadores",
             "all": "Todos"
         }
+    },
+    "encounter": {
+        "combatantsCount": "{{ count }} combatente(s)",
+        "delete": "Excluir encontro",
+        "deleted": "Encontro excluído.",
+        "empty": "Nenhum encontro salvo.",
+        "export": "Exportar encontro",
+        "exportCurrent": "Exportar atual",
+        "importJson": "Importar JSON",
+        "imported": "Encontro importado.",
+        "invalidFile": "Arquivo inválido para este encontro.",
+        "load": "Carregar",
+        "loaded": "Encontro carregado.",
+        "name": "Nome do encontro",
+        "namePlaceholder": "Ex.: Cripta da Lua Carmesim",
+        "nameRequired": "Informe um nome para salvar.",
+        "open": "Encontros",
+        "saveCurrent": "Salvar atual",
+        "saved": "Encontro salvo.",
+        "savedTitle": "Encontros salvos",
+        "title": "Gerenciar encontros"
     },
     "turn": {
         "active": "Turno",

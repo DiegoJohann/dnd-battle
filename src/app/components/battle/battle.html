@@ -15,81 +15,32 @@
             (initiativeChange)="updateInitiative(combatant, $event)"
             (armorClassChange)="updateArmorClass(combatant, $event)"
             (maxHpChange)="updateMaxHp(combatant, $event)"
-            (conditionsChange)="combatant.conditions = $event; save()"
-            (conditionStatesChange)="combatant.conditionStates = $event; save()"
+            (conditionsChange)="updateConditions(combatant, $event)"
+            (conditionStatesChange)="updateConditionStates(combatant, $event)"
             (openSpellSlots)="openSpellSlotsModal(combatant)"
-            (spellSlotsChange)="combatant.spellSlots = $event; save()"
+            (spellSlotsChange)="updateSpellSlots(combatant, $event)"
         />
     }
 </div>
 
-<section class="turn-tracker" [class.empty]="!combatants.length">
-    <button
-        type="button"
-        class="turn-reset-icon"
-        (click)="openResetTurnModal()"
-        [disabled]="!combatants.length"
-        [title]="'turn.reset' | translate"
-    >
-        <lucide-icon [img]="RotateCcwIcon" [size]="14"></lucide-icon>
-    </button>
+<app-turn-tracker
+    [round]="round"
+    [activeCombatantName]="activeCombatant?.name"
+    [hasCombatants]="!!combatants.length"
+    (resetTurn)="openResetTurnModal()"
+    (previousTurn)="previousTurn()"
+    (nextTurn)="nextTurn()"
+/>
 
-    <div class="round-box">
-        <span>{{ 'turn.round' | translate }}</span>
-        <strong>{{ round }}</strong>
-    </div>
-
-    <div class="turn-current">
-        <span>{{ 'turn.current' | translate }}</span>
-        <strong>{{ activeCombatant?.name ?? ('turn.none' | translate) }}</strong>
-    </div>
-
-    <div class="turn-actions">
-        <button
-            type="button"
-            (click)="previousTurn()"
-            [disabled]="!combatants.length"
-            [title]="'turn.previous' | translate"
-        >
-            <lucide-icon [img]="ChevronLeftIcon" [size]="18"></lucide-icon>
-            <span>{{ 'turn.previousShort' | translate }}</span>
-        </button>
-
-        <button
-            type="button"
-            class="next-turn-btn"
-            (click)="nextTurn()"
-            [disabled]="!combatants.length"
-            [title]="'turn.next' | translate"
-        >
-            <span>{{ 'turn.nextShort' | translate }}</span>
-            <lucide-icon [img]="ChevronRightIcon" [size]="18"></lucide-icon>
-        </button>
-    </div>
-</section>
-
-<label class="language-select">
-    <span>{{ 'language.label' | translate }}</span>
-    <select
-        [value]="languageService.currentLanguage"
-        (change)="changeLanguage(languageInput.value)"
-        #languageInput
-    >
-        @for (language of languageService.supportedLanguages; track language) {
-            <option [value]="language">{{ ('language.options.' + language) | translate }}</option>
-        }
-    </select>
-</label>
-
-<button class="add-btn" [class.pulse]="combatants.length === 0" (click)="openAddCombatantModal()">
-    <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
-    <span class="label">{{ 'battle.addCombatant' | translate }}</span>
-</button>
-
-<button class="clear-btn" (click)="openClearFieldModal()">
-    <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
-    {{ 'common.clear' | translate }}
-</button>
+<app-battle-toolbar
+    [currentLanguage]="languageService.currentLanguage"
+    [supportedLanguages]="languageService.supportedLanguages"
+    [empty]="combatants.length === 0"
+    (languageChange)="changeLanguage($event)"
+    (openEncounter)="openEncounterModal()"
+    (addCombatant)="openAddCombatantModal()"
+    (clearBattlefield)="openClearFieldModal()"
+/>
 
 @if (showAddCombatantModal) {
     <app-add-combatant-modal
@@ -99,40 +50,34 @@
 }
 
 @if (showClearFieldModal) {
-    <div class="overlay">
-        <div class="modal" #clearFieldModal (keydown.tab)="trapModalTab($event, clearFieldModal)">
-            <h2>{{ 'battle.clear.title' | translate }}</h2>
-            <p>{{ 'battle.clear.prompt' | translate }}</p>
+    <app-clear-battle-modal
+        (clear)="clearCombatants($event)"
+        (close)="closeClearFieldModal()"
+    />
+}
 
-            <div class="actions">
-                <button (click)="clearCombatants('NPC')">{{ 'battle.clear.npcs' | translate }}</button>
-                <button (click)="clearCombatants('PLAYER')">{{ 'battle.clear.players' | translate }}</button>
-                <button (click)="clearCombatants('ALL')">{{ 'battle.clear.all' | translate }}</button>
-                <button #clearCancelButton (click)="closeClearFieldModal()">{{ 'common.cancel' | translate }}</button>
-            </div>
-        </div>
-    </div>
+@if (showEncounterModal) {
+    <app-encounter-manager-modal
+        [combatants]="combatants"
+        [round]="round"
+        [activeCombatantId]="activeCombatantId"
+        (close)="closeEncounterModal()"
+        (encounterLoaded)="applyEncounterData($event)"
+    />
 }
 
 @if (showResetTurnModal) {
-    <div class="overlay">
-        <div class="modal" #resetTurnModal (keydown.tab)="trapModalTab($event, resetTurnModal)">
-            <h2>{{ 'turn.resetTitle' | translate }}</h2>
-            <p>{{ 'turn.resetPrompt' | translate }}</p>
-
-            <div class="actions">
-                <button (click)="resetTurnTracker()">{{ 'turn.resetConfirm' | translate }}</button>
-                <button #resetCancelButton (click)="closeResetTurnModal()">{{ 'common.cancel' | translate }}</button>
-            </div>
-        </div>
-    </div>
+    <app-reset-turn-modal
+        (reset)="resetTurnTracker()"
+        (close)="closeResetTurnModal()"
+    />
 }
 
 @if (spellSlotsCombatant) {
     <app-spell-slots-modal
         [combatant]="spellSlotsCombatant"
         (close)="closeSpellSlotsModal()"
-        (spellSlotsChange)="spellSlotsCombatant.spellSlots = $event; save()"
+        (spellSlotsChange)="updateSpellSlots(spellSlotsCombatant, $event)"
     />
 }
 

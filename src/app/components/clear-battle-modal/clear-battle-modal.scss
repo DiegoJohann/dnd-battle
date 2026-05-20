@@ -1,0 +1,57 @@
+.modal {
+    width: 280px;
+    text-align: center;
+}
+
+.modal h2 {
+    margin-bottom: 8px;
+}
+
+.modal p {
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+
+.modal .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal .actions button {
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background var(--duration-normal) ease, transform 0.1s ease;
+}
+
+.modal .actions button:hover {
+    transform: translateY(-1px);
+}
+
+.modal .actions button:nth-child(1) {
+    background: var(--gradient-danger);
+    color: #fff;
+}
+
+.modal .actions button:nth-child(2) {
+    background: var(--gradient-player);
+    color: #fff;
+}
+
+.modal .actions button:nth-child(3) {
+    background: var(--color-bg-muted);
+    color: #fff;
+}
+
+.modal .actions button:nth-child(4) {
+    background: transparent;
+    color: var(--color-text-muted);
+}
+
+.modal .actions button:nth-child(4):hover {
+    color: #fff;
+    text-decoration: underline;
+}

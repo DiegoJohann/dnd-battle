@@ -1,0 +1,13 @@
+<div class="overlay">
+    <div class="modal" appModalFocusTrap>
+        <h2>{{ 'battle.clear.title' | translate }}</h2>
+        <p>{{ 'battle.clear.prompt' | translate }}</p>
+
+        <div class="actions">
+            <button (click)="clear.emit('NPC')">{{ 'battle.clear.npcs' | translate }}</button>
+            <button (click)="clear.emit('PLAYER')">{{ 'battle.clear.players' | translate }}</button>
+            <button (click)="clear.emit('ALL')">{{ 'battle.clear.all' | translate }}</button>
+            <button #cancelButton (click)="close.emit()">{{ 'common.cancel' | translate }}</button>
+        </div>
+    </div>
+</div>
