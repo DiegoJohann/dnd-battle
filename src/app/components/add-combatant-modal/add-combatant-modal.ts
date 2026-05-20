@@ -4,12 +4,13 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { Combatant, CombatantType } from '../../core/entities/combatant';
 import { BugIcon, CircleQuestionMark, LucideAngularModule, UserIcon, UsersIcon } from 'lucide-angular';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MODAL_ANIMATION_DIRECTIVES } from '../../shared/modal-animation.directive';
 
 type CombatantCreateMode = 'single' | 'group';
 
 @Component({
     selector: 'app-add-combatant-modal',
-    imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, TranslatePipe],
+    imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, TranslatePipe, MODAL_ANIMATION_DIRECTIVES],
     templateUrl: './add-combatant-modal.html',
     styleUrl: './add-combatant-modal.scss',
 })

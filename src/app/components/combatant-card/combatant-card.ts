@@ -8,7 +8,6 @@ import {
     CombatantConditionState,
     CombatantSpellSlotLevel
 } from '../../core/entities/combatant';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { CheckIcon, LucideAngularModule, MinusIcon, MoreVerticalIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.service';
@@ -20,22 +19,7 @@ import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.
         TranslatePipe
     ],
     templateUrl: './combatant-card.html',
-    styleUrl: './combatant-card.scss',
-    animations: [
-        trigger('cardAnim', [
-            transition(':enter', [
-                style({ opacity: 0, transform: 'scale(0.8)' }),
-                animate('200ms ease-out',
-                    style({ opacity: 1, transform: 'scale(1)' })
-                )
-            ]),
-            transition(':leave', [
-                animate('150ms ease-in',
-                    style({ opacity: 0, transform: 'scale(0.8)' })
-                )
-            ])
-        ])
-    ]
+    styleUrl: './combatant-card.scss'
 })
 export class CombatantCard {
 

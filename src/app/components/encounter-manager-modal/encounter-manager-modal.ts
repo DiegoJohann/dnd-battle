@@ -8,10 +8,11 @@ import { SupportedLanguage } from '../../core/i18n/i18n';
 import { EncounterStorageService, SavedEncounter } from '../../core/encounters/encounter-storage.service';
 import { EncounterData, EncounterSerializerService } from '../../core/encounters/encounter-serializer.service';
 import { ModalFocusTrapDirective } from '../../shared/modal-focus-trap.directive';
+import { MODAL_ANIMATION_DIRECTIVES } from '../../shared/modal-animation.directive';
 
 @Component({
     selector: 'app-encounter-manager-modal',
-    imports: [CommonModule, LucideAngularModule, TranslatePipe, ModalFocusTrapDirective],
+    imports: [CommonModule, LucideAngularModule, TranslatePipe, ModalFocusTrapDirective, MODAL_ANIMATION_DIRECTIVES],
     templateUrl: './encounter-manager-modal.html',
     styleUrl: './encounter-manager-modal.scss'
 })

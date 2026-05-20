@@ -1,6 +1,5 @@
 <div
     class="card"
-    [@cardAnim]
     [class.dead]="!combatant.alive"
     [class.player]="combatant.type === 'PLAYER'"
     [class.npc]="combatant.type === 'NPC'"
@@ -21,7 +20,12 @@
         </button>
 
         @if (actionMenuOpen) {
-            <div class="card-actions-menu theme-popover" (click)="$event.stopPropagation()">
+            <div
+                class="card-actions-menu theme-popover"
+                animate.enter="popover-enter"
+                animate.leave="popover-leave"
+                (click)="$event.stopPropagation()"
+            >
                 <button type="button" class="danger-action" (click)="onRemoveClick($event)">
                     <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
                     {{ 'combatant.actions.remove' | translate }}
@@ -68,6 +72,8 @@
         @if (temporaryHp > 0) {
             <div
                 class="temp-hp-fill"
+                animate.enter="temp-hp-enter"
+                animate.leave="temp-hp-leave"
                 [style.left.%]="tempHpLeftPercent"
                 [style.width.%]="tempHpVisiblePercent"
             ></div>
@@ -87,7 +93,11 @@
             (keyup.enter)="updateMaxHp(maxHpInput.value); maxHpInput.blur()"
         />
         @if (temporaryHp > 0) {
-            <span class="temp-hp-text">
+            <span
+                class="temp-hp-text"
+                animate.enter="temp-hp-enter"
+                animate.leave="temp-hp-leave"
+            >
                 +{{ temporaryHp }} {{ 'combatant.tempHpShort' | translate }}
                 <button
                     class="temp-hp-clear-button"
@@ -102,7 +112,11 @@
     </div>
 
     @if (!combatant.alive) {
-        <div class="defeated-status">
+        <div
+            class="defeated-status"
+            animate.enter="status-enter"
+            animate.leave="status-leave"
+        >
             {{ defeatedStatusKey | translate }}
         </div>
     }
@@ -176,6 +190,8 @@
                     <button
                         type="button"
                         class="condition-badge"
+                        animate.enter="badge-enter"
+                        animate.leave="badge-leave"
                         [title]="getConditionTitle(condition)"
                         (click)="toggleCondition(condition.key)"
                     >
@@ -192,7 +208,12 @@
 
         <!-- POPOVER -->
         @if (conditionsOpen) {
-            <div class="condition-popover theme-popover" (click)="$event.stopPropagation()">
+            <div
+                class="condition-popover theme-popover"
+                animate.enter="popover-enter"
+                animate.leave="popover-leave"
+                (click)="$event.stopPropagation()"
+            >
                 <div class="condition-picker">
                     @for (condition of conditionCatalog; track condition.key) {
                         <div

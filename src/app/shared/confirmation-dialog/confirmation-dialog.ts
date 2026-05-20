@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ModalFocusTrapDirective } from '../modal-focus-trap.directive';
+import { MODAL_ANIMATION_DIRECTIVES } from '../modal-animation.directive';
 
 @Component({
     selector: 'app-confirmation-dialog',
-    imports: [TranslatePipe, ModalFocusTrapDirective],
+    imports: [TranslatePipe, ModalFocusTrapDirective, MODAL_ANIMATION_DIRECTIVES],
     templateUrl: './confirmation-dialog.html',
     styleUrl: './confirmation-dialog.scss',
 })

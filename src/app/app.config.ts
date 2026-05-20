@@ -2,7 +2,6 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { provideTranslateService, provideTranslateLoader } from '@ngx-translate/core';
 import { DEFAULT_LANGUAGE, JsonTranslateLoader } from './core/i18n/i18n';
@@ -11,7 +10,6 @@ export const appConfig: ApplicationConfig = {
     providers: [
         provideBrowserGlobalErrorListeners(),
         provideRouter(routes),
-        provideAnimations(),
         provideHttpClient(),
         provideTranslateService({
             fallbackLang: DEFAULT_LANGUAGE,

@@ -149,6 +149,57 @@ input:focus {
     color: var(--color-text-muted);
 }
 
+.modal-overlay-enter {
+    animation: modal-overlay-enter 150ms ease-out both;
+}
+
+.modal-overlay-leave {
+    animation: modal-overlay-leave 130ms ease-in both;
+}
+
+.modal-panel-enter {
+    animation: modal-panel-enter 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.modal-panel-leave {
+    animation: modal-panel-leave 120ms ease-in both;
+}
+
+@keyframes modal-overlay-enter {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-overlay-leave {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes modal-panel-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes modal-panel-leave {
+    to {
+        opacity: 0;
+        transform: translateY(6px) scale(0.98);
+    }
+}
+
 .theme-popover {
     z-index: var(--z-popover);
 
@@ -166,6 +217,68 @@ input:focus {
     width: 10px;
     height: 10px;
     background: var(--color-bg-panel);
+}
+
+.popover-enter {
+    --popover-enter-transform: translateY(-4px) scale(0.98);
+    --popover-rest-transform: translateY(0) scale(1);
+    animation: popover-enter 140ms ease-out both;
+}
+
+.popover-leave {
+    --popover-enter-transform: translateY(-4px) scale(0.98);
+    --popover-rest-transform: translateY(0) scale(1);
+    animation: popover-leave 110ms ease-in both;
+}
+
+.temp-hp-enter,
+.status-enter,
+.badge-enter {
+    animation: soft-enter 160ms ease-out both;
+}
+
+.temp-hp-leave,
+.status-leave,
+.badge-leave {
+    animation: soft-leave 120ms ease-in both;
+}
+
+@keyframes popover-enter {
+    from {
+        opacity: 0;
+        transform: var(--popover-enter-transform);
+    }
+
+    to {
+        opacity: 1;
+        transform: var(--popover-rest-transform);
+    }
+}
+
+@keyframes popover-leave {
+    to {
+        opacity: 0;
+        transform: var(--popover-enter-transform);
+    }
+}
+
+@keyframes soft-enter {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes soft-leave {
+    to {
+        opacity: 0;
+        transform: scale(0.92);
+    }
 }
 
 .label {
@@ -307,6 +420,8 @@ input:focus {
     gap: 10px;
 
     transform: translateX(8px);
+    --popover-enter-transform: translateX(8px) translateY(-4px) scale(0.98);
+    --popover-rest-transform: translateX(8px);
 }
 
 .condition-popover::before {

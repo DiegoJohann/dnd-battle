@@ -4,10 +4,11 @@ import { Combatant, CombatantSpellSlotLevel } from '../../core/entities/combatan
 import { CheckIcon, EraserIcon, LucideAngularModule, RotateCcwIcon, XIcon } from 'lucide-angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.service';
+import { MODAL_ANIMATION_DIRECTIVES } from '../../shared/modal-animation.directive';
 
 @Component({
     selector: 'app-spell-slots-modal',
-    imports: [CommonModule, LucideAngularModule, TranslatePipe],
+    imports: [CommonModule, LucideAngularModule, TranslatePipe, MODAL_ANIMATION_DIRECTIVES],
     templateUrl: './spell-slots-modal.html',
     styleUrl: './spell-slots-modal.scss'
 })

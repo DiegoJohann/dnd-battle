@@ -1,6 +1,9 @@
-<div class="grid" [@listAnim]>
+<div class="grid">
     @for (combatant of combatants; track combatant.id) {
         <app-combatant-card
+            animate.enter="combatant-card-enter"
+            animate.leave="combatant-card-leave"
+            [style.--combatant-enter-delay]="$index * 50 + 'ms'"
             [combatant]="combatant"
             [conditionsOpen]="openConditionsForId === combatant.id"
             [activeTurn]="activeCombatantId === combatant.id"

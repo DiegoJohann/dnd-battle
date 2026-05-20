@@ -8,7 +8,6 @@ import {
 } from '../../core/entities/combatant';
 import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
 import { CombatantCard } from '../combatant-card/combatant-card';
-import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog';
 import { SpellSlotsModal } from '../spell-slots-modal/spell-slots-modal';
 import { EncounterManagerModal } from '../encounter-manager-modal/encounter-manager-modal';
@@ -38,17 +37,7 @@ import { ResetTurnModal } from '../reset-turn-modal/reset-turn-modal';
         ResetTurnModal
     ],
     templateUrl: './battle.html',
-    styleUrl: './battle.scss',
-    animations: [
-        trigger('listAnim', [
-            transition('* <=> *', [
-                query(':enter, :leave', style({ opacity: 0 }), { optional: true }),
-                query(':enter', stagger(50, [
-                    animate('200ms ease-out', style({ opacity: 1 }))
-                ]), { optional: true })
-            ])
-        ])
-    ]
+    styleUrl: './battle.scss'
 })
 export class Battle implements OnInit {
 
@@ -331,11 +320,6 @@ export class Battle implements OnInit {
 
     closeResetTurnModal() {
         this.showResetTurnModal = false;
-    }
-
-    setActiveCombatant(combatant: Combatant) {
-        this.activeCombatantId = combatant.id;
-        this.saveTurnState();
     }
 
     get activeCombatant(): Combatant | undefined {
