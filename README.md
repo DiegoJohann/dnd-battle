@@ -14,6 +14,7 @@ Aplicação web para controle rápido de encontros de Dungeons & Dragons durante
 - Condições de D&D com seletor em popover, tooltip traduzido e duração opcional.
 - Duração de condição indefinida, até o início do próximo turno do alvo, ou de 1 a 10 turnos do próprio alvo.
 - Controle de slots de magia por nível, com modal completo e consumo rápido pelo popover do card.
+- Gerenciamento de encontros salvos, com importação e exportação em JSON.
 - Remoção de combatente protegida em menu/diálogo para evitar erro durante a sessão.
 - Limpeza seletiva do campo: NPCs, jogadores ou todos.
 - Internacionalização em Português do Brasil, Espanhol e Inglês US.
@@ -75,6 +76,12 @@ Essa lógica evita que uma condição aplicada no fim da rodada perca duração 
 
 O botão discreto de magia no card abre um popover com resumo dos slots por nível e ações rápidas para gastar um slot. O modal completo permite editar totais e restantes por nível, restaurar todos os slots e concluir com Enter.
 
+### Encontros Salvos
+
+Use **Encontros** para salvar a batalha atual com um nome, carregar encontros salvos anteriormente, excluir entradas antigas ou exportar o encontro atual como JSON.
+
+A importação de JSON permite restaurar encontros em outro navegador ou depois de limpar o armazenamento local. O arquivo exportado inclui combatentes, HP, condições, slots de magia, rodada atual e combatente ativo.
+
 ### Idioma
 
 O seletor de idioma alterna entre:
@@ -119,9 +126,10 @@ Os dados são salvos no navegador:
 
 - `battle`: lista de combatentes e seus estados.
 - `battle-turn`: rodada atual e combatente ativo.
+- `battle-encounters`: encontros nomeados salvos pelo usuário.
 - `dnd-battle-language`: idioma selecionado.
 
-Como a persistência é local, limpar os dados do navegador remove o estado da batalha.
+Como a persistência é local, limpar os dados do navegador remove o estado da batalha e os encontros salvos. Use a exportação em JSON para manter uma cópia fora do navegador.
 
 ## Scripts
 
