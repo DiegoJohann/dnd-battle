@@ -97,6 +97,7 @@
         "tempHpShort": "temp",
         "clearTempHp": "Limpiar PG temporales",
         "actions": {
+            "edit": "Editar",
             "more": "Más acciones",
             "remove": "Eliminar"
         },
@@ -108,6 +109,21 @@
             "npc": "PNJ",
             "player": "Jugador"
         }
+    },
+    "combatantEdit": {
+        "currentHp": "PG actuales",
+        "initiative": "Iniciativa",
+        "maxHp": "PG máximos",
+        "name": "Nombre",
+        "subtitle": "Administración",
+        "title": "Editar combatiente"
+    },
+    "initiative": {
+        "open": "Definir iniciativa",
+        "saveAndStart": "Guardar e iniciar",
+        "shortTitle": "Iniciativa",
+        "subtitle": "Orden de combate",
+        "title": "Definir iniciativa"
     },
     "combatantModal": {
         "addGroup": "Añadir grupo",

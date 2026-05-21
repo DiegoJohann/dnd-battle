@@ -26,6 +26,10 @@
                 animate.leave="popover-leave"
                 (click)="$event.stopPropagation()"
             >
+                <button type="button" (click)="onEditClick($event)">
+                    <lucide-icon [img]="PencilIcon" [size]="14"></lucide-icon>
+                    {{ 'combatant.actions.edit' | translate }}
+                </button>
                 <button type="button" class="danger-action" (click)="onRemoveClick($event)">
                     <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
                     {{ 'combatant.actions.remove' | translate }}
@@ -36,31 +40,15 @@
 
     <h3>{{ combatant.name }}</h3>
 
-    <div class="row">
-        <label class="stat-edit armor-class">
-            {{ 'combatant.ac' | translate }}:
-            <input
-                type="number"
-                [value]="combatant.armorClass"
-                #armorClassInput
-                (focus)="selectNumberValue($event)"
-                (click)="selectNumberValue($event)"
-                (blur)="updateArmorClass(armorClassInput.value)"
-                (keyup.enter)="updateArmorClass(armorClassInput.value); armorClassInput.blur()"
-            />
-        </label>
-
-        <label class="stat-edit initiative">
-            {{ 'combatant.initiativeShort' | translate }}:
-            <input
-                type="number"
-                [value]="combatant.initiative"
-                #initiativeInput
-                (focus)="selectNumberValue($event)"
-                (click)="selectNumberValue($event)"
-                (keyup.enter)="updateInitiative(initiativeInput.value)"
-            />
-        </label>
+    <div class="stat-row">
+        <span class="stat-chip">
+            {{ 'combatant.ac' | translate }}
+            <strong>{{ combatant.armorClass }}</strong>
+        </span>
+        <span class="stat-chip">
+            {{ 'combatant.initiativeShort' | translate }}
+            <strong>{{ combatant.initiative }}</strong>
+        </span>
     </div>
 
     <div class="hp-bar">
@@ -81,17 +69,10 @@
     </div>
 
     <div class="hp-text">
-        <span>{{ 'combatant.hp' | translate }} {{ combatant.currentHp }} /</span>
-        <input
-            class="max-hp-input"
-            type="number"
-            [value]="combatant.maxHp"
-            #maxHpInput
-            (focus)="selectNumberValue($event)"
-            (click)="selectNumberValue($event)"
-            (blur)="updateMaxHp(maxHpInput.value)"
-            (keyup.enter)="updateMaxHp(maxHpInput.value); maxHpInput.blur()"
-        />
+        <span class="stat-chip">
+            {{ 'combatant.hp' | translate }}
+            <strong>{{ combatant.currentHp }} / {{ combatant.maxHp }}</strong>
+        </span>
         @if (temporaryHp > 0) {
             <span
                 class="temp-hp-text"

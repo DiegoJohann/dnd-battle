@@ -8,7 +8,7 @@ import {
     CombatantConditionState,
     CombatantSpellSlotLevel
 } from '../../core/entities/combatant';
-import { CheckIcon, LucideAngularModule, MinusIcon, MoreVerticalIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
+import { CheckIcon, LucideAngularModule, MinusIcon, MoreVerticalIcon, PencilIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.service';
 
@@ -34,9 +34,7 @@ export class CombatantCard {
     @Output() healing = new EventEmitter<number>();
     @Output() temporaryHpChange = new EventEmitter<number>();
     @Output() remove = new EventEmitter<void>();
-    @Output() initiativeChange = new EventEmitter<number>();
-    @Output() armorClassChange = new EventEmitter<number>();
-    @Output() maxHpChange = new EventEmitter<number>();
+    @Output() edit = new EventEmitter<void>();
     @Output() conditionsChange = new EventEmitter<CombatantConditionKey[]>();
     @Output() conditionStatesChange = new EventEmitter<CombatantConditionState[]>();
     @Output() openSpellSlots = new EventEmitter<void>();
@@ -73,27 +71,6 @@ export class CombatantCard {
 
     clearTemporaryHp() {
         this.temporaryHpChange.emit(0);
-    }
-
-    updateInitiative(value: string) {
-        const init = Number(value);
-        if (isNaN(init)) return;
-
-        this.initiativeChange.emit(init);
-    }
-
-    updateArmorClass(value: string) {
-        const armorClass = Math.floor(Number(value));
-        if (isNaN(armorClass) || armorClass <= 0) return;
-
-        this.armorClassChange.emit(armorClass);
-    }
-
-    updateMaxHp(value: string) {
-        const maxHp = Math.floor(Number(value));
-        if (isNaN(maxHp) || maxHp <= 0) return;
-
-        this.maxHpChange.emit(maxHp);
     }
 
     get healthPercent(): number {
@@ -327,6 +304,12 @@ export class CombatantCard {
         this.remove.emit();
     }
 
+    onEditClick(event: MouseEvent) {
+        event.stopPropagation();
+        this.actionMenuOpen = false;
+        this.edit.emit();
+    }
+
     selectNumberValue(event: FocusEvent | MouseEvent) {
         const input = event.target as HTMLInputElement;
 
@@ -357,6 +340,7 @@ export class CombatantCard {
     protected readonly SparklesIcon = SparklesIcon;
     protected readonly MinusIcon = MinusIcon;
     protected readonly MoreVerticalIcon = MoreVerticalIcon;
+    protected readonly PencilIcon = PencilIcon;
     protected readonly Trash2Icon = Trash2Icon;
     protected readonly XIcon = XIcon;
 }

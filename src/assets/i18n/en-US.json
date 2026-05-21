@@ -97,6 +97,7 @@
         "tempHpShort": "temp",
         "clearTempHp": "Clear temporary HP",
         "actions": {
+            "edit": "Edit",
             "more": "More actions",
             "remove": "Remove"
         },
@@ -108,6 +109,21 @@
             "npc": "NPC",
             "player": "Player"
         }
+    },
+    "combatantEdit": {
+        "currentHp": "Current HP",
+        "initiative": "Initiative",
+        "maxHp": "Max HP",
+        "name": "Name",
+        "subtitle": "Administration",
+        "title": "Edit combatant"
+    },
+    "initiative": {
+        "open": "Set initiative",
+        "saveAndStart": "Save and start",
+        "shortTitle": "Initiative",
+        "subtitle": "Combat order",
+        "title": "Set initiative"
     },
     "combatantModal": {
         "addGroup": "Add group",

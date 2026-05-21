@@ -22,6 +22,17 @@
     <div class="turn-actions">
         <button
             type="button"
+            class="initiative-btn"
+            (click)="setInitiative.emit()"
+            [disabled]="!hasCombatants"
+            [title]="'initiative.open' | translate"
+        >
+            <lucide-icon [img]="ListOrderedIcon" [size]="16"></lucide-icon>
+            <span>{{ 'initiative.shortTitle' | translate }}</span>
+        </button>
+
+        <button
+            type="button"
             (click)="previousTurn.emit()"
             [disabled]="!hasCombatants"
             [title]="'turn.previous' | translate"

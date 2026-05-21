@@ -97,6 +97,7 @@
         "tempHpShort": "temp",
         "clearTempHp": "Limpar PV temporário",
         "actions": {
+            "edit": "Editar",
             "more": "Mais ações",
             "remove": "Remover"
         },
@@ -108,6 +109,21 @@
             "npc": "NPC",
             "player": "Jogador"
         }
+    },
+    "combatantEdit": {
+        "currentHp": "PV atual",
+        "initiative": "Iniciativa",
+        "maxHp": "PV máximo",
+        "name": "Nome",
+        "subtitle": "Administração",
+        "title": "Editar combatente"
+    },
+    "initiative": {
+        "open": "Definir iniciativa",
+        "saveAndStart": "Salvar e iniciar",
+        "shortTitle": "Iniciativa",
+        "subtitle": "Ordem de combate",
+        "title": "Definir iniciativa"
     },
     "combatantModal": {
         "addGroup": "Adicionar grupo",

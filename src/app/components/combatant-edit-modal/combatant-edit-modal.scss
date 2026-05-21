@@ -1,0 +1,25 @@
+.combatant-edit-modal {
+    width: min(440px, 100%);
+}
+
+.edit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.edit-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.edit-grid .full {
+    grid-column: 1 / -1;
+}
+
+.edit-grid span {
+    color: var(--color-text-subtle);
+    font-size: 0.72rem;
+    font-weight: 800;
+}

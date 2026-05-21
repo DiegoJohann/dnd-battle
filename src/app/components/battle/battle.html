@@ -15,9 +15,7 @@
             (healing)="applyHealing(combatant, $event)"
             (temporaryHpChange)="updateTemporaryHp(combatant, $event)"
             (remove)="onClickRemoveCombatant(combatant)"
-            (initiativeChange)="updateInitiative(combatant, $event)"
-            (armorClassChange)="updateArmorClass(combatant, $event)"
-            (maxHpChange)="updateMaxHp(combatant, $event)"
+            (edit)="onClickEditCombatant(combatant)"
             (conditionsChange)="updateConditions(combatant, $event)"
             (conditionStatesChange)="updateConditionStates(combatant, $event)"
             (openSpellSlots)="openSpellSlotsModal(combatant)"
@@ -31,6 +29,7 @@
     [activeCombatantName]="activeCombatant?.name"
     [hasCombatants]="!!combatants.length"
     (resetTurn)="openResetTurnModal()"
+    (setInitiative)="openInitiativeModal()"
     (previousTurn)="previousTurn()"
     (nextTurn)="nextTurn()"
 />
@@ -83,6 +82,22 @@
         [combatants]="combatants"
         (applyDamage)="applyAreaDamage($event)"
         (close)="closeAreaDamageModal()"
+    />
+}
+
+@if (showInitiativeModal) {
+    <app-initiative-modal
+        [combatants]="combatants"
+        (save)="applyInitiative($event)"
+        (close)="closeInitiativeModal()"
+    />
+}
+
+@if (combatantToEdit) {
+    <app-combatant-edit-modal
+        [combatant]="combatantToEdit"
+        (save)="updateCombatantAdmin(combatantToEdit, $event)"
+        (close)="closeCombatantEditModal()"
     />
 }
 

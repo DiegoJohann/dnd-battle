@@ -1,0 +1,39 @@
+<div class="overlay" (click)="close.emit()">
+    <section class="modal initiative-modal compact-form-modal" appModalFocusTrap (click)="$event.stopPropagation()">
+        <header class="modal-header">
+            <div>
+                <p>{{ 'initiative.subtitle' | translate }}</p>
+                <h2>{{ 'initiative.title' | translate }}</h2>
+            </div>
+
+            <button class="close-btn" type="button" (click)="close.emit()" [title]="'common.close' | translate">
+                <lucide-icon [img]="XIcon" [size]="16"></lucide-icon>
+            </button>
+        </header>
+
+        <div class="initiative-list">
+            @for (row of rows; track row.combatant.id) {
+                <label class="initiative-row">
+                    <span class="combatant-name">{{ row.combatant.name }}</span>
+                    <span class="combatant-type">{{ ('combatant.type.' + row.combatant.type.toLowerCase()) | translate }}</span>
+                    <input
+                        type="number"
+                        [(ngModel)]="row.initiative"
+                        (focus)="selectNumberValue($event)"
+                        (click)="selectNumberValue($event)"
+                    />
+                </label>
+            }
+        </div>
+
+        <footer class="modal-actions">
+            <button type="button" class="ghost-btn" (click)="close.emit()">
+                {{ 'common.cancel' | translate }}
+            </button>
+            <button type="button" class="primary-btn" (click)="submit()">
+                <lucide-icon [img]="CheckIcon" [size]="14"></lucide-icon>
+                {{ 'initiative.saveAndStart' | translate }}
+            </button>
+        </footer>
+    </section>
+</div>

@@ -22,6 +22,8 @@ import { BattleToolbarComponent } from '../battle-toolbar/battle-toolbar';
 import { ClearBattleModal, ClearBattleType } from '../clear-battle-modal/clear-battle-modal';
 import { ResetTurnModal } from '../reset-turn-modal/reset-turn-modal';
 import { AreaDamageModal, AreaDamageResult } from '../area-damage-modal/area-damage-modal';
+import { InitiativeModal, InitiativeUpdate } from '../initiative-modal/initiative-modal';
+import { CombatantAdminUpdate, CombatantEditModal } from '../combatant-edit-modal/combatant-edit-modal';
 
 @Component({
     selector: 'app-battle',
@@ -36,7 +38,9 @@ import { AreaDamageModal, AreaDamageResult } from '../area-damage-modal/area-dam
         BattleToolbarComponent,
         ClearBattleModal,
         ResetTurnModal,
-        AreaDamageModal
+        AreaDamageModal,
+        InitiativeModal,
+        CombatantEditModal
     ],
     templateUrl: './battle.html',
     styleUrl: './battle.scss'
@@ -54,9 +58,11 @@ export class Battle implements OnInit {
     showResetTurnModal = false;
     showEncounterModal = false;
     showAreaDamageModal = false;
+    showInitiativeModal = false;
 
     showConfirmationDialog = false;
     combatantToRemove: Combatant | undefined;
+    combatantToEdit: Combatant | undefined;
     spellSlotsCombatant: Combatant | undefined;
 
     constructor(
@@ -98,28 +104,6 @@ export class Battle implements OnInit {
         this.ensureActiveCombatant();
         this.save();
         this.saveTurnState();
-    }
-
-    updateInitiative(combatant: Combatant, initiative: number) {
-        combatant.initiative = initiative;
-        this.sortByInitiative();
-        this.save();
-    }
-
-    updateArmorClass(combatant: Combatant, armorClass: number) {
-        if (isNaN(armorClass) || armorClass <= 0) return;
-
-        combatant.armorClass = Math.floor(armorClass);
-        this.save();
-    }
-
-    updateMaxHp(combatant: Combatant, maxHp: number) {
-        if (isNaN(maxHp) || maxHp <= 0) return;
-
-        combatant.maxHp = Math.floor(maxHp);
-        combatant.currentHp = Math.min(combatant.currentHp, combatant.maxHp);
-        combatant.alive = combatant.currentHp > 0;
-        this.save();
     }
 
     updateTemporaryHp(combatant: Combatant, temporaryHp: number) {
@@ -197,6 +181,11 @@ export class Battle implements OnInit {
         this.showConfirmationDialog = true;
     }
 
+    onClickEditCombatant(combatant: Combatant) {
+        this.closeAllConditions();
+        this.combatantToEdit = combatant;
+    }
+
     removeCombatant() {
         const removedId = this.combatantToRemove?.id;
         const removedIndex = this.combatants.findIndex(e => e.id === removedId);
@@ -213,6 +202,25 @@ export class Battle implements OnInit {
         this.saveTurnState();
         this.showConfirmationDialog = false;
         this.combatantToRemove = undefined;
+    }
+
+    updateCombatantAdmin(combatant: Combatant, update: CombatantAdminUpdate) {
+        const activeBeforeUpdate = this.activeCombatantId;
+
+        combatant.name = update.name;
+        combatant.armorClass = update.armorClass;
+        combatant.maxHp = update.maxHp;
+        combatant.currentHp = update.currentHp;
+        combatant.initiative = update.initiative;
+        combatant.alive = combatant.currentHp > 0;
+
+        this.sortByInitiative();
+        this.activeCombatantId = this.combatants.some(current => current.id === activeBeforeUpdate)
+            ? activeBeforeUpdate
+            : this.combatants[0]?.id ?? null;
+        this.save();
+        this.saveTurnState();
+        this.closeCombatantEditModal();
     }
 
     toggleConditionsPopover(id: string) {
@@ -250,6 +258,43 @@ export class Battle implements OnInit {
 
     closeAreaDamageModal() {
         this.showAreaDamageModal = false;
+    }
+
+    openInitiativeModal() {
+        if (!this.combatants.length) return;
+
+        this.closeAllConditions();
+        this.showInitiativeModal = true;
+    }
+
+    closeInitiativeModal() {
+        this.showInitiativeModal = false;
+    }
+
+    applyInitiative(updates: InitiativeUpdate[]) {
+        const initiativeById = new Map(updates.map(update => [
+            update.combatantId,
+            update.initiative
+        ]));
+
+        this.combatants.forEach(combatant => {
+            const initiative = initiativeById.get(combatant.id);
+
+            if (initiative === undefined) return;
+
+            combatant.initiative = initiative;
+        });
+
+        this.sortByInitiative();
+        this.round = 1;
+        this.activeCombatantId = this.combatants[0]?.id ?? null;
+        this.save();
+        this.saveTurnState();
+        this.closeInitiativeModal();
+    }
+
+    closeCombatantEditModal() {
+        this.combatantToEdit = undefined;
     }
 
     clearCombatants(type: ClearBattleType) {
@@ -455,7 +500,9 @@ export class Battle implements OnInit {
             || this.showResetTurnModal
             || this.showEncounterModal
             || this.showAreaDamageModal
+            || this.showInitiativeModal
             || this.showConfirmationDialog
+            || !!this.combatantToEdit
             || !!this.spellSlotsCombatant;
     }
 
@@ -465,6 +512,8 @@ export class Battle implements OnInit {
         this.closeResetTurnModal();
         this.closeEncounterModal();
         this.closeAreaDamageModal();
+        this.closeInitiativeModal();
+        this.closeCombatantEditModal();
         this.closeAllConditions();
         this.closeSpellSlotsModal();
         this.showConfirmationDialog = false;

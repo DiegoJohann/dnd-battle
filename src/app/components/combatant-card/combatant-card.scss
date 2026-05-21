@@ -29,28 +29,9 @@
     background: linear-gradient(180deg, #2a1b17, #1f1512);
 }
 
-.row {
+.stat-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-.stat-edit {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-}
-
-.stat-edit input,
-.max-hp-input {
-    width: 50px;
-    padding: 2px 4px;
-    font-size: 0.8rem;
-}
-
-.armor-class input {
-    width: 42px;
 }
 
 .hp-bar {
@@ -98,13 +79,10 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    flex-wrap: wrap;
 
     font-size: 0.85rem;
     color: var(--color-text-muted);
-}
-
-.max-hp-input {
-    width: 54px;
 }
 
 .temp-hp-text {
