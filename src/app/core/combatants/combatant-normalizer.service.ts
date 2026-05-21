@@ -26,6 +26,7 @@ export class CombatantNormalizer {
 
         return {
             id: typeof partial.id === 'string' && partial.id ? partial.id : crypto.randomUUID(),
+            groupId: typeof partial.groupId === 'string' && partial.groupId ? partial.groupId : undefined,
             name: typeof partial.name === 'string' && partial.name.trim()
                 ? partial.name.trim()
                 : 'Combatant',

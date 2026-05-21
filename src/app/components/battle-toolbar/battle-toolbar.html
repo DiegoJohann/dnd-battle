@@ -16,6 +16,16 @@
     {{ 'encounter.open' | translate }}
 </button>
 
+<button
+    class="area-damage-btn"
+    [disabled]="areaDamageDisabled"
+    (click)="areaDamage.emit()"
+    [title]="'areaDamage.open' | translate"
+>
+    <lucide-icon [img]="FlameIcon" [size]="15"></lucide-icon>
+    {{ 'areaDamage.shortTitle' | translate }}
+</button>
+
 <button class="add-btn" [class.pulse]="empty" (click)="addCombatant.emit()">
     <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
     <span class="label">{{ 'battle.addCombatant' | translate }}</span>

@@ -1,0 +1,122 @@
+<div class="overlay" (click)="close.emit()">
+    <section class="modal area-damage-modal" appModalFocusTrap (click)="$event.stopPropagation()">
+        <header class="modal-header">
+            <div>
+                <p>{{ 'areaDamage.subtitle' | translate }}</p>
+                <h2>{{ 'areaDamage.title' | translate }}</h2>
+            </div>
+
+            <button class="close-btn" type="button" (click)="close.emit()" [title]="'common.close' | translate">
+                <lucide-icon [img]="XIcon" [size]="16"></lucide-icon>
+            </button>
+        </header>
+
+        <div class="controls-grid">
+            <label>
+                <span>{{ 'areaDamage.damage' | translate }}</span>
+                <input
+                    type="number"
+                    min="1"
+                    [(ngModel)]="damage"
+                    (focus)="selectNumberValue($event)"
+                    (click)="selectNumberValue($event)"
+                />
+            </label>
+
+            <label>
+                <span>{{ 'areaDamage.saveDc' | translate }}</span>
+                <input
+                    type="number"
+                    min="1"
+                    [(ngModel)]="saveDc"
+                    (focus)="selectNumberValue($event)"
+                    (click)="selectNumberValue($event)"
+                />
+            </label>
+
+            <div class="success-effect" role="radiogroup" [attr.aria-label]="'areaDamage.successEffect' | translate">
+                <span>{{ 'areaDamage.successEffect' | translate }}</span>
+
+                <div class="segmented-control">
+                    <button
+                        type="button"
+                        [class.active]="successEffect === 'HALF'"
+                        (click)="successEffect = 'HALF'"
+                    >
+                        {{ 'areaDamage.halfDamage' | translate }}
+                    </button>
+                    <button
+                        type="button"
+                        [class.active]="successEffect === 'NONE'"
+                        (click)="successEffect = 'NONE'"
+                    >
+                        {{ 'areaDamage.noDamage' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="targets-header">
+            <div>
+                <strong>{{ 'areaDamage.targets' | translate }}</strong>
+                <span>{{ 'areaDamage.selectedCount' | translate: { count: selectedCount } }}</span>
+            </div>
+
+            <label class="select-all">
+                <input
+                    type="checkbox"
+                    [checked]="selectedCount === targets.length && targets.length > 0"
+                    (change)="toggleAll(selectAllInput.checked)"
+                    #selectAllInput
+                />
+                {{ 'areaDamage.selectAll' | translate }}
+            </label>
+        </div>
+
+        @if (targets.length) {
+            <div class="targets-list">
+                @for (target of targets; track target.combatant.id) {
+                    <label class="target-row" [class.selected]="target.selected">
+                        <input type="checkbox" tabindex="-1" [(ngModel)]="target.selected" />
+
+                        <span class="target-name">
+                            {{ target.combatant.name }}
+                            @if (target.groupSize > 1) {
+                                <span class="group-badge" [title]="'areaDamage.syncedGroupTitle' | translate">
+                                    {{ 'areaDamage.syncedGroup' | translate }}
+                                </span>
+                            }
+                        </span>
+
+                        <span class="target-hp">
+                            {{ 'combatant.hp' | translate }} {{ target.combatant.currentHp }}/{{ target.combatant.maxHp }}
+                        </span>
+
+                        <span class="bonus-field">
+                            {{ 'areaDamage.saveBonus' | translate }}
+                            <input
+                                type="number"
+                                [ngModel]="target.saveBonus"
+                                (ngModelChange)="updateSaveBonus(target, $event)"
+                                (focus)="selectNumberValue($event)"
+                                (click)="selectNumberValue($event)"
+                            />
+                        </span>
+                    </label>
+                }
+            </div>
+        } @else {
+            <p class="empty-state">{{ 'areaDamage.empty' | translate }}</p>
+        }
+
+        <footer class="modal-actions">
+            <button type="button" class="ghost-btn" (click)="close.emit()">
+                {{ 'common.cancel' | translate }}
+            </button>
+            <button type="button" class="primary-btn" [disabled]="!canApply" (click)="submit()">
+                <lucide-icon [img]="CheckIcon" [size]="14"></lucide-icon>
+                {{ 'areaDamage.apply' | translate }}
+            </button>
+        </footer>
+    </section>
+</div>

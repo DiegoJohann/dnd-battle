@@ -39,8 +39,10 @@
     [currentLanguage]="languageService.currentLanguage"
     [supportedLanguages]="languageService.supportedLanguages"
     [empty]="combatants.length === 0"
+    [areaDamageDisabled]="!hasAliveNpcs"
     (languageChange)="changeLanguage($event)"
     (openEncounter)="openEncounterModal()"
+    (areaDamage)="openAreaDamageModal()"
     (addCombatant)="openAddCombatantModal()"
     (clearBattlefield)="openClearFieldModal()"
 />
@@ -73,6 +75,14 @@
     <app-reset-turn-modal
         (reset)="resetTurnTracker()"
         (close)="closeResetTurnModal()"
+    />
+}
+
+@if (showAreaDamageModal) {
+    <app-area-damage-modal
+        [combatants]="combatants"
+        (applyDamage)="applyAreaDamage($event)"
+        (close)="closeAreaDamageModal()"
     />
 }
 

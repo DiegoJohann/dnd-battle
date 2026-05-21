@@ -21,6 +21,7 @@ import { TurnTrackerComponent } from '../turn-tracker/turn-tracker';
 import { BattleToolbarComponent } from '../battle-toolbar/battle-toolbar';
 import { ClearBattleModal, ClearBattleType } from '../clear-battle-modal/clear-battle-modal';
 import { ResetTurnModal } from '../reset-turn-modal/reset-turn-modal';
+import { AreaDamageModal, AreaDamageResult } from '../area-damage-modal/area-damage-modal';
 
 @Component({
     selector: 'app-battle',
@@ -34,7 +35,8 @@ import { ResetTurnModal } from '../reset-turn-modal/reset-turn-modal';
         TurnTrackerComponent,
         BattleToolbarComponent,
         ClearBattleModal,
-        ResetTurnModal
+        ResetTurnModal,
+        AreaDamageModal
     ],
     templateUrl: './battle.html',
     styleUrl: './battle.scss'
@@ -51,6 +53,7 @@ export class Battle implements OnInit {
     showClearFieldModal = false;
     showResetTurnModal = false;
     showEncounterModal = false;
+    showAreaDamageModal = false;
 
     showConfirmationDialog = false;
     combatantToRemove: Combatant | undefined;
@@ -133,6 +136,24 @@ export class Battle implements OnInit {
     }
 
     applyDamage(combatant: Combatant, damage: number) {
+        this.applyDamageToCombatant(combatant, damage);
+        this.save();
+    }
+
+    applyAreaDamage(results: AreaDamageResult[]) {
+        results.forEach(result => {
+            const combatant = this.combatants.find(current => current.id === result.combatantId);
+
+            if (!combatant || result.damage <= 0) return;
+
+            this.applyDamageToCombatant(combatant, result.damage);
+        });
+
+        this.save();
+        this.closeAreaDamageModal();
+    }
+
+    private applyDamageToCombatant(combatant: Combatant, damage: number) {
         if (!combatant.alive) return;
 
         let remainingDamage = damage;
@@ -148,7 +169,6 @@ export class Battle implements OnInit {
         }
 
         combatant.alive = combatant.currentHp > 0;
-        this.save();
     }
 
     applyHealing(combatant: Combatant, healing: number) {
@@ -219,6 +239,17 @@ export class Battle implements OnInit {
 
     closeClearFieldModal() {
         this.showClearFieldModal = false;
+    }
+
+    openAreaDamageModal() {
+        if (!this.hasAliveNpcs) return;
+
+        this.closeAllConditions();
+        this.showAreaDamageModal = true;
+    }
+
+    closeAreaDamageModal() {
+        this.showAreaDamageModal = false;
     }
 
     clearCombatants(type: ClearBattleType) {
@@ -327,6 +358,10 @@ export class Battle implements OnInit {
             ?? this.combatants[0];
     }
 
+    get hasAliveNpcs(): boolean {
+        return this.combatants.some(combatant => combatant.type === 'NPC' && combatant.alive);
+    }
+
     get activeCombatantIndex(): number {
         const index = this.combatants.findIndex(combatant => combatant.id === this.activeCombatantId);
 
@@ -419,6 +454,7 @@ export class Battle implements OnInit {
             || this.showClearFieldModal
             || this.showResetTurnModal
             || this.showEncounterModal
+            || this.showAreaDamageModal
             || this.showConfirmationDialog
             || !!this.spellSlotsCombatant;
     }
@@ -428,6 +464,7 @@ export class Battle implements OnInit {
         this.closeClearFieldModal();
         this.closeResetTurnModal();
         this.closeEncounterModal();
+        this.closeAreaDamageModal();
         this.closeAllConditions();
         this.closeSpellSlotsModal();
         this.showConfirmationDialog = false;

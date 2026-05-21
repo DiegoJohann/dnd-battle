@@ -33,6 +33,25 @@
             "all": "Todos"
         }
     },
+    "areaDamage": {
+        "apply": "Aplicar daño de área",
+        "damage": "Daño total",
+        "empty": "No hay PNJ vivos disponibles.",
+        "halfDamage": "Mitad",
+        "noDamage": "Ninguno",
+        "open": "Daño de área contra PNJ",
+        "saveBonus": "Bono",
+        "saveDc": "CD",
+        "selectAll": "Seleccionar todos",
+        "selectedCount": "{{ count }} seleccionado(s)",
+        "shortTitle": "Área",
+        "subtitle": "Salvaciones individuales",
+        "syncedGroup": "grupo",
+        "syncedGroupTitle": "Bono sincronizado con combatientes creados en el mismo grupo",
+        "successEffect": "Al superar la salvación",
+        "targets": "Objetivos",
+        "title": "Daño de área"
+    },
     "encounter": {
         "combatantsCount": "{{ count }} combatiente(s)",
         "delete": "Eliminar encuentro",

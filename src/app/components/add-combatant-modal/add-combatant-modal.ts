@@ -64,8 +64,10 @@ export class AddCombatantModal implements AfterViewInit {
             ? Math.max(1, Math.min(50, Math.floor(Number(quantity)) || 1))
             : 1;
         const baseInitiative = initiative ?? 0;
+        const groupId = mode === 'group' && count > 1 ? crypto.randomUUID() : undefined;
         const combatants = Array.from({ length: count }, (_, index) => ({
             id: crypto.randomUUID(),
+            groupId,
             name: count > 1 ? `${name!} ${index + 1}` : name!,
             maxHp: hp!,
             currentHp: hp!,

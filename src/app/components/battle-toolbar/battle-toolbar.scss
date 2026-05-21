@@ -91,6 +91,48 @@
         color var(--duration-fast) ease;
 }
 
+.area-damage-btn {
+    position: fixed;
+    top: 18px;
+    left: 166px;
+    z-index: 10;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    border: 1px solid rgba(214, 168, 79, 0.28);
+    border-radius: var(--radius-pill);
+    background: rgba(80, 31, 21, 0.88);
+    color: var(--color-gold-soft);
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    font-weight: 800;
+
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(8px);
+    transition:
+        transform var(--duration-fast) ease,
+        background var(--duration-fast) ease,
+        border-color var(--duration-fast) ease,
+        color var(--duration-fast) ease,
+        opacity var(--duration-fast) ease;
+}
+
+.area-damage-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(214, 168, 79, 0.5);
+    background: rgba(105, 38, 24, 0.96);
+    color: #fff;
+}
+
+.area-damage-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .encounter-btn:hover {
     transform: translateY(-1px);
     border-color: rgba(214, 168, 79, 0.38);
@@ -111,7 +153,8 @@
 
 .add-btn lucide-icon,
 .clear-btn lucide-icon,
-.encounter-btn lucide-icon {
+.encounter-btn lucide-icon,
+.area-damage-btn lucide-icon {
     margin-right: 6px;
     vertical-align: middle;
 }
@@ -152,6 +195,12 @@
 
     .encounter-btn {
         top: 18px;
+        left: 12px;
+        padding: 8px 10px;
+    }
+
+    .area-damage-btn {
+        top: 60px;
         left: 12px;
         padding: 8px 10px;
     }

@@ -71,6 +71,7 @@ export const COMBATANT_CONDITION_CATALOG: CombatantConditionDefinition[] = [
 
 export interface Combatant {
     id: string;
+    groupId?: string;
     name: string;
     type: CombatantType;
     armorClass: number;

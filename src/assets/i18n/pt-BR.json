@@ -33,6 +33,25 @@
             "all": "Todos"
         }
     },
+    "areaDamage": {
+        "apply": "Aplicar dano em área",
+        "damage": "Dano total",
+        "empty": "Nenhum NPC vivo disponível.",
+        "halfDamage": "Metade",
+        "noDamage": "Nenhum",
+        "open": "Dano em área contra NPCs",
+        "saveBonus": "Bônus",
+        "saveDc": "CD",
+        "selectAll": "Selecionar todos",
+        "selectedCount": "{{ count }} selecionado(s)",
+        "shortTitle": "Área",
+        "subtitle": "Resistência individual",
+        "syncedGroup": "grupo",
+        "syncedGroupTitle": "Bônus sincronizado com combatentes criados no mesmo grupo",
+        "successEffect": "Ao passar no teste",
+        "targets": "Alvos",
+        "title": "Dano em área"
+    },
     "encounter": {
         "combatantsCount": "{{ count }} combatente(s)",
         "delete": "Excluir encontro",

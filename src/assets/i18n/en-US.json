@@ -33,6 +33,25 @@
             "all": "All"
         }
     },
+    "areaDamage": {
+        "apply": "Apply area damage",
+        "damage": "Total damage",
+        "empty": "No living NPCs available.",
+        "halfDamage": "Half",
+        "noDamage": "None",
+        "open": "Area damage against NPCs",
+        "saveBonus": "Bonus",
+        "saveDc": "DC",
+        "selectAll": "Select all",
+        "selectedCount": "{{ count }} selected",
+        "shortTitle": "Area",
+        "subtitle": "Individual saves",
+        "syncedGroup": "group",
+        "syncedGroupTitle": "Bonus synced with combatants created in the same group",
+        "successEffect": "On a successful save",
+        "targets": "Targets",
+        "title": "Area damage"
+    },
     "encounter": {
         "combatantsCount": "{{ count }} combatant(s)",
         "delete": "Delete encounter",
