@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
+    BookOpenIcon,
     FlameIcon,
     FolderOpenIcon,
     LucideAngularModule,
@@ -25,19 +26,30 @@ export class BattleToolbarComponent {
 
     @Output() languageChange = new EventEmitter<string>();
     @Output() openEncounter = new EventEmitter<void>();
+    @Output() openLibrary = new EventEmitter<void>();
     @Output() addCombatant = new EventEmitter<void>();
     @Output() clearBattlefield = new EventEmitter<void>();
     @Output() areaDamage = new EventEmitter<void>();
 
+    protected readonly BookOpenIcon = BookOpenIcon;
     protected readonly FlameIcon = FlameIcon;
     protected readonly FolderOpenIcon = FolderOpenIcon;
     protected readonly MenuIcon = MenuIcon;
     protected readonly PlusIcon = PlusIcon;
     protected readonly Trash2Icon = Trash2Icon;
 
+    desktopMenuOpen = false;
     mobileMenuOpen = false;
 
     constructor(private elementRef: ElementRef) {}
+
+    toggleDesktopMenu(): void {
+        this.desktopMenuOpen = !this.desktopMenuOpen;
+    }
+
+    closeDesktopMenu(): void {
+        this.desktopMenuOpen = false;
+    }
 
     toggleMobileMenu(): void {
         this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -49,7 +61,11 @@ export class BattleToolbarComponent {
 
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent): void {
-        if (this.mobileMenuOpen && !this.elementRef.nativeElement.contains(event.target)) {
+        if (
+            (this.desktopMenuOpen || this.mobileMenuOpen) &&
+            !this.elementRef.nativeElement.contains(event.target)
+        ) {
+            this.desktopMenuOpen = false;
             this.mobileMenuOpen = false;
         }
     }

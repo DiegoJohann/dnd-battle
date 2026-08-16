@@ -7,10 +7,8 @@
             [combatant]="combatant"
             [conditionsOpen]="openConditionsForId === combatant.id"
             [activeTurn]="activeCombatantId === combatant.id"
-
             (toggleConditions)="toggleConditionsPopover(combatant.id)"
             (closeConditions)="closeAllConditions()"
-
             (damage)="applyDamage(combatant, $event)"
             (healing)="applyHealing(combatant, $event)"
             (temporaryHpChange)="updateTemporaryHp(combatant, $event)"
@@ -20,6 +18,7 @@
             (conditionStatesChange)="updateConditionStates(combatant, $event)"
             (openSpellSlots)="openSpellSlotsModal(combatant)"
             (spellSlotsChange)="updateSpellSlots(combatant, $event)"
+            (saveToLibrary)="openLibraryModalWithCombatant(combatant)"
         />
     }
 </div>
@@ -41,23 +40,18 @@
     [areaDamageDisabled]="!hasAliveNpcs"
     (languageChange)="changeLanguage($event)"
     (openEncounter)="openEncounterModal()"
+    (openLibrary)="openLibraryModal()"
     (areaDamage)="openAreaDamageModal()"
     (addCombatant)="openAddCombatantModal()"
     (clearBattlefield)="openClearFieldModal()"
 />
 
 @if (showAddCombatantModal) {
-    <app-add-combatant-modal
-        (close)="closeAddCombatantModal()"
-        (create)="addCombatants($event)"
-    />
+    <app-add-combatant-modal (close)="closeAddCombatantModal()" (create)="addCombatants($event)" />
 }
 
 @if (showClearFieldModal) {
-    <app-clear-battle-modal
-        (clear)="clearCombatants($event)"
-        (close)="closeClearFieldModal()"
-    />
+    <app-clear-battle-modal (clear)="clearCombatants($event)" (close)="closeClearFieldModal()" />
 }
 
 @if (showEncounterModal) {
@@ -70,11 +64,16 @@
     />
 }
 
-@if (showResetTurnModal) {
-    <app-reset-turn-modal
-        (reset)="resetTurnTracker()"
-        (close)="closeResetTurnModal()"
+@if (showLibraryModal) {
+    <app-library-manager-modal
+        [combatantToSave]="combatantToSaveAsPreset"
+        (close)="closeLibraryModal()"
+        (loadPresets)="loadPresetsToBattle($event)"
     />
+}
+
+@if (showResetTurnModal) {
+    <app-reset-turn-modal (reset)="resetTurnTracker()" (close)="closeResetTurnModal()" />
 }
 
 @if (showAreaDamageModal) {
@@ -113,6 +112,6 @@
     <app-confirmation-dialog
         confirmationMessage="battle.removeConfirmation"
         (actionConfirmed)="removeCombatant()"
-        (actionRejected)="this.showConfirmationDialog = false; this.combatantToRemove = undefined;"
+        (actionRejected)="this.showConfirmationDialog = false; this.combatantToRemove = undefined"
     ></app-confirmation-dialog>
 }

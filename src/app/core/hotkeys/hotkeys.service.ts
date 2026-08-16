@@ -5,6 +5,7 @@ export type BattleHotkeyAction =
     | 'CLEAR_BATTLEFIELD'
     | 'CLOSE_OVERLAYS'
     | 'NEXT_TURN'
+    | 'OPEN_LIBRARY'
     | 'PREVIOUS_TURN'
     | 'RESET_TURN';
 
@@ -14,7 +15,7 @@ export interface BattleHotkeyMatch {
 }
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class HotkeysService {
     matchBattleHotkey(event: KeyboardEvent): BattleHotkeyMatch | null {
@@ -37,6 +38,8 @@ export class HotkeysService {
         switch (event.key.toLowerCase()) {
             case 'a':
                 return { action: 'ADD_COMBATANT', preventDefault: true };
+            case 'b':
+                return { action: 'OPEN_LIBRARY', preventDefault: true };
             case 'c':
                 return { action: 'CLEAR_BATTLEFIELD', preventDefault: true };
             case 'n':
@@ -53,9 +56,11 @@ export class HotkeysService {
     private isEditableTarget(target: EventTarget | null): boolean {
         if (!(target instanceof HTMLElement)) return false;
 
-        return target.isContentEditable
-            || target.tagName === 'INPUT'
-            || target.tagName === 'TEXTAREA'
-            || target.tagName === 'SELECT';
+        return (
+            target.isContentEditable ||
+            target.tagName === 'INPUT' ||
+            target.tagName === 'TEXTAREA' ||
+            target.tagName === 'SELECT'
+        );
     }
 }
