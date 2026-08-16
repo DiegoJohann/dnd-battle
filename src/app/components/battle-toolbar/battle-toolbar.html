@@ -76,8 +76,8 @@
         <div class="mobile-menu-item mobile-lang-row">
             <span>{{ 'language.label' | translate }}</span>
             <select
-                [value]="currentLanguage"
-                (change)="languageChange.emit(langSelect.value); closeMobileMenu()"
+                [ngModel]="currentLanguage"
+                (ngModelChange)="languageChange.emit($event); closeMobileMenu()"
                 #langSelect
             >
                 @for (language of supportedLanguages; track language) {
