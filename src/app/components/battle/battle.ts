@@ -4,13 +4,14 @@ import {
     Combatant,
     CombatantConditionKey,
     CombatantConditionState,
-    CombatantSpellSlotLevel
+    CombatantSpellSlotLevel,
 } from '../../core/entities/combatant';
 import { AddCombatantModal } from '../add-combatant-modal/add-combatant-modal';
 import { CombatantCard } from '../combatant-card/combatant-card';
 import { ConfirmationDialog } from '../../shared/confirmation-dialog/confirmation-dialog';
 import { SpellSlotsModal } from '../spell-slots-modal/spell-slots-modal';
 import { EncounterManagerModal } from '../encounter-manager-modal/encounter-manager-modal';
+import { LibraryManagerModal } from '../library-manager-modal/library-manager-modal';
 import { LanguageService } from '../../core/i18n/language.service';
 import { SupportedLanguage } from '../../core/i18n/i18n';
 import { HotkeysService } from '../../core/hotkeys/hotkeys.service';
@@ -23,7 +24,11 @@ import { ClearBattleModal, ClearBattleType } from '../clear-battle-modal/clear-b
 import { ResetTurnModal } from '../reset-turn-modal/reset-turn-modal';
 import { AreaDamageModal, AreaDamageResult } from '../area-damage-modal/area-damage-modal';
 import { InitiativeModal, InitiativeUpdate } from '../initiative-modal/initiative-modal';
-import { CombatantAdminUpdate, CombatantEditModal } from '../combatant-edit-modal/combatant-edit-modal';
+import {
+    CombatantAdminUpdate,
+    CombatantEditModal,
+} from '../combatant-edit-modal/combatant-edit-modal';
+import { CombatantPreset } from '../../core/entities/combatant-preset';
 
 @Component({
     selector: 'app-battle',
@@ -34,19 +39,19 @@ import { CombatantAdminUpdate, CombatantEditModal } from '../combatant-edit-moda
         ConfirmationDialog,
         SpellSlotsModal,
         EncounterManagerModal,
+        LibraryManagerModal,
         TurnTrackerComponent,
         BattleToolbarComponent,
         ClearBattleModal,
         ResetTurnModal,
         AreaDamageModal,
         InitiativeModal,
-        CombatantEditModal
+        CombatantEditModal,
     ],
     templateUrl: './battle.html',
-    styleUrl: './battle.scss'
+    styleUrl: './battle.scss',
 })
 export class Battle implements OnInit {
-
     combatants: Combatant[] = [];
     round = 1;
     activeCombatantId: string | null = null;
@@ -57,6 +62,7 @@ export class Battle implements OnInit {
     showClearFieldModal = false;
     showResetTurnModal = false;
     showEncounterModal = false;
+    showLibraryModal = false;
     showAreaDamageModal = false;
     showInitiativeModal = false;
 
@@ -64,14 +70,14 @@ export class Battle implements OnInit {
     combatantToRemove: Combatant | undefined;
     combatantToEdit: Combatant | undefined;
     spellSlotsCombatant: Combatant | undefined;
+    combatantToSaveAsPreset: Combatant | undefined;
 
     constructor(
         protected languageService: LanguageService,
         private hotkeysService: HotkeysService,
         private battleStorage: BattleStorageService,
-        private combatantNormalizer: CombatantNormalizer
-    ) {
-    }
+        private combatantNormalizer: CombatantNormalizer,
+    ) {}
 
     changeLanguage(value: string) {
         this.languageService.use(value as SupportedLanguage);
@@ -95,10 +101,63 @@ export class Battle implements OnInit {
         this.showEncounterModal = false;
     }
 
+    openLibraryModal() {
+        this.closeAllConditions();
+        this.combatantToSaveAsPreset = undefined;
+        this.showLibraryModal = true;
+    }
+
+    openLibraryModalWithCombatant(combatant: Combatant) {
+        this.closeAllConditions();
+        this.combatantToSaveAsPreset = combatant;
+        this.showLibraryModal = true;
+    }
+
+    closeLibraryModal() {
+        this.showLibraryModal = false;
+        this.combatantToSaveAsPreset = undefined;
+    }
+
+    loadPresetsToBattle(
+        loadRequests: { presets: CombatantPreset[]; quantity: number; rollInitiative: boolean }[],
+    ) {
+        const newCombatants: Combatant[] = [];
+
+        for (const request of loadRequests) {
+            for (const preset of request.presets) {
+                const count = Math.max(1, Math.min(50, request.quantity));
+                const groupId = count > 1 ? crypto.randomUUID() : undefined;
+                const baseName = preset.name || preset.presetName;
+
+                for (let i = 0; i < count; i++) {
+                    const initiative = request.rollInitiative
+                        ? this.rollInitiative(preset.initiativeBonus)
+                        : preset.initiativeBonus;
+
+                    newCombatants.push({
+                        id: crypto.randomUUID(),
+                        groupId,
+                        name: count > 1 ? `${baseName} ${i + 1}` : baseName,
+                        type: preset.type,
+                        armorClass: preset.armorClass,
+                        maxHp: preset.maxHp,
+                        currentHp: preset.maxHp,
+                        initiative,
+                        alive: true,
+                    });
+                }
+            }
+        }
+
+        this.addCombatants(newCombatants);
+    }
+
     addCombatants(combatants: Combatant[]) {
-        this.combatants.push(...combatants.map(combatant =>
-            this.combatantNormalizer.normalizeCombatant(combatant)
-        ));
+        this.combatants.push(
+            ...combatants.map((combatant) =>
+                this.combatantNormalizer.normalizeCombatant(combatant),
+            ),
+        );
 
         this.sortByInitiative();
         this.ensureActiveCombatant();
@@ -125,8 +184,8 @@ export class Battle implements OnInit {
     }
 
     applyAreaDamage(results: AreaDamageResult[]) {
-        results.forEach(result => {
-            const combatant = this.combatants.find(current => current.id === result.combatantId);
+        results.forEach((result) => {
+            const combatant = this.combatants.find((current) => current.id === result.combatantId);
 
             if (!combatant || result.damage <= 0) return;
 
@@ -188,13 +247,14 @@ export class Battle implements OnInit {
 
     removeCombatant() {
         const removedId = this.combatantToRemove?.id;
-        const removedIndex = this.combatants.findIndex(e => e.id === removedId);
+        const removedIndex = this.combatants.findIndex((e) => e.id === removedId);
 
-        this.combatants = this.combatants.filter(e => e.id !== this.combatantToRemove?.id);
+        this.combatants = this.combatants.filter((e) => e.id !== this.combatantToRemove?.id);
 
         if (this.activeCombatantId === removedId) {
             this.activeCombatantId = this.combatants.length
-                ? this.combatants[Math.min(Math.max(removedIndex, 0), this.combatants.length - 1)].id
+                ? this.combatants[Math.min(Math.max(removedIndex, 0), this.combatants.length - 1)]
+                      .id
                 : null;
         }
 
@@ -215,9 +275,11 @@ export class Battle implements OnInit {
         combatant.alive = combatant.currentHp > 0;
 
         this.sortByInitiative();
-        this.activeCombatantId = this.combatants.some(current => current.id === activeBeforeUpdate)
+        this.activeCombatantId = this.combatants.some(
+            (current) => current.id === activeBeforeUpdate,
+        )
             ? activeBeforeUpdate
-            : this.combatants[0]?.id ?? null;
+            : (this.combatants[0]?.id ?? null);
         this.save();
         this.saveTurnState();
         this.closeCombatantEditModal();
@@ -272,12 +334,11 @@ export class Battle implements OnInit {
     }
 
     applyInitiative(updates: InitiativeUpdate[]) {
-        const initiativeById = new Map(updates.map(update => [
-            update.combatantId,
-            update.initiative
-        ]));
+        const initiativeById = new Map(
+            updates.map((update) => [update.combatantId, update.initiative]),
+        );
 
-        this.combatants.forEach(combatant => {
+        this.combatants.forEach((combatant) => {
             const initiative = initiativeById.get(combatant.id);
 
             if (initiative === undefined) return;
@@ -303,10 +364,10 @@ export class Battle implements OnInit {
         if (type === 'ALL') {
             this.combatants = [];
         } else {
-            this.combatants = this.combatants.filter(c => c.type !== type);
+            this.combatants = this.combatants.filter((c) => c.type !== type);
         }
 
-        if (!this.combatants.some(combatant => combatant.id === activeBeforeClear)) {
+        if (!this.combatants.some((combatant) => combatant.id === activeBeforeClear)) {
             this.activeCombatantId = this.combatants[0]?.id ?? null;
         }
 
@@ -326,7 +387,7 @@ export class Battle implements OnInit {
     saveTurnState() {
         this.battleStorage.saveTurn({
             round: this.round,
-            activeCombatantId: this.activeCombatantId
+            activeCombatantId: this.activeCombatantId,
         });
     }
 
@@ -399,16 +460,20 @@ export class Battle implements OnInit {
     }
 
     get activeCombatant(): Combatant | undefined {
-        return this.combatants.find(combatant => combatant.id === this.activeCombatantId)
-            ?? this.combatants[0];
+        return (
+            this.combatants.find((combatant) => combatant.id === this.activeCombatantId) ??
+            this.combatants[0]
+        );
     }
 
     get hasAliveNpcs(): boolean {
-        return this.combatants.some(combatant => combatant.type === 'NPC' && combatant.alive);
+        return this.combatants.some((combatant) => combatant.type === 'NPC' && combatant.alive);
     }
 
     get activeCombatantIndex(): number {
-        const index = this.combatants.findIndex(combatant => combatant.id === this.activeCombatantId);
+        const index = this.combatants.findIndex(
+            (combatant) => combatant.id === this.activeCombatantId,
+        );
 
         return index >= 0 ? index : 0;
     }
@@ -417,13 +482,17 @@ export class Battle implements OnInit {
         this.combatants.sort((a, b) => b.initiative - a.initiative);
     }
 
+    private rollInitiative(modifier: number): number {
+        return Math.floor(Math.random() * 20) + 1 + modifier;
+    }
+
     private tickStartOfTurnConditions(combatantId: string | null) {
         if (!combatantId) return;
 
-        this.combatants.forEach(combatant => {
+        this.combatants.forEach((combatant) => {
             const expiringKeys = new Set<CombatantConditionKey>();
 
-            combatant.conditionStates = (combatant.conditionStates ?? []).map(state => {
+            combatant.conditionStates = (combatant.conditionStates ?? []).map((state) => {
                 const expiresOnCombatantId = state.expiresOnCombatantId ?? combatant.id;
 
                 if (expiresOnCombatantId !== combatantId) return state;
@@ -442,7 +511,7 @@ export class Battle implements OnInit {
 
                     return {
                         ...state,
-                        remainingRounds
+                        remainingRounds,
                     };
                 }
 
@@ -456,8 +525,10 @@ export class Battle implements OnInit {
     }
 
     private removeConditions(combatant: Combatant, keys: Set<CombatantConditionKey>) {
-        combatant.conditions = (combatant.conditions ?? []).filter(key => !keys.has(key));
-        combatant.conditionStates = (combatant.conditionStates ?? []).filter(state => !keys.has(state.key));
+        combatant.conditions = (combatant.conditions ?? []).filter((key) => !keys.has(key));
+        combatant.conditionStates = (combatant.conditionStates ?? []).filter(
+            (state) => !keys.has(state.key),
+        );
     }
 
     private loadTurnState() {
@@ -471,9 +542,10 @@ export class Battle implements OnInit {
     applyEncounterData(encounter: EncounterData) {
         this.combatants = this.combatantNormalizer.normalizeCombatants(encounter.combatants);
         this.round = Math.max(1, Math.floor(Number(encounter.turn.round)) || 1);
-        this.activeCombatantId = typeof encounter.turn.activeCombatantId === 'string'
-            ? encounter.turn.activeCombatantId
-            : null;
+        this.activeCombatantId =
+            typeof encounter.turn.activeCombatantId === 'string'
+                ? encounter.turn.activeCombatantId
+                : null;
 
         this.sortByInitiative();
         this.ensureActiveCombatant();
@@ -489,21 +561,24 @@ export class Battle implements OnInit {
             return;
         }
 
-        if (!this.combatants.some(combatant => combatant.id === this.activeCombatantId)) {
+        if (!this.combatants.some((combatant) => combatant.id === this.activeCombatantId)) {
             this.activeCombatantId = this.combatants[0].id;
         }
     }
 
     private get hasBlockingModal(): boolean {
-        return this.showAddCombatantModal
-            || this.showClearFieldModal
-            || this.showResetTurnModal
-            || this.showEncounterModal
-            || this.showAreaDamageModal
-            || this.showInitiativeModal
-            || this.showConfirmationDialog
-            || !!this.combatantToEdit
-            || !!this.spellSlotsCombatant;
+        return (
+            this.showAddCombatantModal ||
+            this.showClearFieldModal ||
+            this.showResetTurnModal ||
+            this.showEncounterModal ||
+            this.showLibraryModal ||
+            this.showAreaDamageModal ||
+            this.showInitiativeModal ||
+            this.showConfirmationDialog ||
+            !!this.combatantToEdit ||
+            !!this.spellSlotsCombatant
+        );
     }
 
     private closeOverlays() {
@@ -511,6 +586,7 @@ export class Battle implements OnInit {
         this.closeClearFieldModal();
         this.closeResetTurnModal();
         this.closeEncounterModal();
+        this.closeLibraryModal();
         this.closeAreaDamageModal();
         this.closeInitiativeModal();
         this.closeCombatantEditModal();
@@ -543,6 +619,9 @@ export class Battle implements OnInit {
                 break;
             case 'CLEAR_BATTLEFIELD':
                 this.openClearFieldModal();
+                break;
+            case 'OPEN_LIBRARY':
+                this.openLibraryModal();
                 break;
             case 'NEXT_TURN':
                 this.nextTurn();

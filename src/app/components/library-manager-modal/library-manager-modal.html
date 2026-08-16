@@ -1,0 +1,281 @@
+<div class="overlay library-overlay">
+    <div class="modal library-modal" appModalFocusTrap>
+        <div class="library-header">
+            <h2>{{ 'library.title' | translate }}</h2>
+            <button
+                type="button"
+                class="icon-button"
+                (click)="close.emit()"
+                [title]="'common.close' | translate"
+            >
+                {{ 'common.close' | translate }}
+            </button>
+        </div>
+
+        <div class="library-field">
+            <label for="library-name-input">{{ 'library.name' | translate }}</label>
+            <input
+                #libraryNameInput
+                id="library-name-input"
+                type="text"
+                [value]="libraryName"
+                [placeholder]="'library.namePlaceholder' | translate"
+                (input)="libraryName = libraryNameInput.value"
+                (keyup.enter)="saveLibrary()"
+            />
+        </div>
+
+        @if (loadedFileName) {
+            <div class="library-file-status">
+                <span class="file-badge"
+                    >{{ 'library.fromFile' | translate }}: {{ loadedFileName }}</span
+                >
+                @if (isDirty) {
+                    <span class="dirty-badge">{{ 'library.unsavedDot' | translate }}</span>
+                }
+            </div>
+        }
+
+        <div class="library-actions">
+            <button type="button" (click)="exportLibrary()">
+                <lucide-icon [img]="DownloadIcon" [size]="15"></lucide-icon>
+                {{ 'library.export' | translate }}
+            </button>
+
+            <button type="button" (click)="importFileInput.click()" [disabled]="importLoading">
+                @if (importLoading) {
+                    <lucide-icon [img]="LoaderIcon" [size]="15" class="spin"></lucide-icon>
+                } @else {
+                    <lucide-icon [img]="UploadIcon" [size]="15"></lucide-icon>
+                }
+                {{ 'library.importJson' | translate }}
+            </button>
+
+            <input
+                #importFileInput
+                class="hidden-file"
+                type="file"
+                accept="application/json,.json"
+                (change)="importLibraryFile($event)"
+            />
+        </div>
+
+        @if (messageKey) {
+            <p class="library-message" [class.error]="messageTone === 'error'">
+                {{ messageKey | translate }}
+            </p>
+        }
+
+        <!-- Preset creation/edit form -->
+        <section class="preset-form-section">
+            <h3>{{ (editingPreset ? 'library.editPreset' : 'library.newPreset') | translate }}</h3>
+
+            <div class="preset-form-grid">
+                <div class="preset-field">
+                    <label for="preset-preset-name">{{ 'library.presetName' | translate }}</label>
+                    <input
+                        id="preset-preset-name"
+                        type="text"
+                        [ngModel]="presetFormPresetName"
+                        (ngModelChange)="presetFormPresetName = $event"
+                        [placeholder]="'library.presetNamePlaceholder' | translate"
+                    />
+                </div>
+
+                <div class="preset-field">
+                    <label for="preset-name">{{ 'library.nameOverride' | translate }}</label>
+                    <input
+                        id="preset-name"
+                        type="text"
+                        [ngModel]="presetFormName"
+                        (ngModelChange)="presetFormName = $event"
+                        [placeholder]="'library.nameOverridePlaceholder' | translate"
+                    />
+                </div>
+
+                <div class="preset-field">
+                    <label for="preset-type">{{ 'library.type' | translate }}</label>
+                    <select
+                        id="preset-type"
+                        [ngModel]="presetFormType"
+                        (ngModelChange)="presetFormType = $event"
+                    >
+                        <option value="NPC">{{ 'combatant.type.npc' | translate }}</option>
+                        <option value="PLAYER">{{ 'combatant.type.player' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="preset-field">
+                    <label for="preset-ac">{{ 'library.ac' | translate }}</label>
+                    <input
+                        id="preset-ac"
+                        type="number"
+                        [ngModel]="presetFormAc"
+                        (ngModelChange)="presetFormAc = $event"
+                        min="1"
+                    />
+                </div>
+
+                <div class="preset-field">
+                    <label for="preset-hp">{{ 'library.hp' | translate }}</label>
+                    <input
+                        id="preset-hp"
+                        type="number"
+                        [ngModel]="presetFormHp"
+                        (ngModelChange)="presetFormHp = $event"
+                        min="1"
+                    />
+                </div>
+
+                <div class="preset-field">
+                    <label for="preset-init">{{ 'library.initiativeBonus' | translate }}</label>
+                    <input
+                        id="preset-init"
+                        type="number"
+                        [ngModel]="presetFormInitiativeBonus"
+                        (ngModelChange)="presetFormInitiativeBonus = $event"
+                    />
+                </div>
+            </div>
+
+            <div class="preset-form-actions">
+                <button type="button" class="primary" (click)="savePreset()">
+                    <lucide-icon [img]="SaveIcon" [size]="15"></lucide-icon>
+                    {{
+                        (editingPreset ? 'library.updatePreset' : 'library.savePreset') | translate
+                    }}
+                </button>
+
+                @if (editingPreset) {
+                    <button type="button" (click)="clearPresetForm()">
+                        {{ 'common.cancel' | translate }}
+                    </button>
+                }
+            </div>
+        </section>
+
+        <!-- Saved presets list -->
+        <section class="saved-presets">
+            <h3>{{ 'library.presetsTitle' | translate }}</h3>
+
+            @if (presets.length) {
+                <div class="presets-search">
+                    <lucide-icon [img]="SearchIcon" [size]="14"></lucide-icon>
+                    <input
+                        type="text"
+                        [placeholder]="'library.searchPlaceholder' | translate"
+                        [ngModel]="pendingSearchQuery"
+                        (ngModelChange)="onSearchInput($event)"
+                    />
+                </div>
+
+                <div class="preset-list" #presetsScrollContainer (scroll)="onPresetsScroll($event)">
+                    @for (preset of displayedPresets; track preset.id) {
+                        <article class="preset-card">
+                            <div class="preset-info">
+                                <div class="preset-header-row">
+                                    <strong>{{ preset.presetName }}</strong>
+                                    <span
+                                        class="type-badge"
+                                        [class.npc]="preset.type === 'NPC'"
+                                        [class.player]="preset.type === 'PLAYER'"
+                                    >
+                                        {{
+                                            'combatant.type.' + preset.type.toLowerCase()
+                                                | translate
+                                        }}
+                                    </span>
+                                </div>
+                                <span>{{ getPresetStats(preset) }}</span>
+                                @if (preset.name) {
+                                    <span class="name-override"
+                                        >{{ 'library.nameOverride' | translate }}:
+                                        {{ preset.name }}</span
+                                    >
+                                }
+                            </div>
+
+                            <div class="preset-actions">
+                                <button
+                                    type="button"
+                                    class="load-btn"
+                                    (click)="toggleLoadPreset(preset.id)"
+                                    [title]="'library.load' | translate"
+                                >
+                                    <lucide-icon [img]="SwordsIcon" [size]="14"></lucide-icon>
+                                    {{ 'library.load' | translate }}
+                                </button>
+                                <button
+                                    type="button"
+                                    (click)="editPreset(preset)"
+                                    [title]="'library.editPreset' | translate"
+                                >
+                                    <lucide-icon [img]="PencilIcon" [size]="14"></lucide-icon>
+                                </button>
+                                <button
+                                    type="button"
+                                    class="danger"
+                                    (click)="deletePreset(preset.id)"
+                                    [title]="'library.deletePreset' | translate"
+                                >
+                                    <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
+                                </button>
+                            </div>
+
+                            @if (loadingPresetId === preset.id) {
+                                <div class="load-controls">
+                                    <div class="load-field">
+                                        <label>{{ 'library.quantity' | translate }}</label>
+                                        <input
+                                            type="number"
+                                            [(ngModel)]="loadQuantity"
+                                            min="1"
+                                            max="50"
+                                        />
+                                    </div>
+                                    <label class="load-toggle">
+                                        <input type="checkbox" [(ngModel)]="loadRollInitiative" />
+                                        {{ 'library.rollInitiative' | translate }}
+                                    </label>
+                                    <button
+                                        type="button"
+                                        class="primary"
+                                        (click)="confirmLoadPreset(preset)"
+                                    >
+                                        {{ 'common.confirm' | translate }}
+                                    </button>
+                                </div>
+                            }
+                        </article>
+                    }
+
+                    @if (hasMorePresets) {
+                        <div class="load-more-sentinel"></div>
+                    }
+                </div>
+            } @else {
+                <p class="preset-empty">{{ 'library.empty' | translate }}</p>
+            }
+        </section>
+    </div>
+</div>
+
+@if (showDirtyConfirm) {
+    <div class="overlay library-overlay">
+        <div class="modal library-modal dirty-confirm-modal" appModalFocusTrap>
+            <p>{{ 'library.unsavedChanges' | translate }}</p>
+
+            <div class="dirty-confirm-actions">
+                <button (click)="confirmImportSaveAndLoad()">
+                    {{ 'library.saveAndLoad' | translate }}
+                </button>
+                <button (click)="confirmImportDiscard()">
+                    {{ 'library.discard' | translate }}
+                </button>
+                <button (click)="confirmImportCancel()">
+                    {{ 'common.cancel' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+}

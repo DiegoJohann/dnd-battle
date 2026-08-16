@@ -3,42 +3,50 @@
         <h2>{{ 'combatantModal.title' | translate }}</h2>
 
         <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="form-field">
-                <label>{{ 'combatantModal.mode' | translate }}</label>
+            @if (form.value.type !== 'PLAYER') {
+                <div class="form-field">
+                    <label>{{ 'combatantModal.mode' | translate }}</label>
 
-                <div class="type-toggle mode-toggle">
-                    <button
-                        type="button"
-                        class="type-btn"
-                        [class.active]="form.value.mode === 'single'"
-                        (click)="form.patchValue({ mode: 'single' })"
-                    >
-                        <lucide-icon [img]="UserIcon" [size]="16"></lucide-icon>
-                        {{ 'combatantModal.single' | translate }}
-                    </button>
+                    <div class="type-toggle mode-toggle">
+                        <button
+                            type="button"
+                            class="type-btn"
+                            [class.active]="form.value.mode === 'single'"
+                            (click)="form.patchValue({ mode: 'single' })"
+                        >
+                            <lucide-icon [img]="UserIcon" [size]="16"></lucide-icon>
+                            {{ 'combatantModal.single' | translate }}
+                        </button>
 
-                    <button
-                        type="button"
-                        class="type-btn"
-                        [class.active]="form.value.mode === 'group'"
-                        (click)="form.patchValue({ mode: 'group' })"
-                    >
-                        <lucide-icon [img]="UsersIcon" [size]="16"></lucide-icon>
-                        {{ 'combatantModal.group' | translate }}
-                    </button>
+                        <button
+                            type="button"
+                            class="type-btn"
+                            [class.active]="form.value.mode === 'group'"
+                            (click)="form.patchValue({ mode: 'group' })"
+                        >
+                            <lucide-icon [img]="UsersIcon" [size]="16"></lucide-icon>
+                            {{ 'combatantModal.group' | translate }}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            }
 
             <div class="form-field">
                 <label for="name">
-                    {{ (form.value.mode === 'group' ? 'combatantModal.baseName' : 'combatantModal.name') | translate }}
+                    {{
+                        (form.value.mode === 'group'
+                            ? 'combatantModal.baseName'
+                            : 'combatantModal.name'
+                        ) | translate
+                    }}
                 </label>
                 <input
                     #nameInput
                     id="name"
                     type="text"
                     formControlName="name"
-                    (keyup.enter)="hpInput.focus()" />
+                    (keyup.enter)="hpInput.focus()"
+                />
             </div>
 
             @if (form.value.mode === 'group') {
@@ -50,7 +58,8 @@
                         formControlName="quantity"
                         min="1"
                         max="50"
-                        (keyup.enter)="hpInput.focus()" />
+                        (keyup.enter)="hpInput.focus()"
+                    />
                 </div>
             }
 
@@ -72,7 +81,8 @@
                     id="hp"
                     type="number"
                     formControlName="hp"
-                    (keyup.enter)="acInput.focus()" />
+                    (keyup.enter)="acInput.focus()"
+                />
             </div>
 
             <div class="form-field">
@@ -93,17 +103,17 @@
                     id="ac"
                     type="number"
                     formControlName="ac"
-                    (keyup.enter)="initInput.focus()"/>
+                    (keyup.enter)="initInput.focus()"
+                />
             </div>
 
             <div class="form-field">
                 <div class="field-label">
                     <label for="initiative">
                         {{
-                            (
-                                form.value.mode === 'group' && form.value.individualInitiative
-                                    ? 'combatantModal.initiativeModifier'
-                                    : 'combatantModal.initiative'
+                            (form.value.mode === 'group' && form.value.individualInitiative
+                                ? 'combatantModal.initiativeModifier'
+                                : 'combatantModal.initiative'
                             ) | translate
                         }}
                     </label>
@@ -112,28 +122,22 @@
                         class="info-tip"
                         tabindex="-1"
                         [attr.title]="
-                            (
-                                form.value.mode === 'group' && form.value.individualInitiative
-                                    ? 'combatantModal.initiativeModifierHelp'
-                                    : 'combatantModal.initiativeHelp'
+                            (form.value.mode === 'group' && form.value.individualInitiative
+                                ? 'combatantModal.initiativeModifierHelp'
+                                : 'combatantModal.initiativeHelp'
                             ) | translate
                         "
                         [attr.aria-label]="
-                            (
-                                form.value.mode === 'group' && form.value.individualInitiative
-                                    ? 'combatantModal.initiativeModifierHelp'
-                                    : 'combatantModal.initiativeHelp'
+                            (form.value.mode === 'group' && form.value.individualInitiative
+                                ? 'combatantModal.initiativeModifierHelp'
+                                : 'combatantModal.initiativeHelp'
                             ) | translate
                         "
                     >
                         <lucide-icon [img]="CircleQuestionMark" [size]="14"></lucide-icon>
                     </button>
                 </div>
-                <input
-                    #initInput
-                    id="initiative"
-                    type="number"
-                    formControlName="initiative" />
+                <input #initInput id="initiative" type="number" formControlName="initiative" />
             </div>
 
             @if (form.value.mode === 'group') {
@@ -143,34 +147,55 @@
                 </label>
             }
 
-            <div class="form-field">
-                <label>{{ 'combatantModal.type' | translate }}</label>
+            @if (form.value.mode !== 'group') {
+                <div class="form-field">
+                    <label>{{ 'combatantModal.type' | translate }}</label>
 
-                <div class="type-toggle">
-                    <button
-                        type="button"
-                        class="type-btn npc"
-                        [class.active]="form.value.type === 'NPC'"
-                        (click)="form.patchValue({ type: 'NPC' })"
-                    >
-                        <lucide-icon [img]="BugIcon" [size]="16"></lucide-icon>
-                        {{ 'combatant.type.npc' | translate }}
-                    </button>
+                    <div class="type-toggle">
+                        <button
+                            type="button"
+                            class="type-btn npc"
+                            [class.active]="form.value.type === 'NPC'"
+                            (click)="form.patchValue({ type: 'NPC' })"
+                        >
+                            <lucide-icon [img]="BugIcon" [size]="16"></lucide-icon>
+                            {{ 'combatant.type.npc' | translate }}
+                        </button>
 
-                    <button
-                        type="button"
-                        class="type-btn player"
-                        [class.active]="form.value.type === 'PLAYER'"
-                        (click)="form.patchValue({ type: 'PLAYER' })"
-                    >
-                        <lucide-icon [img]="UserIcon" [size]="16"></lucide-icon>
-                        {{ 'combatant.type.player' | translate }}
-                    </button>
+                        <button
+                            type="button"
+                            class="type-btn player"
+                            [class.active]="form.value.type === 'PLAYER'"
+                            (click)="form.patchValue({ type: 'PLAYER' })"
+                        >
+                            <lucide-icon [img]="UserIcon" [size]="16"></lucide-icon>
+                            {{ 'combatant.type.player' | translate }}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            } @else {
+                <div class="form-field">
+                    <label>{{ 'combatantModal.type' | translate }}</label>
+
+                    <div class="type-toggle type-toggle-locked">
+                        <button type="button" class="type-btn npc active" disabled>
+                            <lucide-icon [img]="BugIcon" [size]="16"></lucide-icon>
+                            {{ 'combatant.type.npc' | translate }}
+                        </button>
+
+                        <button type="button" class="type-btn player" disabled>
+                            <lucide-icon [img]="UserIcon" [size]="16"></lucide-icon>
+                            {{ 'combatant.type.player' | translate }}
+                        </button>
+                    </div>
+                    <span class="type-hint">{{ 'combatantModal.groupNpcHint' | translate }}</span>
+                </div>
+            }
 
             <div class="actions">
-                <button type="button" (click)="close.emit()">{{ 'common.cancel' | translate }}</button>
+                <button type="button" (click)="close.emit()">
+                    {{ 'common.cancel' | translate }}
+                </button>
                 <button type="submit" [disabled]="form.invalid">
                     {{
                         (form.value.mode === 'group' ? 'combatantModal.addGroup' : 'common.add')
@@ -178,7 +203,6 @@
                     }}
                 </button>
             </div>
-
         </form>
     </div>
 </div>

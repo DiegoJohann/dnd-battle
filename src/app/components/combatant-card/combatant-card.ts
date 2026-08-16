@@ -6,23 +6,29 @@ import {
     CombatantConditionDurationMode,
     CombatantConditionKey,
     CombatantConditionState,
-    CombatantSpellSlotLevel
+    CombatantSpellSlotLevel,
 } from '../../core/entities/combatant';
-import { CheckIcon, LucideAngularModule, MinusIcon, MoreVerticalIcon, PencilIcon, SparklesIcon, Trash2Icon, XIcon } from 'lucide-angular';
+import {
+    CheckIcon,
+    LucideAngularModule,
+    MinusIcon,
+    MoreVerticalIcon,
+    PencilIcon,
+    SparklesIcon,
+    Trash2Icon,
+    XIcon,
+    BookMarkedIcon,
+} from 'lucide-angular';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CombatantNormalizer } from '../../core/combatants/combatant-normalizer.service';
 
 @Component({
     selector: 'app-combatant-card',
-    imports: [
-        LucideAngularModule,
-        TranslatePipe
-    ],
+    imports: [LucideAngularModule, TranslatePipe],
     templateUrl: './combatant-card.html',
-    styleUrl: './combatant-card.scss'
+    styleUrl: './combatant-card.scss',
 })
 export class CombatantCard {
-
     @Input() combatant!: Combatant;
     @Input() conditionsOpen = false;
     @Input() activeTurn = false;
@@ -39,6 +45,7 @@ export class CombatantCard {
     @Output() conditionStatesChange = new EventEmitter<CombatantConditionState[]>();
     @Output() openSpellSlots = new EventEmitter<void>();
     @Output() spellSlotsChange = new EventEmitter<CombatantSpellSlotLevel[]>();
+    @Output() saveToLibrary = new EventEmitter<void>();
 
     readonly conditionCatalog = COMBATANT_CONDITION_CATALOG;
     readonly conditionRoundOptions = Array.from({ length: 10 }, (_, index) => index + 1);
@@ -47,9 +54,8 @@ export class CombatantCard {
 
     constructor(
         private translate: TranslateService,
-        private combatantNormalizer: CombatantNormalizer
-    ) {
-    }
+        private combatantNormalizer: CombatantNormalizer,
+    ) {}
 
     applyDamage(value: string) {
         const dmg = Number(value);
@@ -101,7 +107,7 @@ export class CombatantCard {
 
     get activeConditions(): CombatantConditionDefinition[] {
         const current = this.combatant.conditions ?? [];
-        return this.conditionCatalog.filter(condition => current.includes(condition.key));
+        return this.conditionCatalog.filter((condition) => current.includes(condition.key));
     }
 
     get spellSlotSummary(): string {
@@ -112,22 +118,22 @@ export class CombatantCard {
         const remaining = slots.reduce((sum, slot) => sum + slot.remaining, 0);
         const total = slots.reduce((sum, slot) => sum + slot.total, 0);
         const levels = slots
-            .map(slot => `${slot.level}: ${slot.remaining}/${slot.total}`)
+            .map((slot) => `${slot.level}: ${slot.remaining}/${slot.total}`)
             .join(' | ');
 
         return this.translate.instant('spells.summary', {
             remaining,
             total,
-            levels
+            levels,
         });
     }
 
     get hasSpellSlots(): boolean {
-        return this.normalizedSpellSlots.some(slot => slot.total > 0);
+        return this.normalizedSpellSlots.some((slot) => slot.total > 0);
     }
 
     get configuredSpellSlots(): CombatantSpellSlotLevel[] {
-        return this.normalizedSpellSlots.filter(slot => slot.total > 0);
+        return this.normalizedSpellSlots.filter((slot) => slot.total > 0);
     }
 
     get spellSlotsRemaining(): number {
@@ -158,15 +164,15 @@ export class CombatantCard {
             current.add(key);
             states.push({
                 key,
-                durationMode: 'INDEFINITE'
+                durationMode: 'INDEFINITE',
             });
         }
 
         const next = this.conditionCatalog
-            .map(condition => condition.key)
-            .filter(conditionKey => current.has(conditionKey));
+            .map((condition) => condition.key)
+            .filter((conditionKey) => current.has(conditionKey));
 
-        const nextStates = states.filter(state => next.includes(state.key));
+        const nextStates = states.filter((state) => next.includes(state.key));
 
         this.conditionsChange.emit(next);
         this.conditionStatesChange.emit(nextStates);
@@ -181,7 +187,7 @@ export class CombatantCard {
         key: CombatantConditionKey,
         mode: CombatantConditionDurationMode,
         event: MouseEvent,
-        remainingRounds?: number
+        remainingRounds?: number,
     ) {
         event.stopPropagation();
 
@@ -189,30 +195,31 @@ export class CombatantCard {
         conditions.add(key);
 
         const nextConditions = this.conditionCatalog
-            .map(condition => condition.key)
-            .filter(conditionKey => conditions.has(conditionKey));
+            .map((condition) => condition.key)
+            .filter((conditionKey) => conditions.has(conditionKey));
         const nextState: CombatantConditionState = {
             key,
             durationMode: mode,
             remainingRounds: mode === 'ROUNDS' ? remainingRounds : undefined,
-            expiresOnCombatantId: mode === 'TURN_START' || mode === 'ROUNDS'
-                ? this.combatant.id
-                : undefined
+            expiresOnCombatantId:
+                mode === 'TURN_START' || mode === 'ROUNDS' ? this.combatant.id : undefined,
         };
         const nextStates = this.normalizedConditionStates
-            .filter(state => state.key !== key)
+            .filter((state) => state.key !== key)
             .concat(nextState)
-            .filter(state => nextConditions.includes(state.key));
+            .filter((state) => nextConditions.includes(state.key));
 
         this.conditionsChange.emit(nextConditions);
         this.conditionStatesChange.emit(nextStates);
     }
 
     getConditionState(key: CombatantConditionKey): CombatantConditionState {
-        return this.normalizedConditionStates.find(state => state.key === key) ?? {
-            key,
-            durationMode: 'INDEFINITE'
-        };
+        return (
+            this.normalizedConditionStates.find((state) => state.key === key) ?? {
+                key,
+                durationMode: 'INDEFINITE',
+            }
+        );
     }
 
     getConditionDurationText(key: CombatantConditionKey): string {
@@ -236,44 +243,44 @@ export class CombatantCard {
         if (state.durationMode === 'ROUNDS') {
             return this.translate.instant('conditions.duration.titleWithTurns', {
                 condition: label,
-                count: state.remainingRounds ?? 1
+                count: state.remainingRounds ?? 1,
             });
         }
 
         if (state.durationMode === 'TURN_START') {
             return this.translate.instant('conditions.duration.titleUntilStart', {
-                condition: label
+                condition: label,
             });
         }
 
         return this.translate.instant('conditions.duration.titleIndefinite', {
-            condition: label
+            condition: label,
         });
     }
-
 
     isConditionDurationActive(
         key: CombatantConditionKey,
         mode: CombatantConditionDurationMode,
-        remainingRounds?: number
+        remainingRounds?: number,
     ): boolean {
         const state = this.getConditionState(key);
 
-        return state.durationMode === mode
-            && (mode !== 'ROUNDS' || state.remainingRounds === remainingRounds);
+        return (
+            state.durationMode === mode &&
+            (mode !== 'ROUNDS' || state.remainingRounds === remainingRounds)
+        );
     }
 
     spendSpellSlot(level: number, event: MouseEvent) {
         event.stopPropagation();
 
         const slots = this.normalizedSpellSlots;
-        const target = slots.find(slot => slot.level === level);
+        const target = slots.find((slot) => slot.level === level);
 
         if (!target || target.remaining <= 0) return;
 
-        const next = slots.map(slot => slot.level === level
-            ? { ...slot, remaining: slot.remaining - 1 }
-            : slot
+        const next = slots.map((slot) =>
+            slot.level === level ? { ...slot, remaining: slot.remaining - 1 } : slot,
         );
 
         this.spellSlotsChange.emit(next);
@@ -310,6 +317,12 @@ export class CombatantCard {
         this.edit.emit();
     }
 
+    onSaveToLibraryClick(event: MouseEvent) {
+        event.stopPropagation();
+        this.actionMenuOpen = false;
+        this.saveToLibrary.emit();
+    }
+
     selectNumberValue(event: FocusEvent | MouseEvent) {
         const input = event.target as HTMLInputElement;
 
@@ -318,9 +331,8 @@ export class CombatantCard {
 
     scrollDurationOptions(event: WheelEvent) {
         const container = event.currentTarget as HTMLElement;
-        const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX)
-            ? event.deltaY
-            : event.deltaX;
+        const delta =
+            Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
 
         if (!delta) return;
 
@@ -343,4 +355,5 @@ export class CombatantCard {
     protected readonly PencilIcon = PencilIcon;
     protected readonly Trash2Icon = Trash2Icon;
     protected readonly XIcon = XIcon;
+    protected readonly BookMarkedIcon = BookMarkedIcon;
 }

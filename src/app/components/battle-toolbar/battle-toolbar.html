@@ -1,3 +1,59 @@
+<!-- Desktop hamburger menu -->
+<button class="desktop-menu-toggle" (click)="toggleDesktopMenu()">
+    <lucide-icon [img]="MenuIcon" [size]="18"></lucide-icon>
+</button>
+
+@if (desktopMenuOpen) {
+    <div class="desktop-menu-overlay" (click)="closeDesktopMenu()"></div>
+    <div
+        class="desktop-menu theme-popover"
+        animate.enter="menu-enter"
+        animate.leave="menu-leave"
+        (click)="$event.stopPropagation()"
+    >
+        <button
+            class="desktop-menu-item"
+            [title]="'encounter.tooltip' | translate"
+            (click)="openEncounter.emit(); closeDesktopMenu()"
+        >
+            <lucide-icon [img]="FolderOpenIcon" [size]="16"></lucide-icon>
+            <span>{{ 'encounter.open' | translate }}</span>
+        </button>
+        <button
+            class="desktop-menu-item"
+            [title]="'library.tooltip' | translate"
+            (click)="openLibrary.emit(); closeDesktopMenu()"
+        >
+            <lucide-icon [img]="BookOpenIcon" [size]="16"></lucide-icon>
+            <span>{{ 'library.open' | translate }}</span>
+        </button>
+        <button
+            class="desktop-menu-item"
+            [title]="'areaDamage.tooltip' | translate"
+            [disabled]="areaDamageDisabled"
+            (click)="areaDamage.emit(); closeDesktopMenu()"
+        >
+            <lucide-icon [img]="FlameIcon" [size]="16"></lucide-icon>
+            <span>{{ 'areaDamage.shortTitle' | translate }}</span>
+        </button>
+        <div class="desktop-menu-divider"></div>
+        <div class="desktop-menu-item desktop-lang-row">
+            <span>{{ 'language.label' | translate }}</span>
+            <select
+                [value]="currentLanguage"
+                (change)="languageChange.emit(desktopLangInput.value); closeDesktopMenu()"
+                #desktopLangInput
+            >
+                @for (language of supportedLanguages; track language) {
+                    <option [value]="language">
+                        {{ 'language.options.' + language | translate }}
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+}
+
 <label class="language-select">
     <span>{{ 'language.label' | translate }}</span>
     <select
@@ -10,21 +66,6 @@
         }
     </select>
 </label>
-
-<button class="encounter-btn" (click)="openEncounter.emit()" [title]="'encounter.open' | translate">
-    <lucide-icon [img]="FolderOpenIcon" [size]="15"></lucide-icon>
-    {{ 'encounter.open' | translate }}
-</button>
-
-<button
-    class="area-damage-btn"
-    [disabled]="areaDamageDisabled"
-    (click)="areaDamage.emit()"
-    [title]="'areaDamage.open' | translate"
->
-    <lucide-icon [img]="FlameIcon" [size]="15"></lucide-icon>
-    {{ 'areaDamage.shortTitle' | translate }}
-</button>
 
 <button class="add-btn" [class.pulse]="empty" (click)="addCombatant.emit()">
     <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
@@ -52,6 +93,10 @@
         <button class="mobile-menu-item" (click)="openEncounter.emit(); closeMobileMenu()">
             <lucide-icon [img]="FolderOpenIcon" [size]="18"></lucide-icon>
             <span>{{ 'encounter.open' | translate }}</span>
+        </button>
+        <button class="mobile-menu-item" (click)="openLibrary.emit(); closeMobileMenu()">
+            <lucide-icon [img]="BookOpenIcon" [size]="18"></lucide-icon>
+            <span>{{ 'library.open' | translate }}</span>
         </button>
         <button
             class="mobile-menu-item"

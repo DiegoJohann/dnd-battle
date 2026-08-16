@@ -30,6 +30,10 @@
                     <lucide-icon [img]="PencilIcon" [size]="14"></lucide-icon>
                     {{ 'combatant.actions.edit' | translate }}
                 </button>
+                <button type="button" (click)="onSaveToLibraryClick($event)">
+                    <lucide-icon [img]="BookMarkedIcon" [size]="14"></lucide-icon>
+                    {{ 'combatant.actions.saveToLibrary' | translate }}
+                </button>
                 <button type="button" class="danger-action" (click)="onRemoveClick($event)">
                     <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
                     {{ 'combatant.actions.remove' | translate }}

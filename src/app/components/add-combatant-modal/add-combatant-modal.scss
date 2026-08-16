@@ -101,13 +101,6 @@ input {
     gap: 8px;
 }
 
-.mode-toggle {
-    padding: 3px;
-    border: 1px solid var(--color-border-soft);
-    border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.035);
-}
-
 .type-btn {
     flex: 1;
     padding: 10px 0;
@@ -150,9 +143,30 @@ input {
     opacity: 0.7;
 }
 
+.type-btn.active {
+    border-color: rgba(var(--color-gold-rgb), 0.5);
+    background: rgba(var(--color-gold-rgb), 0.14);
+    color: var(--color-gold-soft);
+    box-shadow: 0 0 0 1px rgba(var(--color-gold-rgb), 0.2) inset;
+    opacity: 1;
+}
+
 .type-btn lucide-icon {
     margin-right: 6px;
     vertical-align: middle;
+}
+
+.type-toggle-locked {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.type-hint {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-text-subtle);
+    font-size: 0.68rem;
+    font-style: italic;
 }
 
 .check-field {
