@@ -13,6 +13,8 @@
     flex-direction: column;
     gap: 8px;
 
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: 4px;
@@ -85,23 +87,28 @@
 
 @media (max-width: $bp-md) {
     .table-head {
+        display: grid;
+        grid-template-columns: 32px 0.65fr 1fr auto;
+        padding: 0 8px 4px;
+    }
+
+    .table-head > span:last-child {
         display: none;
     }
 
     .slot-row {
-        grid-template-columns: 38px 1fr 1fr;
-    }
-
-    .row-actions {
-        grid-column: 1 / -1;
-        justify-content: stretch;
+        grid-template-columns: 32px 1fr 1fr auto;
     }
 
     .row-actions button {
-        flex: 1;
+        font-size: 0;
+        gap: 0;
+        padding: 8px;
     }
 
-    .modal-actions {
+    .compact-form-modal .modal-actions {
+        position: static;
         flex-direction: column;
+        margin: 0 -18px -18px;
     }
 }
