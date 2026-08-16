@@ -13,6 +13,8 @@ import {
 export class LanguageService {
     readonly supportedLanguages = SUPPORTED_LANGUAGES;
 
+    private _currentLanguage: SupportedLanguage = DEFAULT_LANGUAGE;
+
     constructor(
         private translate: TranslateService,
         @Inject(DOCUMENT) private document: Document
@@ -30,15 +32,14 @@ export class LanguageService {
     }
 
     use(language: SupportedLanguage) {
+        this._currentLanguage = language;
         this.translate.use(language);
         this.document.documentElement.lang = language;
         localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
     }
 
     get currentLanguage(): SupportedLanguage {
-        const currentLanguage = this.translate.currentLang;
-
-        return isSupportedLanguage(currentLanguage) ? currentLanguage : DEFAULT_LANGUAGE;
+        return this._currentLanguage;
     }
 
     private getBrowserLanguage(): SupportedLanguage {
