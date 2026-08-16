@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .encounter-overlay {
     padding: 20px;
 }
@@ -27,7 +29,7 @@
     background: transparent;
     color: var(--color-text-muted);
     cursor: pointer;
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     font-weight: 700;
 }
 
@@ -52,7 +54,7 @@
 .encounter-field input {
     width: 100%;
     padding: 8px 10px;
-    font-size: 0.82rem;
+    font-size: var(--text-base);
 }
 
 .encounter-actions {
@@ -72,7 +74,7 @@
     background: var(--color-bg-control);
     color: var(--color-text);
     padding: 8px 10px;
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     font-weight: 800;
     cursor: pointer;
     transition:
@@ -88,8 +90,8 @@
 }
 
 .encounter-actions .primary {
-    border-color: rgba(214, 168, 79, 0.38);
-    background: rgba(214, 168, 79, 0.12);
+    border-color: rgba(var(--color-gold-rgb), 0.38);
+    background: rgba(var(--color-gold-rgb), 0.12);
     color: var(--color-gold-soft);
 }
 
@@ -99,12 +101,12 @@
 
 .encounter-message {
     margin: 12px 0 0;
-    border: 1px solid rgba(214, 168, 79, 0.28);
+    border: 1px solid rgba(var(--color-gold-rgb), 0.28);
     border-radius: var(--radius-sm);
-    background: rgba(214, 168, 79, 0.1);
+    background: rgba(var(--color-gold-rgb), 0.1);
     color: var(--color-gold-soft);
     padding: 8px 10px;
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     font-weight: 700;
 }
 
@@ -152,7 +154,7 @@
 .saved-encounter-info strong {
     overflow: hidden;
     color: var(--color-text);
-    font-size: 0.82rem;
+    font-size: var(--text-base);
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -191,7 +193,7 @@
     background: rgba(127, 29, 29, 0.26);
 }
 
-@media (max-width: 560px) {
+@media (max-width: $bp-md) {
     .encounter-actions,
     .saved-encounter {
         grid-template-columns: 1fr;

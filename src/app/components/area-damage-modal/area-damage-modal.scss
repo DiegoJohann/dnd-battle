@@ -5,49 +5,6 @@
 .area-damage-modal {
     width: min(720px, 100%);
     max-height: min(760px, calc(100dvh - 40px));
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--color-bg-control-hover);
-    padding: 18px;
-    box-shadow: var(--shadow-modal);
-}
-
-.modal-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-.modal-header p {
-    margin: 0 0 4px;
-    color: var(--color-text-subtle);
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.modal-header h2 {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.close-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--color-border-soft);
-    background: rgba(255, 255, 255, 0.04);
-    color: #ddd;
-    cursor: pointer;
-}
-
-.close-btn:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.08);
 }
 
 .controls-grid {
@@ -70,16 +27,8 @@
 .targets-header span,
 .bonus-field {
     color: var(--color-text-subtle);
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     font-weight: 700;
-}
-
-input {
-    width: 100%;
-    min-width: 0;
-    padding: 7px 8px;
-    border-radius: var(--radius-sm);
-    font-size: 0.82rem;
 }
 
 .segmented-control {
@@ -99,13 +48,13 @@ input {
     background: transparent;
     color: var(--color-text-muted);
     cursor: pointer;
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     font-weight: 800;
 }
 
 .segmented-control button.active {
-    border-color: rgba(214, 168, 79, 0.45);
-    background: rgba(214, 168, 79, 0.14);
+    border-color: rgba(var(--color-gold-rgb), 0.45);
+    background: rgba(var(--color-gold-rgb), 0.14);
     color: var(--color-gold-soft);
 }
 
@@ -163,18 +112,18 @@ input {
 }
 
 .target-row.selected {
-    border-color: rgba(214, 168, 79, 0.34);
-    background: rgba(214, 168, 79, 0.08);
+    border-color: rgba(var(--color-gold-rgb), 0.34);
+    background: rgba(var(--color-gold-rgb), 0.08);
 }
 
 .target-row:hover {
-    border-color: rgba(215, 196, 166, 0.24);
+    border-color: rgba(var(--color-parchment-rgb), 0.24);
 }
 
 .target-name {
     overflow: hidden;
     color: var(--color-text);
-    font-size: 0.82rem;
+    font-size: var(--text-base);
     font-weight: 800;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -182,7 +131,7 @@ input {
 
 .target-hp {
     color: var(--color-text-muted);
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     white-space: nowrap;
 }
@@ -199,59 +148,6 @@ input {
     margin: 8px 0 16px;
     color: var(--color-text-muted);
     font-size: 0.85rem;
-}
-
-.modal-actions {
-    position: sticky;
-    bottom: -18px;
-
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin: 8px -18px -18px;
-    padding: 14px 18px 18px;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(var(--color-bg-elevated-rgb), 0),
-            var(--color-bg-elevated) 18%
-        ),
-        var(--color-bg-elevated);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.ghost-btn,
-.primary-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
-    font-size: 0.76rem;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.ghost-btn {
-    background: transparent;
-    color: #ddd;
-}
-
-.ghost-btn:hover {
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.primary-btn {
-    background: var(--gradient-danger);
-    color: #fff;
-}
-
-.primary-btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
 }
 
 @media (max-width: 640px) {

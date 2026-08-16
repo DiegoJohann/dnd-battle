@@ -23,7 +23,7 @@
 
 .combatant-name {
     overflow: hidden;
-    font-size: 0.82rem;
+    font-size: var(--text-base);
     font-weight: 800;
     text-overflow: ellipsis;
     white-space: nowrap;

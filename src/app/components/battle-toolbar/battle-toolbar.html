@@ -6,7 +6,7 @@
         #languageInput
     >
         @for (language of supportedLanguages; track language) {
-            <option [value]="language">{{ ('language.options.' + language) | translate }}</option>
+            <option [value]="language">{{ 'language.options.' + language | translate }}</option>
         }
     </select>
 </label>
@@ -35,3 +35,57 @@
     <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
     {{ 'common.clear' | translate }}
 </button>
+
+<!-- Mobile hamburger menu -->
+<button class="mobile-menu-toggle" [class.active]="mobileMenuOpen" (click)="toggleMobileMenu()">
+    <lucide-icon [img]="MenuIcon" [size]="22"></lucide-icon>
+</button>
+
+@if (mobileMenuOpen) {
+    <div class="mobile-menu-overlay" (click)="closeMobileMenu()"></div>
+    <div
+        class="mobile-menu theme-popover"
+        animate.enter="mobile-menu-enter"
+        animate.leave="mobile-menu-leave"
+        (click)="$event.stopPropagation()"
+    >
+        <button class="mobile-menu-item" (click)="openEncounter.emit(); closeMobileMenu()">
+            <lucide-icon [img]="FolderOpenIcon" [size]="18"></lucide-icon>
+            <span>{{ 'encounter.open' | translate }}</span>
+        </button>
+        <button
+            class="mobile-menu-item"
+            [disabled]="areaDamageDisabled"
+            (click)="areaDamage.emit(); closeMobileMenu()"
+        >
+            <lucide-icon [img]="FlameIcon" [size]="18"></lucide-icon>
+            <span>{{ 'areaDamage.shortTitle' | translate }}</span>
+        </button>
+        <button class="mobile-menu-item" (click)="addCombatant.emit(); closeMobileMenu()">
+            <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
+            <span>{{ 'battle.addCombatant' | translate }}</span>
+        </button>
+        <button
+            class="mobile-menu-item danger"
+            (click)="clearBattlefield.emit(); closeMobileMenu()"
+        >
+            <lucide-icon [img]="Trash2Icon" [size]="18"></lucide-icon>
+            <span>{{ 'common.clear' | translate }}</span>
+        </button>
+        <div class="mobile-menu-divider"></div>
+        <div class="mobile-menu-item mobile-lang-row">
+            <span>{{ 'language.label' | translate }}</span>
+            <select
+                [value]="currentLanguage"
+                (change)="languageChange.emit(langSelect.value); closeMobileMenu()"
+                #langSelect
+            >
+                @for (language of supportedLanguages; track language) {
+                    <option [value]="language">
+                        {{ 'language.options.' + language | translate }}
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+}

@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 :host {
     display: block;
     min-height: 100dvh;
@@ -10,12 +12,7 @@
     inset: 0;
     pointer-events: none;
 
-    background:
-        linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.02),
-                rgba(0, 0, 0, 0.2)
-        );
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.2));
 
     mix-blend-mode: overlay;
 }
@@ -31,7 +28,6 @@
 
     min-height: 100dvh;
     padding: 112px 24px 88px;
-
 }
 
 app-combatant-card {
@@ -71,8 +67,9 @@ app-combatant-card {
     line-height: 1;
 }
 
-@media (max-width: 780px) {
+@media (max-width: $bp-tablet) {
     .grid {
-        padding-top: 148px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        padding: 140px 12px 88px;
     }
 }

@@ -1,39 +1,11 @@
-.modal {
-    width: 280px;
-    text-align: center;
-}
+@use 'mixins' as *;
 
-.modal p {
-    margin-bottom: 16px;
-    font-size: 0.9rem;
-}
-
-.modal .actions {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    justify-content: center;
-}
-
-.modal .actions button {
-    padding: 8px 12px;
-    border-radius: var(--radius-sm);
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background var(--duration-normal) ease, transform 0.1s ease;
-}
-
-.modal .actions button:hover {
-    transform: translateY(-1px);
-}
+@include alert-modal(row, center);
 
 .modal .actions button:nth-child(1) {
     background: var(--gradient-player);
-    color: #fff;
 }
 
 .modal .actions button:nth-child(2) {
     background: var(--color-bg-muted);
-    color: #fff;
 }
