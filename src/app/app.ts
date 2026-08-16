@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, afterNextRender, Injector } from '@angular/core';
 import { Battle } from './components/battle/battle';
 import { LanguageService } from './core/i18n/language.service';
+import { injectSpeedInsights } from '@vercel/speed-insights';
 
 @Component({
     selector: 'app-root',
@@ -9,7 +10,12 @@ import { LanguageService } from './core/i18n/language.service';
     styleUrl: './app.scss'
 })
 export class App {
-    constructor(languageService: LanguageService) {
+    constructor(languageService: LanguageService, injector: Injector) {
         languageService.initialize();
+        
+        // Initialize Vercel Speed Insights
+        afterNextRender(() => {
+            injectSpeedInsights();
+        }, { injector });
     }
 }
