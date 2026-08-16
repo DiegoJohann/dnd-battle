@@ -1,0 +1,47 @@
+@mixin alert-modal($direction: column, $justify: stretch) {
+    .modal {
+        width: 280px;
+        text-align: center;
+    }
+
+    .modal h2 {
+        margin-bottom: 8px;
+    }
+
+    .modal p {
+        margin-bottom: 16px;
+        font-size: 0.9rem;
+    }
+
+    .modal .actions {
+        display: flex;
+        flex-direction: $direction;
+        justify-content: $justify;
+        gap: 8px;
+    }
+
+    .modal .actions button {
+        padding: 8px 12px;
+        border-radius: var(--radius-sm);
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition:
+            background var(--duration-normal) ease,
+            transform var(--duration-fast) ease;
+    }
+
+    .modal .actions button:hover {
+        transform: translateY(-1px);
+    }
+
+    .modal .actions button:nth-child(1) {
+        background: var(--gradient-danger);
+        color: #fff;
+    }
+
+    .modal .actions button:nth-child(2) {
+        background: var(--gradient-player);
+        color: #fff;
+    }
+}

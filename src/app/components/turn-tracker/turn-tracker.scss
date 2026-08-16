@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .turn-tracker {
     position: fixed;
     top: 18px;
@@ -7,7 +9,7 @@
     grid-template-columns: auto minmax(160px, 260px) auto;
     align-items: center;
     gap: 10px;
-    max-width: calc(100vw - 260px);
+    max-width: calc(100vw - 340px);
     padding: 8px;
     border: 1px solid var(--color-border-soft);
     border-radius: var(--radius-pill);
@@ -37,7 +39,7 @@
 
 .turn-reset-icon:hover:not(:disabled) {
     color: var(--color-gold-soft);
-    border-color: rgba(214, 168, 79, 0.38);
+    border-color: rgba(var(--color-gold-rgb), 0.38);
 }
 
 .turn-reset-icon:disabled {
@@ -58,7 +60,7 @@
     min-width: 62px;
     border-radius: var(--radius-pill);
     padding: 6px 12px;
-    background: rgba(214, 168, 79, 0.12);
+    background: rgba(var(--color-gold-rgb), 0.12);
     color: var(--color-gold-soft);
 }
 
@@ -79,7 +81,7 @@
 .turn-current strong {
     overflow: hidden;
     color: var(--color-text);
-    font-size: 0.82rem;
+    font-size: var(--text-base);
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -124,8 +126,8 @@
 }
 
 .turn-actions .next-turn-btn {
-    border-color: rgba(214, 168, 79, 0.38);
-    background: rgba(214, 168, 79, 0.12);
+    border-color: rgba(var(--color-gold-rgb), 0.38);
+    background: rgba(var(--color-gold-rgb), 0.12);
     color: var(--color-gold-soft);
 }
 
@@ -133,8 +135,27 @@
     opacity: 0.72;
 }
 
-@media (max-width: 780px) {
+@media (max-width: $bp-desktop) and (min-width: $bp-tablet + 1) {
+    .turn-actions button {
+        min-width: 0;
+        padding: 8px;
+        font-size: 0;
+
+        gap: 0;
+    }
+
+    .turn-actions button lucide-icon {
+        margin: 0;
+    }
+
+    .turn-actions .initiative-btn {
+        min-width: 0;
+    }
+}
+
+@media (max-width: $bp-tablet) {
     .turn-tracker {
+        top: 12px;
         left: 12px;
         right: 12px;
         max-width: none;
