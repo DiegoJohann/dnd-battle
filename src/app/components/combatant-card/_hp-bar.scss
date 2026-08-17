@@ -1,0 +1,67 @@
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hp-bar {
+    position: relative;
+    background: #3a1712;
+    height: 10px;
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+    margin: 2px 0 0;
+}
+
+.hp-fill {
+    background: var(--gradient-danger);
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    transition:
+        width 0.3s ease,
+        background-color 0.2s ease;
+}
+
+.temp-hp-fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 2;
+
+    background: linear-gradient(90deg, var(--color-temp-hp), var(--color-temp-hp-strong));
+    opacity: 0.75;
+    box-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.26);
+    transition:
+        width 0.3s ease,
+        left 0.3s ease;
+}
+
+.card.player .hp-fill {
+    background: linear-gradient(135deg, #7f1d1d, #b83b2f);
+}
+
+.card.player .hp-bar {
+    background: #34221b;
+}
+
+.card.npc .hp-bar {
+    background: #3a1712;
+}
+
+.hp-text {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.temp-hp-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-temp-hp);
+    font-weight: 600;
+}

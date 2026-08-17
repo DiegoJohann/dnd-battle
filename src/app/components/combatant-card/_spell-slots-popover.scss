@@ -1,0 +1,170 @@
+.spell-slots-section {
+    position: relative;
+    align-self: flex-start;
+}
+
+.spell-slots-section::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    width: 46px;
+    height: 10px;
+    transform: translateX(-50%);
+}
+
+.spell-slots-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 32px;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text-muted);
+
+    font-size: var(--text-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform var(--duration-fast) ease,
+        background var(--duration-fast) ease,
+        border-color var(--duration-fast) ease;
+}
+
+.spell-slots-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+.spell-slots-btn.configured {
+    border-color: rgba(var(--color-gold-rgb), 0.45);
+    background: rgba(var(--color-gold-rgb), 0.12);
+    color: var(--color-gold-soft);
+}
+
+.health-input {
+    padding: 2px 4px;
+    font-size: 0.8rem;
+    width: 100%;
+}
+
+/* Spell slots popover */
+.spell-slots-popover {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 2px);
+
+    width: 220px;
+    padding: 12px;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 4px);
+    transition:
+        opacity var(--duration-fast) ease,
+        transform var(--duration-fast) ease;
+}
+
+.spell-slots-popover::before {
+    left: 50%;
+    bottom: -6px;
+
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.spell-slots-section:hover .spell-slots-popover,
+.spell-slots-section:focus-within .spell-slots-popover {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.spell-popover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.spell-popover-header strong {
+    color: var(--color-gold-soft);
+    font-size: var(--text-base);
+}
+
+.spell-slot-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.spell-slot-summary-row {
+    display: grid;
+    grid-template-columns: 34px 1fr 42px 28px;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.74rem;
+}
+
+.spell-level {
+    color: var(--color-gold-soft);
+    font-weight: 700;
+}
+
+.spell-slot-meter {
+    height: 7px;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    background: #3a2920;
+}
+
+.spell-slot-meter-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: var(--gradient-danger);
+}
+
+.spell-slot-summary-row strong {
+    color: var(--color-text);
+    text-align: right;
+}
+
+.spell-empty {
+    margin: 0;
+    color: var(--color-text-subtle);
+    font-size: var(--text-sm);
+    font-style: italic;
+}
+
+.spell-slots-section:hover .spell-slots-popover,
+.spell-slots-section:focus-within .spell-slots-popover {
+    pointer-events: auto;
+}
+
+.spell-spend-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 24px;
+    border: 1px solid rgba(var(--color-gold-rgb), 0.32);
+    border-radius: var(--radius-sm);
+    background: rgba(var(--color-gold-rgb), 0.1);
+    color: var(--color-gold-soft);
+    cursor: pointer;
+}
+
+.spell-spend-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}

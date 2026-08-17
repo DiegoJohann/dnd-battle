@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 .overlay {
     padding: 20px;
@@ -15,9 +16,7 @@
 
     flex: 1;
     min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 4px;
+    @include scrollable-list;
     padding-bottom: 10px;
 }
 
@@ -39,9 +38,7 @@
 .slot-row {
     min-height: 44px;
     padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.03);
+    @include subtle-row;
 }
 
 .slot-row strong {

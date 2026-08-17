@@ -35,6 +35,36 @@
     text-transform: uppercase;
 }
 
+@mixin subtle-row {
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+@mixin scrollable-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+}
+
+@mixin message-box($tone: info) {
+    margin: 12px 0 0;
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: var(--text-xs);
+    font-weight: 700;
+
+    @if $tone == error {
+        border: 1px solid rgba(217, 107, 82, 0.4);
+        background: rgba(127, 29, 29, 0.26);
+        color: #f0b4a4;
+    } @else {
+        border: 1px solid rgba(var(--color-gold-rgb), 0.28);
+        background: rgba(var(--color-gold-rgb), 0.1);
+        color: var(--color-gold-soft);
+    }
+}
+
 @mixin alert-modal($direction: column, $justify: stretch) {
     .modal {
         width: 280px;
