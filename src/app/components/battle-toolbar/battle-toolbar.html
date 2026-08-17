@@ -40,8 +40,8 @@
         <div class="desktop-menu-item desktop-lang-row">
             <span>{{ 'language.label' | translate }}</span>
             <select
-                [value]="currentLanguage"
-                (change)="languageChange.emit(desktopLangInput.value); closeDesktopMenu()"
+                [ngModel]="currentLanguage"
+                (ngModelChange)="languageChange.emit($event); closeMobileMenu()"
                 #desktopLangInput
             >
                 @for (language of supportedLanguages; track language) {

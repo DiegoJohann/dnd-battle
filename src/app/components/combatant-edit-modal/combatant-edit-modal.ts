@@ -1,4 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CheckIcon, LucideAngularModule, XIcon } from 'lucide-angular';
@@ -23,10 +31,10 @@ export interface CombatantAdminUpdate {
         LucideAngularModule,
         TranslatePipe,
         ModalFocusTrapDirective,
-        MODAL_ANIMATION_DIRECTIVES
+        MODAL_ANIMATION_DIRECTIVES,
     ],
     templateUrl: './combatant-edit-modal.html',
-    styleUrl: './combatant-edit-modal.scss'
+    styleUrl: './combatant-edit-modal.scss',
 })
 export class CombatantEditModal implements OnChanges {
     @Input({ required: true }) combatant!: Combatant;
@@ -39,7 +47,7 @@ export class CombatantEditModal implements OnChanges {
         armorClass: 10,
         currentHp: 1,
         maxHp: 1,
-        initiative: 0
+        initiative: 0,
     };
 
     protected readonly CheckIcon = CheckIcon;
@@ -52,16 +60,18 @@ export class CombatantEditModal implements OnChanges {
                 armorClass: this.combatant.armorClass,
                 currentHp: this.combatant.currentHp,
                 maxHp: this.combatant.maxHp,
-                initiative: this.combatant.initiative
+                initiative: this.combatant.initiative,
             };
         }
     }
 
     get canSave(): boolean {
-        return !!this.model.name.trim()
-            && this.model.armorClass > 0
-            && this.model.maxHp > 0
-            && this.model.currentHp >= 0;
+        return (
+            !!this.model.name.trim() &&
+            this.model.armorClass > 0 &&
+            this.model.maxHp > 0 &&
+            this.model.currentHp >= 0
+        );
     }
 
     submit() {
@@ -74,7 +84,7 @@ export class CombatantEditModal implements OnChanges {
             armorClass: Math.max(1, Math.floor(Number(this.model.armorClass)) || 10),
             currentHp: Math.max(0, Math.min(Math.floor(Number(this.model.currentHp)) || 0, maxHp)),
             maxHp,
-            initiative: Math.floor(Number(this.model.initiative)) || 0
+            initiative: Math.floor(Number(this.model.initiative)) || 0,
         });
         this.close.emit();
     }

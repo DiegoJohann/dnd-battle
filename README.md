@@ -96,20 +96,20 @@ As traduções ficam em `src/assets/i18n/`.
 
 Atalhos globais são ignorados enquanto o foco está em campos de texto, campos numéricos, seletores ou áreas editáveis. Também são bloqueados enquanto um modal está aberto, exceto `Escape`. Modais de confirmação focam uma opção segura por padrão e mantêm a navegação por `Tab` dentro do próprio modal.
 
-| Atalho | Função |
-| --- | --- |
-| `A` | Abrir cadastro de combatente |
-| `ArrowRight` | Próximo turno |
-| `N` | Próximo turno |
-| `ArrowLeft` | Turno anterior |
-| `P` | Turno anterior |
-| `R` | Abrir confirmação para resetar turno e rodada |
-| `C` | Abrir modal de limpeza do campo |
-| `Escape` | Fechar modais, popovers e diálogos abertos |
-| `Tab` em modais | Navegar entre ações disponíveis sem sair do modal |
-| `Enter` no modal de magias | Concluir e fechar o modal |
-| `Enter` em campos de dano, cura, HP temporário e iniciativa | Aplicar ou atualizar o valor do campo |
-| `Enter` no cadastro de combatente | Avançar entre campos do formulário |
+| Atalho                                                      | Função                                            |
+| ----------------------------------------------------------- | ------------------------------------------------- |
+| `A`                                                         | Abrir cadastro de combatente                      |
+| `ArrowRight`                                                | Próximo turno                                     |
+| `N`                                                         | Próximo turno                                     |
+| `ArrowLeft`                                                 | Turno anterior                                    |
+| `P`                                                         | Turno anterior                                    |
+| `R`                                                         | Abrir confirmação para resetar turno e rodada     |
+| `C`                                                         | Abrir modal de limpeza do campo                   |
+| `Escape`                                                    | Fechar modais, popovers e diálogos abertos        |
+| `Tab` em modais                                             | Navegar entre ações disponíveis sem sair do modal |
+| `Enter` no modal de magias                                  | Concluir e fechar o modal                         |
+| `Enter` em campos de dano, cura, HP temporário e iniciativa | Aplicar ou atualizar o valor do campo             |
+| `Enter` no cadastro de combatente                           | Avançar entre campos do formulário                |
 
 ## Estrutura Técnica
 

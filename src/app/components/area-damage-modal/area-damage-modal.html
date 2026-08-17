@@ -1,12 +1,21 @@
 <div class="overlay" (click)="close.emit()">
-    <section class="modal area-damage-modal compact-form-modal" appModalFocusTrap (click)="$event.stopPropagation()">
+    <section
+        class="modal area-damage-modal compact-form-modal"
+        appModalFocusTrap
+        (click)="$event.stopPropagation()"
+    >
         <header class="modal-header">
             <div>
                 <p>{{ 'areaDamage.subtitle' | translate }}</p>
                 <h2>{{ 'areaDamage.title' | translate }}</h2>
             </div>
 
-            <button class="close-btn" type="button" (click)="close.emit()" [title]="'common.close' | translate">
+            <button
+                class="close-btn"
+                type="button"
+                (click)="close.emit()"
+                [title]="'common.close' | translate"
+            >
                 <lucide-icon [img]="XIcon" [size]="16"></lucide-icon>
             </button>
         </header>
@@ -34,7 +43,11 @@
                 />
             </label>
 
-            <div class="success-effect" role="radiogroup" [attr.aria-label]="'areaDamage.successEffect' | translate">
+            <div
+                class="success-effect"
+                role="radiogroup"
+                [attr.aria-label]="'areaDamage.successEffect' | translate"
+            >
                 <span>{{ 'areaDamage.successEffect' | translate }}</span>
 
                 <div class="segmented-control">
@@ -82,14 +95,19 @@
                         <span class="target-name">
                             {{ target.combatant.name }}
                             @if (target.groupSize > 1) {
-                                <span class="group-badge" [title]="'areaDamage.syncedGroupTitle' | translate">
+                                <span
+                                    class="group-badge"
+                                    [title]="'areaDamage.syncedGroupTitle' | translate"
+                                >
                                     {{ 'areaDamage.syncedGroup' | translate }}
                                 </span>
                             }
                         </span>
 
                         <span class="target-hp">
-                            {{ 'combatant.hp' | translate }} {{ target.combatant.currentHp }}/{{ target.combatant.maxHp }}
+                            {{ 'combatant.hp' | translate }} {{ target.combatant.currentHp }}/{{
+                                target.combatant.maxHp
+                            }}
                         </span>
 
                         <span class="bonus-field">

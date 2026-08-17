@@ -11,11 +11,10 @@ const BATTLE_STORAGE_KEY = 'battle';
 const BATTLE_TURN_STORAGE_KEY = 'battle-turn';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class BattleStorageService {
-    constructor(private combatantNormalizer: CombatantNormalizer) {
-    }
+    constructor(private combatantNormalizer: CombatantNormalizer) {}
 
     saveBattle(combatants: Combatant[]) {
         localStorage.setItem(BATTLE_STORAGE_KEY, JSON.stringify(combatants));
@@ -47,9 +46,8 @@ export class BattleStorageService {
 
             return {
                 round: Math.max(1, Math.floor(Number(parsed.round)) || 1),
-                activeCombatantId: typeof parsed.activeCombatantId === 'string'
-                    ? parsed.activeCombatantId
-                    : null
+                activeCombatantId:
+                    typeof parsed.activeCombatantId === 'string' ? parsed.activeCombatantId : null,
             };
         } catch {
             localStorage.removeItem(BATTLE_TURN_STORAGE_KEY);

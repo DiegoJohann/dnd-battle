@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
         provideTranslateService({
             fallbackLang: DEFAULT_LANGUAGE,
             lang: DEFAULT_LANGUAGE,
-            loader: provideTranslateLoader(JsonTranslateLoader)
-        })
-    ]
+            loader: provideTranslateLoader(JsonTranslateLoader),
+        }),
+    ],
 };

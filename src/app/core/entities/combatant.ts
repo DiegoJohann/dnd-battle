@@ -66,7 +66,7 @@ export const COMBATANT_CONDITION_CATALOG: CombatantConditionDefinition[] = [
     { key: 'EXHAUSTION_3', labelKey: 'conditions.EXHAUSTION_3', icon: '⚡', tone: 'warning' },
     { key: 'EXHAUSTION_4', labelKey: 'conditions.EXHAUSTION_4', icon: '⚡', tone: 'danger' },
     { key: 'EXHAUSTION_5', labelKey: 'conditions.EXHAUSTION_5', icon: '⚡', tone: 'danger' },
-    { key: 'EXHAUSTION_6', labelKey: 'conditions.EXHAUSTION_6', icon: '⚡', tone: 'danger' }
+    { key: 'EXHAUSTION_6', labelKey: 'conditions.EXHAUSTION_6', icon: '⚡', tone: 'danger' },
 ];
 
 export interface Combatant {

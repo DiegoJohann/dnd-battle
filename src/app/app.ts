@@ -8,16 +8,19 @@ import { inject } from '@vercel/analytics';
     selector: 'app-root',
     imports: [Battle],
     templateUrl: './app.html',
-    styleUrl: './app.scss'
+    styleUrl: './app.scss',
 })
 export class App {
     constructor(languageService: LanguageService, injector: Injector) {
         languageService.initialize();
-        
+
         // Initialize Vercel Speed Insights and Web Analytics
-        afterNextRender(() => {
-            injectSpeedInsights();
-            inject();
-        }, { injector });
+        afterNextRender(
+            () => {
+                injectSpeedInsights();
+                inject();
+            },
+            { injector },
+        );
     }
 }

@@ -1,12 +1,21 @@
 <div class="overlay" (click)="close.emit()">
-    <section class="modal combatant-edit-modal compact-form-modal" appModalFocusTrap (click)="$event.stopPropagation()">
+    <section
+        class="modal combatant-edit-modal compact-form-modal"
+        appModalFocusTrap
+        (click)="$event.stopPropagation()"
+    >
         <header class="modal-header">
             <div>
                 <p>{{ 'combatantEdit.subtitle' | translate }}</p>
                 <h2>{{ 'combatantEdit.title' | translate }}</h2>
             </div>
 
-            <button class="close-btn" type="button" (click)="close.emit()" [title]="'common.close' | translate">
+            <button
+                class="close-btn"
+                type="button"
+                (click)="close.emit()"
+                [title]="'common.close' | translate"
+            >
                 <lucide-icon [img]="XIcon" [size]="16"></lucide-icon>
             </button>
         </header>
@@ -19,22 +28,41 @@
 
             <label>
                 <span>{{ 'combatant.ac' | translate }}</span>
-                <input type="number" min="1" [(ngModel)]="model.armorClass" (focus)="selectNumberValue($event)" />
+                <input
+                    type="number"
+                    min="1"
+                    [(ngModel)]="model.armorClass"
+                    (focus)="selectNumberValue($event)"
+                />
             </label>
 
             <label>
                 <span>{{ 'combatantEdit.currentHp' | translate }}</span>
-                <input type="number" min="0" [(ngModel)]="model.currentHp" (focus)="selectNumberValue($event)" />
+                <input
+                    type="number"
+                    min="0"
+                    [(ngModel)]="model.currentHp"
+                    (focus)="selectNumberValue($event)"
+                />
             </label>
 
             <label>
                 <span>{{ 'combatantEdit.maxHp' | translate }}</span>
-                <input type="number" min="1" [(ngModel)]="model.maxHp" (focus)="selectNumberValue($event)" />
+                <input
+                    type="number"
+                    min="1"
+                    [(ngModel)]="model.maxHp"
+                    (focus)="selectNumberValue($event)"
+                />
             </label>
 
             <label>
                 <span>{{ 'combatantEdit.initiative' | translate }}</span>
-                <input type="number" [(ngModel)]="model.initiative" (focus)="selectNumberValue($event)" />
+                <input
+                    type="number"
+                    [(ngModel)]="model.initiative"
+                    (focus)="selectNumberValue($event)"
+                />
             </label>
         </div>
 

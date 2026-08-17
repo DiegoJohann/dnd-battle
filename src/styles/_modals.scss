@@ -1,0 +1,181 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.modal {
+    background: var(--color-bg-elevated);
+    color: var(--color-text);
+    border-radius: var(--radius-md);
+    padding: 20px;
+}
+
+.modal p {
+    color: var(--color-text-muted);
+}
+
+.compact-form-modal {
+    max-height: min(720px, calc(100dvh - 40px));
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-bg-control-hover);
+    padding: 18px;
+    box-shadow: var(--shadow-modal);
+}
+
+.compact-form-modal .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.compact-form-modal .modal-header p {
+    margin: 0 0 4px;
+    color: var(--color-text-subtle);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.compact-form-modal .modal-header h2 {
+    margin: 0;
+    font-size: var(--text-lg);
+}
+
+.compact-form-modal .close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border-soft);
+    background: rgba(255, 255, 255, 0.04);
+    color: #ddd;
+    cursor: pointer;
+}
+
+.compact-form-modal .close-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.compact-form-modal input {
+    width: 100%;
+    min-width: 0;
+    padding: 7px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-base);
+}
+
+.compact-form-modal .modal-actions {
+    position: sticky;
+    bottom: -18px;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 14px -18px -18px;
+    padding: 14px 18px 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(var(--color-bg-elevated-rgb), 0),
+            var(--color-bg-elevated) 18%
+        ),
+        var(--color-bg-elevated);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.compact-form-modal .ghost-btn,
+.compact-form-modal .primary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: var(--text-sm);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.compact-form-modal .ghost-btn {
+    background: transparent;
+    color: #ddd;
+}
+
+.compact-form-modal .ghost-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.compact-form-modal .primary-btn {
+    background: var(--gradient-danger);
+    color: #fff;
+}
+
+.compact-form-modal .primary-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.modal-overlay-enter {
+    animation: modal-overlay-enter 150ms ease-out both;
+}
+
+.modal-overlay-leave {
+    animation: modal-overlay-leave 130ms ease-in both;
+}
+
+.modal-panel-enter {
+    animation: modal-panel-enter 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.modal-panel-leave {
+    animation: modal-panel-leave 120ms ease-in both;
+}
+
+@keyframes modal-overlay-enter {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-overlay-leave {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes modal-panel-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes modal-panel-leave {
+    to {
+        opacity: 0;
+        transform: translateY(6px) scale(0.98);
+    }
+}

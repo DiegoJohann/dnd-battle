@@ -1,4 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CheckIcon, LucideAngularModule, XIcon } from 'lucide-angular';
@@ -33,10 +41,10 @@ interface AreaDamageTarget {
         LucideAngularModule,
         TranslatePipe,
         ModalFocusTrapDirective,
-        MODAL_ANIMATION_DIRECTIVES
+        MODAL_ANIMATION_DIRECTIVES,
     ],
     templateUrl: './area-damage-modal.html',
-    styleUrl: './area-damage-modal.scss'
+    styleUrl: './area-damage-modal.scss',
 })
 export class AreaDamageModal implements OnChanges {
     @Input({ required: true }) combatants: Combatant[] = [];
@@ -59,7 +67,7 @@ export class AreaDamageModal implements OnChanges {
     }
 
     get selectedCount(): number {
-        return this.targets.filter(target => target.selected).length;
+        return this.targets.filter((target) => target.selected).length;
     }
 
     get canApply(): boolean {
@@ -67,7 +75,7 @@ export class AreaDamageModal implements OnChanges {
     }
 
     toggleAll(checked: boolean) {
-        this.targets.forEach(target => {
+        this.targets.forEach((target) => {
             target.selected = checked;
         });
     }
@@ -79,8 +87,8 @@ export class AreaDamageModal implements OnChanges {
         if (!target.combatant.groupId) return;
 
         this.targets
-            .filter(currentTarget => currentTarget.combatant.groupId === target.combatant.groupId)
-            .forEach(currentTarget => {
+            .filter((currentTarget) => currentTarget.combatant.groupId === target.combatant.groupId)
+            .forEach((currentTarget) => {
                 currentTarget.saveBonus = saveBonus;
             });
     }
@@ -91,8 +99,8 @@ export class AreaDamageModal implements OnChanges {
         const damage = Math.max(0, Math.floor(Number(this.damage)));
         const saveDc = Math.max(1, Math.floor(Number(this.saveDc)));
         const results = this.targets
-            .filter(target => target.selected)
-            .map(target => this.rollTarget(target, damage, saveDc));
+            .filter((target) => target.selected)
+            .map((target) => this.rollTarget(target, damage, saveDc));
 
         this.applyDamage.emit(results);
         this.close.emit();
@@ -118,16 +126,17 @@ export class AreaDamageModal implements OnChanges {
     }
 
     private syncTargets() {
-        const previousBonuses = new Map(this.targets.map(target => [
-            target.combatant.id,
-            target.saveBonus
-        ]));
+        const previousBonuses = new Map(
+            this.targets.map((target) => [target.combatant.id, target.saveBonus]),
+        );
         const npcs = this.combatants
-            .filter(combatant => combatant.type === 'NPC' && combatant.alive)
-            .sort((a, b) => a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base'
-            }));
+            .filter((combatant) => combatant.type === 'NPC' && combatant.alive)
+            .sort((a, b) =>
+                a.name.localeCompare(b.name, undefined, {
+                    numeric: true,
+                    sensitivity: 'base',
+                }),
+            );
         const groupSizes = npcs.reduce((groups, combatant) => {
             if (!combatant.groupId) return groups;
 
@@ -135,13 +144,12 @@ export class AreaDamageModal implements OnChanges {
             return groups;
         }, new Map<string, number>());
 
-        this.targets = npcs
-            .map(combatant => ({
-                combatant,
-                selected: true,
-                saveBonus: previousBonuses.get(combatant.id) ?? 0,
-                groupSize: combatant.groupId ? groupSizes.get(combatant.groupId) ?? 1 : 1
-            }));
+        this.targets = npcs.map((combatant) => ({
+            combatant,
+            selected: true,
+            saveBonus: previousBonuses.get(combatant.id) ?? 0,
+            groupSize: combatant.groupId ? (groupSizes.get(combatant.groupId) ?? 1) : 1,
+        }));
     }
 
     private rollTarget(target: AreaDamageTarget, damage: number, saveDc: number): AreaDamageResult {
@@ -156,15 +164,13 @@ export class AreaDamageModal implements OnChanges {
             saveBonus,
             total,
             succeeded,
-            damage: this.resolveDamage(damage, succeeded)
+            damage: this.resolveDamage(damage, succeeded),
         };
     }
 
     private resolveDamage(damage: number, succeeded: boolean): number {
         if (!succeeded) return damage;
 
-        return this.successEffect === 'HALF'
-            ? Math.floor(damage / 2)
-            : 0;
+        return this.successEffect === 'HALF' ? Math.floor(damage / 2) : 0;
     }
 }

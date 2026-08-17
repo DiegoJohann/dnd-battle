@@ -1,12 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ChevronLeftIcon, ChevronRightIcon, ListOrderedIcon, LucideAngularModule, RotateCcwIcon } from 'lucide-angular';
+import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    ListOrderedIcon,
+    LucideAngularModule,
+    RotateCcwIcon,
+} from 'lucide-angular';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-turn-tracker',
     imports: [LucideAngularModule, TranslatePipe],
     templateUrl: './turn-tracker.html',
-    styleUrl: './turn-tracker.scss'
+    styleUrl: './turn-tracker.scss',
 })
 export class TurnTrackerComponent {
     @Input({ required: true }) round = 1;

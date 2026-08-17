@@ -10,7 +10,7 @@ import { MODAL_ANIMATION_DIRECTIVES } from '../../shared/modal-animation.directi
     selector: 'app-spell-slots-modal',
     imports: [CommonModule, LucideAngularModule, TranslatePipe, MODAL_ANIMATION_DIRECTIVES],
     templateUrl: './spell-slots-modal.html',
-    styleUrl: './spell-slots-modal.scss'
+    styleUrl: './spell-slots-modal.scss',
 })
 export class SpellSlotsModal {
     @Input({ required: true }) combatant!: Combatant;
@@ -20,15 +20,16 @@ export class SpellSlotsModal {
 
     readonly spellLevels = Array.from({ length: 9 }, (_, index) => index + 1);
 
-    constructor(private combatantNormalizer: CombatantNormalizer) {
-    }
+    constructor(private combatantNormalizer: CombatantNormalizer) {}
 
     getSlot(level: number): CombatantSpellSlotLevel {
-        return this.combatant.spellSlots?.find(slot => slot.level === level) ?? {
-            level,
-            total: 0,
-            remaining: 0
-        };
+        return (
+            this.combatant.spellSlots?.find((slot) => slot.level === level) ?? {
+                level,
+                total: 0,
+                remaining: 0,
+            }
+        );
     }
 
     updateTotal(level: number, value: string) {
@@ -37,7 +38,7 @@ export class SpellSlotsModal {
 
         this.emitSlots(level, {
             total,
-            remaining: Math.min(current.remaining, total)
+            remaining: Math.min(current.remaining, total),
         });
     }
 
@@ -46,7 +47,7 @@ export class SpellSlotsModal {
         const remaining = Math.min(this.parseSlotValue(value), current.total);
 
         this.emitSlots(level, {
-            remaining
+            remaining,
         });
     }
 
@@ -60,14 +61,14 @@ export class SpellSlotsModal {
         const current = this.getSlot(level);
 
         this.emitSlots(level, {
-            remaining: current.total
+            remaining: current.total,
         });
     }
 
     resetAllRemaining() {
-        const next = this.normalizedSlots().map(slot => ({
+        const next = this.normalizedSlots().map((slot) => ({
             ...slot,
-            remaining: slot.total
+            remaining: slot.total,
         }));
 
         this.spellSlotsChange.emit(next);
@@ -76,7 +77,7 @@ export class SpellSlotsModal {
     clearLevel(level: number) {
         this.emitSlots(level, {
             total: 0,
-            remaining: 0
+            remaining: 0,
         });
     }
 
@@ -92,15 +93,15 @@ export class SpellSlotsModal {
         const current = this.getSlot(level);
         const updated: CombatantSpellSlotLevel = {
             ...current,
-            ...changes
+            ...changes,
         };
 
         updated.total = Math.max(0, updated.total);
         updated.remaining = Math.max(0, Math.min(updated.remaining, updated.total));
 
         const next = this.normalizedSlots()
-            .map(slot => slot.level === level ? updated : slot)
-            .filter(slot => slot.total > 0 || slot.remaining > 0);
+            .map((slot) => (slot.level === level ? updated : slot))
+            .filter((slot) => slot.total > 0 || slot.remaining > 0);
 
         this.spellSlotsChange.emit(next);
     }
@@ -108,7 +109,7 @@ export class SpellSlotsModal {
     private normalizedSlots(): CombatantSpellSlotLevel[] {
         return this.combatantNormalizer.normalizeSpellSlotsForLevels(
             this.combatant.spellSlots,
-            this.spellLevels
+            this.spellLevels,
         );
     }
 
