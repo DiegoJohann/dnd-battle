@@ -11,6 +11,7 @@ import {
 } from 'lucide-angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SupportedLanguage } from '../../core/i18n/i18n';
+import { version as appVersion } from '../../../../package.json';
 
 @Component({
     selector: 'app-battle-toolbar',
@@ -37,6 +38,8 @@ export class BattleToolbarComponent {
     protected readonly MenuIcon = MenuIcon;
     protected readonly PlusIcon = PlusIcon;
     protected readonly Trash2Icon = Trash2Icon;
+
+    version = appVersion;
 
     desktopMenuOpen = false;
     mobileMenuOpen = false;
