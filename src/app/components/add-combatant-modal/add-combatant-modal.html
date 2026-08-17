@@ -42,6 +42,7 @@
                 </label>
                 <input
                     #nameInput
+                    class="form-input"
                     id="name"
                     type="text"
                     formControlName="name"
@@ -53,6 +54,7 @@
                 <div class="form-field">
                     <label for="quantity">{{ 'combatantModal.quantity' | translate }}</label>
                     <input
+                        class="form-input"
                         id="quantity"
                         type="number"
                         formControlName="quantity"
@@ -78,6 +80,7 @@
                 </div>
                 <input
                     #hpInput
+                    class="form-input"
                     id="hp"
                     type="number"
                     formControlName="hp"
@@ -100,6 +103,7 @@
                 </div>
                 <input
                     #acInput
+                    class="form-input"
                     id="ac"
                     type="number"
                     formControlName="ac"
@@ -137,7 +141,13 @@
                         <lucide-icon [img]="CircleQuestionMark" [size]="14"></lucide-icon>
                     </button>
                 </div>
-                <input #initInput id="initiative" type="number" formControlName="initiative" />
+                <input
+                    class="form-input"
+                    #initInput
+                    id="initiative"
+                    type="number"
+                    formControlName="initiative"
+                />
             </div>
 
             @if (form.value.mode === 'group') {

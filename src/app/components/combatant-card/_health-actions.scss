@@ -1,0 +1,104 @@
+/* Defeated status */
+.defeated-status {
+    align-self: flex-start;
+    border: 1px solid rgba(var(--color-danger-500-rgb), 0.42);
+    border-radius: var(--radius-pill);
+    padding: 4px 8px;
+    background: rgba(var(--color-danger-500-rgb), 0.16);
+    color: #f1b4a6;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* Health action controls */
+.health-action-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 32px;
+    gap: 8px;
+    align-items: center;
+}
+
+.health-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 30px;
+    border: 1px solid rgba(var(--color-parchment-rgb), 0.18);
+    border-radius: var(--radius-sm);
+    padding: 0;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+        transform var(--duration-fast) ease,
+        background var(--duration-fast) ease,
+        border-color var(--duration-fast) ease;
+}
+
+.health-action-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: rgba(var(--color-gold-rgb), 0.12);
+    border-color: rgba(var(--color-gold-rgb), 0.42);
+    color: var(--color-gold-soft);
+}
+
+.health-action-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.damage-button {
+    color: #e9b5a8;
+}
+
+.healing-button {
+    color: var(--color-text-muted);
+}
+
+.temp-hp-clear-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(var(--color-gold-rgb), 0.28);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-gold-soft);
+    cursor: pointer;
+    padding: 0;
+}
+
+.temp-hp-clear-button:hover {
+    background: rgba(var(--color-gold-rgb), 0.1);
+}
+
+/* Active turn */
+.card.active-turn {
+    border-color: var(--color-gold);
+    box-shadow:
+        0 0 0 1px rgba(var(--color-gold-rgb), 0.45),
+        0 0 28px rgba(var(--color-gold-rgb), 0.18);
+    transform: translateY(-2px);
+}
+
+.turn-ribbon {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    z-index: 4;
+
+    border: 1px solid rgba(var(--color-gold-rgb), 0.45);
+    border-radius: var(--radius-pill);
+    padding: 3px 8px;
+    background: #332511;
+    color: var(--color-gold-soft);
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}

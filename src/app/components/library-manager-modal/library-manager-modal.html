@@ -266,13 +266,13 @@
             <p>{{ 'library.unsavedChanges' | translate }}</p>
 
             <div class="dirty-confirm-actions">
-                <button (click)="confirmImportSaveAndLoad()">
+                <button class="btn-danger" (click)="confirmImportSaveAndLoad()">
                     {{ 'library.saveAndLoad' | translate }}
                 </button>
-                <button (click)="confirmImportDiscard()">
+                <button class="btn-primary" (click)="confirmImportDiscard()">
                     {{ 'library.discard' | translate }}
                 </button>
-                <button (click)="confirmImportCancel()">
+                <button class="btn-ghost" (click)="confirmImportCancel()">
                     {{ 'common.cancel' | translate }}
                 </button>
             </div>

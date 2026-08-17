@@ -1,0 +1,61 @@
+/* Card actions menu */
+.card-actions {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 5;
+}
+
+.card-actions-toggle {
+    background: transparent;
+    border: none;
+    color: var(--color-text-subtle);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-pill);
+}
+
+.card-actions-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-text);
+}
+
+.card-actions-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 132px;
+    padding: 6px;
+
+    &::before {
+        display: none;
+    }
+}
+
+.card-actions-menu button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.card-actions-menu button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.card-actions-menu .danger-action {
+    color: var(--color-danger-400);
+}

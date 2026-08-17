@@ -24,7 +24,7 @@
     margin-bottom: 4px;
 }
 
-label {
+.form-field label {
     font-size: 0.85rem;
     color: var(--color-text-muted);
 }
@@ -48,7 +48,7 @@ label {
     color: #fff;
 }
 
-input {
+.form-field .form-input {
     padding: 6px 8px;
     font-size: 0.8rem;
 }
