@@ -2,7 +2,12 @@
     <div class="modal encounter-modal" appModalFocusTrap>
         <div class="encounter-header">
             <h2>{{ 'encounter.title' | translate }}</h2>
-            <button type="button" class="icon-button" (click)="close.emit()" [title]="'common.close' | translate">
+            <button
+                type="button"
+                class="icon-button"
+                (click)="close.emit()"
+                [title]="'common.close' | translate"
+            >
                 {{ 'common.close' | translate }}
             </button>
         </div>
@@ -16,7 +21,8 @@
                 [value]="encounterName"
                 [placeholder]="'encounter.namePlaceholder' | translate"
                 (input)="encounterName = encounterNameInput.value"
-                (keyup.enter)="saveNamedEncounter()" />
+                (keyup.enter)="saveNamedEncounter()"
+            />
         </div>
 
         <div class="encounter-actions">
@@ -40,7 +46,8 @@
                 class="hidden-file"
                 type="file"
                 accept="application/json,.json"
-                (change)="importEncounterFile($event)" />
+                (change)="importEncounterFile($event)"
+            />
         </div>
 
         @if (encounterMessageKey) {
@@ -59,20 +66,36 @@
                             <div class="saved-encounter-info">
                                 <strong>{{ encounter.name }}</strong>
                                 <span>
-                                    {{ 'encounter.combatantsCount' | translate: { count: encounter.combatants.length } }}
+                                    {{
+                                        'encounter.combatantsCount'
+                                            | translate: { count: encounter.combatants.length }
+                                    }}
                                     ·
                                     {{ formatEncounterDate(encounter.savedAt) }}
                                 </span>
                             </div>
 
                             <div class="saved-encounter-actions">
-                                <button type="button" (click)="loadNamedEncounter(encounter)" [title]="'encounter.load' | translate">
+                                <button
+                                    type="button"
+                                    (click)="loadNamedEncounter(encounter)"
+                                    [title]="'encounter.load' | translate"
+                                >
                                     {{ 'encounter.load' | translate }}
                                 </button>
-                                <button type="button" (click)="exportNamedEncounter(encounter)" [title]="'encounter.export' | translate">
+                                <button
+                                    type="button"
+                                    (click)="exportNamedEncounter(encounter)"
+                                    [title]="'encounter.export' | translate"
+                                >
                                     <lucide-icon [img]="DownloadIcon" [size]="14"></lucide-icon>
                                 </button>
-                                <button type="button" class="danger" (click)="deleteNamedEncounter(encounter.id)" [title]="'encounter.delete' | translate">
+                                <button
+                                    type="button"
+                                    class="danger"
+                                    (click)="deleteNamedEncounter(encounter.id)"
+                                    [title]="'encounter.delete' | translate"
+                                >
                                     <lucide-icon [img]="Trash2Icon" [size]="14"></lucide-icon>
                                 </button>
                             </div>

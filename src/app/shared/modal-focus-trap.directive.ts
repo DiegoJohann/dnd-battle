@@ -1,20 +1,19 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-    selector: '[appModalFocusTrap]'
+    selector: '[appModalFocusTrap]',
 })
 export class ModalFocusTrapDirective {
-    constructor(private elementRef: ElementRef<HTMLElement>) {
-    }
+    constructor(private elementRef: ElementRef<HTMLElement>) {}
 
     @HostListener('keydown.tab', ['$event'])
     trapTab(event: Event) {
         const keyboardEvent = event as KeyboardEvent;
         const focusableElements = Array.from(
             this.elementRef.nativeElement.querySelectorAll<HTMLElement>(
-                'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-            )
-        ).filter(element => !element.hasAttribute('disabled') && element.offsetParent !== null);
+                'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            ),
+        ).filter((element) => !element.hasAttribute('disabled') && element.offsetParent !== null);
 
         if (!focusableElements.length) return;
 

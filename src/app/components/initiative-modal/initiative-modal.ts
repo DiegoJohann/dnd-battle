@@ -1,4 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CheckIcon, LucideAngularModule, XIcon } from 'lucide-angular';
@@ -25,10 +33,10 @@ interface InitiativeRow {
         LucideAngularModule,
         TranslatePipe,
         ModalFocusTrapDirective,
-        MODAL_ANIMATION_DIRECTIVES
+        MODAL_ANIMATION_DIRECTIVES,
     ],
     templateUrl: './initiative-modal.html',
-    styleUrl: './initiative-modal.scss'
+    styleUrl: './initiative-modal.scss',
 })
 export class InitiativeModal implements OnChanges {
     @Input({ required: true }) combatants: Combatant[] = [];
@@ -43,18 +51,20 @@ export class InitiativeModal implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['combatants']) {
-            this.rows = this.combatants.map(combatant => ({
+            this.rows = this.combatants.map((combatant) => ({
                 combatant,
-                initiative: combatant.initiative
+                initiative: combatant.initiative,
             }));
         }
     }
 
     submit() {
-        this.save.emit(this.rows.map(row => ({
-            combatantId: row.combatant.id,
-            initiative: Math.floor(Number(row.initiative)) || 0
-        })));
+        this.save.emit(
+            this.rows.map((row) => ({
+                combatantId: row.combatant.id,
+                initiative: Math.floor(Number(row.initiative)) || 0,
+            })),
+        );
         this.close.emit();
     }
 

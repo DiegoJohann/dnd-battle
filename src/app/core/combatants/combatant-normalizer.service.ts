@@ -3,11 +3,11 @@ import {
     Combatant,
     CombatantConditionKey,
     CombatantConditionState,
-    CombatantSpellSlotLevel
+    CombatantSpellSlotLevel,
 } from '../entities/combatant';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class CombatantNormalizer {
     normalizeCombatants(value: unknown): Combatant[] {
@@ -15,21 +15,28 @@ export class CombatantNormalizer {
             throw new Error('Invalid combatants payload');
         }
 
-        return value.map(combatant => this.normalizeCombatant(combatant));
+        return value.map((combatant) => this.normalizeCombatant(combatant));
     }
 
     normalizeCombatant(value: unknown): Combatant {
         const partial = value as Partial<Combatant>;
         const maxHp = Math.max(1, Math.floor(Number(partial.maxHp)) || 1);
-        const currentHp = Math.max(0, Math.min(Math.floor(Number(partial.currentHp)) || maxHp, maxHp));
+        const currentHp = Math.max(
+            0,
+            Math.min(Math.floor(Number(partial.currentHp)) || maxHp, maxHp),
+        );
         const type = partial.type === 'PLAYER' ? 'PLAYER' : 'NPC';
 
         return {
             id: typeof partial.id === 'string' && partial.id ? partial.id : crypto.randomUUID(),
-            groupId: typeof partial.groupId === 'string' && partial.groupId ? partial.groupId : undefined,
-            name: typeof partial.name === 'string' && partial.name.trim()
-                ? partial.name.trim()
-                : 'Combatant',
+            groupId:
+                typeof partial.groupId === 'string' && partial.groupId
+                    ? partial.groupId
+                    : undefined,
+            name:
+                typeof partial.name === 'string' && partial.name.trim()
+                    ? partial.name.trim()
+                    : 'Combatant',
             type,
             armorClass: Math.max(1, Math.floor(Number(partial.armorClass)) || 10),
             initiative: Math.floor(Number(partial.initiative)) || 0,
@@ -39,82 +46,87 @@ export class CombatantNormalizer {
             alive: typeof partial.alive === 'boolean' ? partial.alive : currentHp > 0,
             conditions: Array.isArray(partial.conditions) ? partial.conditions : [],
             conditionStates: this.normalizeConditionStates(partial),
-            spellSlots: this.normalizeSpellSlots(partial.spellSlots)
+            spellSlots: this.normalizeSpellSlots(partial.spellSlots),
         };
     }
 
     normalizeConditionStates(combatant: Partial<Combatant>): CombatantConditionState[] {
-        const activeConditions = Array.isArray(combatant.conditions)
-            ? combatant.conditions
-            : [];
+        const activeConditions = Array.isArray(combatant.conditions) ? combatant.conditions : [];
         const activeKeys = new Set(activeConditions);
         const currentStates = Array.isArray(combatant.conditionStates)
             ? combatant.conditionStates
             : [];
 
-        return activeConditions.map(key => {
-            const state = currentStates.find(currentState => currentState.key === key);
-            const durationMode = String(state?.durationMode ?? 'INDEFINITE');
+        return activeConditions
+            .map((key) => {
+                const state = currentStates.find((currentState) => currentState.key === key);
+                const durationMode = String(state?.durationMode ?? 'INDEFINITE');
 
-            if (!state) {
+                if (!state) {
+                    return {
+                        key,
+                        durationMode: 'INDEFINITE' as const,
+                    };
+                }
+
+                if (durationMode === 'ROUNDS') {
+                    return {
+                        key,
+                        durationMode: 'ROUNDS' as const,
+                        remainingRounds: Math.max(
+                            1,
+                            Math.floor(Number(state.remainingRounds)) || 1,
+                        ),
+                    };
+                }
+
+                if (durationMode === 'TURN_START' || durationMode === 'TURN_END') {
+                    return {
+                        key,
+                        durationMode: 'TURN_START' as const,
+                        expiresOnCombatantId: state.expiresOnCombatantId ?? combatant.id,
+                    };
+                }
+
                 return {
                     key,
-                    durationMode: 'INDEFINITE' as const
+                    durationMode: 'INDEFINITE' as const,
                 };
-            }
-
-            if (durationMode === 'ROUNDS') {
-                return {
-                    key,
-                    durationMode: 'ROUNDS' as const,
-                    remainingRounds: Math.max(1, Math.floor(Number(state.remainingRounds)) || 1)
-                };
-            }
-
-            if (durationMode === 'TURN_START' || durationMode === 'TURN_END') {
-                return {
-                    key,
-                    durationMode: 'TURN_START' as const,
-                    expiresOnCombatantId: state.expiresOnCombatantId ?? combatant.id
-                };
-            }
-
-            return {
-                key,
-                durationMode: 'INDEFINITE' as const
-            };
-        }).filter(state => activeKeys.has(state.key));
+            })
+            .filter((state) => activeKeys.has(state.key));
     }
 
     normalizeSpellSlots(value: unknown): CombatantSpellSlotLevel[] {
         if (!Array.isArray(value)) return [];
 
         return value
-            .map(slot => this.normalizeSpellSlot(slot))
+            .map((slot) => this.normalizeSpellSlot(slot))
             .filter((slot): slot is CombatantSpellSlotLevel => !!slot);
     }
 
     normalizeSpellSlotsForLevels(
         slots: CombatantSpellSlotLevel[] | undefined,
-        levels: number[]
+        levels: number[],
     ): CombatantSpellSlotLevel[] {
-        return levels.map(level => {
-            const slot = slots?.find(currentSlot => currentSlot.level === level) ?? {
+        return levels.map((level) => {
+            const slot = slots?.find((currentSlot) => currentSlot.level === level) ?? {
                 level,
                 total: 0,
-                remaining: 0
+                remaining: 0,
             };
             const total = Math.max(0, Math.floor(Number(slot.total)) || 0);
 
             return {
                 level,
                 total,
-                remaining: Math.max(0, Math.min(Math.floor(Number(slot.remaining)) || 0, total))
+                remaining: Math.max(0, Math.min(Math.floor(Number(slot.remaining)) || 0, total)),
             };
         });
     }
 
-    normalizeConfiguredSpellSlots(slots: CombatantSpellSlotLevel[] | undefined): CombatantSpellSlotLevel[] {
+    normalizeConfiguredSpellSlots(
+        slots: CombatantSpellSlotLevel[] | undefined,
+    ): CombatantSpellSlotLevel[] {
         return this.normalizeSpellSlots(slots);
     }
 

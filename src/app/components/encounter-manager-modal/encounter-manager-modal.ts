@@ -1,20 +1,47 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Combatant } from '../../core/entities/combatant';
-import { DownloadIcon, LucideAngularModule, SaveIcon, Trash2Icon, UploadIcon } from 'lucide-angular';
+import {
+    DownloadIcon,
+    LucideAngularModule,
+    SaveIcon,
+    Trash2Icon,
+    UploadIcon,
+} from 'lucide-angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../core/i18n/language.service';
 import { SupportedLanguage } from '../../core/i18n/i18n';
-import { EncounterStorageService, SavedEncounter } from '../../core/encounters/encounter-storage.service';
-import { EncounterData, EncounterSerializerService } from '../../core/encounters/encounter-serializer.service';
+import {
+    EncounterStorageService,
+    SavedEncounter,
+} from '../../core/encounters/encounter-storage.service';
+import {
+    EncounterData,
+    EncounterSerializerService,
+} from '../../core/encounters/encounter-serializer.service';
 import { ModalFocusTrapDirective } from '../../shared/modal-focus-trap.directive';
 import { MODAL_ANIMATION_DIRECTIVES } from '../../shared/modal-animation.directive';
 
 @Component({
     selector: 'app-encounter-manager-modal',
-    imports: [CommonModule, LucideAngularModule, TranslatePipe, ModalFocusTrapDirective, MODAL_ANIMATION_DIRECTIVES],
+    imports: [
+        CommonModule,
+        LucideAngularModule,
+        TranslatePipe,
+        ModalFocusTrapDirective,
+        MODAL_ANIMATION_DIRECTIVES,
+    ],
     templateUrl: './encounter-manager-modal.html',
-    styleUrl: './encounter-manager-modal.scss'
+    styleUrl: './encounter-manager-modal.scss',
 })
 export class EncounterManagerModal implements OnInit {
     @Input({ required: true }) combatants: Combatant[] = [];
@@ -29,7 +56,9 @@ export class EncounterManagerModal implements OnInit {
     encounterMessageKey: string | null = null;
     encounterMessageTone: 'success' | 'error' = 'success';
 
-    @ViewChild('encounterNameInput') set encounterNameInput(input: ElementRef<HTMLInputElement> | undefined) {
+    @ViewChild('encounterNameInput') set encounterNameInput(
+        input: ElementRef<HTMLInputElement> | undefined,
+    ) {
         if (!input) return;
 
         setTimeout(() => input.nativeElement.focus());
@@ -38,9 +67,8 @@ export class EncounterManagerModal implements OnInit {
     constructor(
         protected languageService: LanguageService,
         private encounterStorage: EncounterStorageService,
-        private encounterSerializer: EncounterSerializerService
-    ) {
-    }
+        private encounterSerializer: EncounterSerializerService,
+    ) {}
 
     ngOnInit() {
         this.savedEncounters = this.encounterStorage.listEncounters(this.defaultEncounterName());
@@ -66,13 +94,16 @@ export class EncounterManagerModal implements OnInit {
     }
 
     deleteNamedEncounter(id: string) {
-        this.savedEncounters = this.encounterStorage.deleteEncounter(id, this.defaultEncounterName());
+        this.savedEncounters = this.encounterStorage.deleteEncounter(
+            id,
+            this.defaultEncounterName(),
+        );
         this.setEncounterMessage('encounter.deleted', 'success');
     }
 
     exportCurrentEncounter() {
         this.encounterSerializer.downloadEncounter(
-            this.buildEncounterData(this.encounterName.trim() || this.defaultEncounterName())
+            this.buildEncounterData(this.encounterName.trim() || this.defaultEncounterName()),
         );
     }
 
@@ -90,10 +121,11 @@ export class EncounterManagerModal implements OnInit {
 
         reader.onload = () => {
             try {
-                const fallbackName = file.name.replace(/\.json$/i, '') || this.defaultEncounterName();
+                const fallbackName =
+                    file.name.replace(/\.json$/i, '') || this.defaultEncounterName();
                 const encounter = this.encounterSerializer.parseEncounterJson(
                     String(reader.result ?? ''),
-                    fallbackName
+                    fallbackName,
                 );
 
                 this.encounterName = encounter.name;
@@ -121,7 +153,7 @@ export class EncounterManagerModal implements OnInit {
 
         return new Intl.DateTimeFormat(this.languageService.currentLanguage, {
             dateStyle: 'short',
-            timeStyle: 'short'
+            timeStyle: 'short',
         }).format(date);
     }
 
@@ -132,14 +164,10 @@ export class EncounterManagerModal implements OnInit {
     }
 
     private buildEncounterData(name: string): EncounterData {
-        return this.encounterSerializer.buildEncounter(
-            name,
-            this.combatants,
-            {
-                round: this.round,
-                activeCombatantId: this.activeCombatantId
-            }
-        );
+        return this.encounterSerializer.buildEncounter(name, this.combatants, {
+            round: this.round,
+            activeCombatantId: this.activeCombatantId,
+        });
     }
 
     private setEncounterMessage(key: string, tone: 'success' | 'error') {
@@ -151,7 +179,7 @@ export class EncounterManagerModal implements OnInit {
         const labels: Record<SupportedLanguage, string> = {
             'pt-BR': 'Encontro',
             es: 'Encuentro',
-            'en-US': 'Encounter'
+            'en-US': 'Encounter',
         };
 
         return `${labels[this.languageService.currentLanguage]} ${new Date().toLocaleDateString(this.languageService.currentLanguage)}`;

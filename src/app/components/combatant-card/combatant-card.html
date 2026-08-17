@@ -56,10 +56,7 @@
     </div>
 
     <div class="hp-bar">
-        <div
-            class="hp-fill"
-            [style.width.%]="healthPercent"
-        ></div>
+        <div class="hp-fill" [style.width.%]="healthPercent"></div>
 
         @if (temporaryHp > 0) {
             <div
@@ -78,11 +75,7 @@
             <strong>{{ combatant.currentHp }} / {{ combatant.maxHp }}</strong>
         </span>
         @if (temporaryHp > 0) {
-            <span
-                class="temp-hp-text"
-                animate.enter="temp-hp-enter"
-                animate.leave="temp-hp-leave"
-            >
+            <span class="temp-hp-text" animate.enter="temp-hp-enter" animate.leave="temp-hp-leave">
                 +{{ temporaryHp }} {{ 'combatant.tempHpShort' | translate }}
                 <button
                     class="temp-hp-clear-button"
@@ -97,11 +90,7 @@
     </div>
 
     @if (!combatant.alive) {
-        <div
-            class="defeated-status"
-            animate.enter="status-enter"
-            animate.leave="status-leave"
-        >
+        <div class="defeated-status" animate.enter="status-enter" animate.leave="status-leave">
             {{ defeatedStatusKey | translate }}
         </div>
     }
@@ -133,7 +122,9 @@
                             <div class="spell-slot-meter">
                                 <div
                                     class="spell-slot-meter-fill"
-                                    [style.width.%]="slot.total ? (slot.remaining / slot.total) * 100 : 0"
+                                    [style.width.%]="
+                                        slot.total ? (slot.remaining / slot.total) * 100 : 0
+                                    "
                                 ></div>
                             </div>
                             <strong>{{ slot.remaining }}/{{ slot.total }}</strong>
@@ -160,11 +151,7 @@
         <div class="conditions-header">
             <span>{{ 'conditions.title' | translate }}</span>
 
-            <button
-                type="button"
-                class="conditions-toggle"
-                (click)="onToggleClick($event)"
-            >
+            <button type="button" class="conditions-toggle" (click)="onToggleClick($event)">
                 ⚙
             </button>
         </div>
@@ -222,16 +209,32 @@
                                 >
                                     <button
                                         type="button"
-                                        [class.active]="isConditionDurationActive(condition.key, 'INDEFINITE')"
-                                        (click)="setConditionDuration(condition.key, 'INDEFINITE', $event)"
+                                        [class.active]="
+                                            isConditionDurationActive(condition.key, 'INDEFINITE')
+                                        "
+                                        (click)="
+                                            setConditionDuration(
+                                                condition.key,
+                                                'INDEFINITE',
+                                                $event
+                                            )
+                                        "
                                         [title]="'conditions.duration.indefinite' | translate"
                                     >
                                         ∞
                                     </button>
                                     <button
                                         type="button"
-                                        [class.active]="isConditionDurationActive(condition.key, 'TURN_START')"
-                                        (click)="setConditionDuration(condition.key, 'TURN_START', $event)"
+                                        [class.active]="
+                                            isConditionDurationActive(condition.key, 'TURN_START')
+                                        "
+                                        (click)="
+                                            setConditionDuration(
+                                                condition.key,
+                                                'TURN_START',
+                                                $event
+                                            )
+                                        "
                                         [title]="'conditions.duration.startTurn' | translate"
                                     >
                                         {{ 'conditions.duration.startTurnShort' | translate }}
@@ -240,9 +243,25 @@
                                     @for (rounds of conditionRoundOptions; track rounds) {
                                         <button
                                             type="button"
-                                            [class.active]="isConditionDurationActive(condition.key, 'ROUNDS', rounds)"
-                                            (click)="setConditionDuration(condition.key, 'ROUNDS', $event, rounds)"
-                                            [title]="'conditions.duration.rounds' | translate: { count: rounds }"
+                                            [class.active]="
+                                                isConditionDurationActive(
+                                                    condition.key,
+                                                    'ROUNDS',
+                                                    rounds
+                                                )
+                                            "
+                                            (click)="
+                                                setConditionDuration(
+                                                    condition.key,
+                                                    'ROUNDS',
+                                                    $event,
+                                                    rounds
+                                                )
+                                            "
+                                            [title]="
+                                                'conditions.duration.rounds'
+                                                    | translate: { count: rounds }
+                                            "
                                         >
                                             {{ rounds }}
                                         </button>
@@ -269,7 +288,7 @@
             [placeholder]="'combatant.damage' | translate"
             (focus)="selectNumberValue($event)"
             (click)="selectNumberValue($event)"
-            (keyup.enter)="applyDamage(damageInput.value); damageInput.value=''"
+            (keyup.enter)="applyDamage(damageInput.value); damageInput.value = ''"
             #damageInput
             [disabled]="!combatant.alive"
         />
@@ -278,7 +297,7 @@
             class="health-action-button damage-button"
             type="button"
             [disabled]="!combatant.alive"
-            (click)="applyDamage(damageInput.value); damageInput.value=''"
+            (click)="applyDamage(damageInput.value); damageInput.value = ''"
             [title]="'common.apply' | translate"
         >
             <lucide-icon [img]="CheckIcon" [size]="14"></lucide-icon>
@@ -292,14 +311,14 @@
             [placeholder]="'combatant.healing' | translate"
             (focus)="selectNumberValue($event)"
             (click)="selectNumberValue($event)"
-            (keyup.enter)="applyHealing(healingInput.value); healingInput.value=''"
+            (keyup.enter)="applyHealing(healingInput.value); healingInput.value = ''"
             #healingInput
         />
 
         <button
             class="health-action-button healing-button"
             type="button"
-            (click)="applyHealing(healingInput.value); healingInput.value=''"
+            (click)="applyHealing(healingInput.value); healingInput.value = ''"
             [title]="'common.apply' | translate"
         >
             <lucide-icon [img]="CheckIcon" [size]="14"></lucide-icon>
@@ -314,13 +333,13 @@
             #tempHpInput
             (focus)="selectNumberValue($event)"
             (click)="selectNumberValue($event)"
-            (keyup.enter)="applyTemporaryHp(tempHpInput.value); tempHpInput.value=''"
+            (keyup.enter)="applyTemporaryHp(tempHpInput.value); tempHpInput.value = ''"
         />
 
         <button
             class="health-action-button temp-hp-button"
             type="button"
-            (click)="applyTemporaryHp(tempHpInput.value); tempHpInput.value=''"
+            (click)="applyTemporaryHp(tempHpInput.value); tempHpInput.value = ''"
             [title]="'common.apply' | translate"
         >
             <lucide-icon [img]="CheckIcon" [size]="14"></lucide-icon>

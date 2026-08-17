@@ -6,7 +6,12 @@
                 <h2>{{ combatant.name }}</h2>
             </div>
 
-            <button class="close-btn" type="button" (click)="close.emit()" [title]="'common.close' | translate">
+            <button
+                class="close-btn"
+                type="button"
+                (click)="close.emit()"
+                [title]="'common.close' | translate"
+            >
                 <lucide-icon [img]="XIcon" [size]="16"></lucide-icon>
             </button>
         </header>
@@ -49,11 +54,19 @@
                     />
 
                     <div class="row-actions">
-                        <button type="button" (click)="resetRemaining(level)" [title]="'spells.resetLevel' | translate">
+                        <button
+                            type="button"
+                            (click)="resetRemaining(level)"
+                            [title]="'spells.resetLevel' | translate"
+                        >
                             <lucide-icon [img]="RotateCcwIcon" [size]="13"></lucide-icon>
                             {{ 'common.reset' | translate }}
                         </button>
-                        <button type="button" (click)="clearLevel(level)" [title]="'spells.clearLevel' | translate">
+                        <button
+                            type="button"
+                            (click)="clearLevel(level)"
+                            [title]="'spells.clearLevel' | translate"
+                        >
                             <lucide-icon [img]="EraserIcon" [size]="13"></lucide-icon>
                             {{ 'common.zero' | translate }}
                         </button>

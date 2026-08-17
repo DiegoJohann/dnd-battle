@@ -6,7 +6,7 @@ import {
     isSupportedLanguage,
     LANGUAGE_STORAGE_KEY,
     SUPPORTED_LANGUAGES,
-    SupportedLanguage
+    SupportedLanguage,
 } from './i18n';
 
 @Injectable({ providedIn: 'root' })
@@ -17,9 +17,8 @@ export class LanguageService {
 
     constructor(
         private translate: TranslateService,
-        @Inject(DOCUMENT) private document: Document
-    ) {
-    }
+        @Inject(DOCUMENT) private document: Document,
+    ) {}
 
     initialize() {
         const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);

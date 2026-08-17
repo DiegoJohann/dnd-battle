@@ -1,0 +1,76 @@
+:root {
+    color-scheme: dark;
+
+    --font-ui: Arial, Helvetica, sans-serif;
+
+    --color-bg: #100d0b;
+    --color-bg-elevated: #211a16;
+    --color-bg-elevated-rgb: 33, 26, 22;
+    --color-bg-panel: #1a1512;
+    --color-bg-control: #2b2420;
+    --color-bg-control-hover: #3a2f28;
+    --color-bg-muted: #5d5147;
+
+    --color-text: #f4eadb;
+    --color-text-muted: #d3c5b3;
+    --color-text-subtle: #a99a88;
+    --color-border: #4a3b31;
+    --color-border-soft: rgba(255, 255, 255, 0.14);
+
+    --color-danger-700: #7f1d1d;
+    --color-danger-600: #991b1b;
+    --color-danger-500: #b83b2f;
+    --color-danger-500-rgb: 184, 59, 47;
+    --color-danger-400: #d96b52;
+    --color-accent-700: #7f1d1d;
+    --color-accent-500: #b83b2f;
+    --color-player-700: #243b53;
+    --color-player-600: #315370;
+    --color-player-500: #416b8a;
+    --color-player-300: #9bb5c5;
+    --color-temp-hp: #c89b3c;
+    --color-temp-hp-strong: #e6c166;
+    --color-gold: #d6a84f;
+    --color-gold-rgb: 214, 168, 79;
+    --color-gold-soft: #f0d997;
+    --color-parchment: #d7c4a6;
+    --color-parchment-rgb: 215, 196, 166;
+
+    --gradient-danger: linear-gradient(135deg, #6f1d18, var(--color-danger-500));
+    --gradient-danger-hover: linear-gradient(
+        135deg,
+        var(--color-danger-600),
+        var(--color-danger-400)
+    );
+    --gradient-accent: linear-gradient(135deg, #6f1d18, #a93428);
+    --gradient-player: linear-gradient(135deg, var(--color-player-700), var(--color-player-500));
+    --gradient-app-bg: radial-gradient(
+        circle at top,
+        #2d2119 0%,
+        #18110e 58%,
+        var(--color-bg) 100%
+    );
+
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-pill: 999px;
+
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.4);
+    --shadow-popover: 0 12px 32px rgba(0, 0, 0, 0.7);
+    --shadow-modal: 0 18px 48px rgba(0, 0, 0, 0.6);
+
+    --duration-fast: 0.12s;
+    --duration-normal: 0.15s;
+
+    --text-xs: 0.72rem;
+    --text-sm: 0.76rem;
+    --text-sm-alt: 0.788rem;
+    --text-base: 0.82rem;
+    --text-lg: 1.2rem;
+
+    --z-popover: 1000;
+    --z-overlay: 10000;
+}

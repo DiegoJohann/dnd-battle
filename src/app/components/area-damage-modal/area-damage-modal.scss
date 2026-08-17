@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .overlay {
     padding: 20px;
 }
@@ -150,7 +152,7 @@
     font-size: 0.85rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: $bp-md) {
     .controls-grid {
         grid-template-columns: 1fr;
     }

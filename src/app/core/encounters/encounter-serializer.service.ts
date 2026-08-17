@@ -13,24 +13,19 @@ export interface EncounterData {
 }
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class EncounterSerializerService {
-    constructor(private combatantNormalizer: CombatantNormalizer) {
-    }
+    constructor(private combatantNormalizer: CombatantNormalizer) {}
 
-    buildEncounter(
-        name: string,
-        combatants: Combatant[],
-        turn: BattleTurnState
-    ): EncounterData {
+    buildEncounter(name: string, combatants: Combatant[], turn: BattleTurnState): EncounterData {
         return {
             schema: 'dnd-battle.encounter',
             version: 1,
             name,
             savedAt: new Date().toISOString(),
             combatants: this.cloneCombatants(combatants),
-            turn
+            turn,
         };
     }
 
@@ -48,8 +43,8 @@ export class EncounterSerializerService {
                 combatants: this.combatantNormalizer.normalizeCombatants(payload),
                 turn: {
                     round: 1,
-                    activeCombatantId: null
-                }
+                    activeCombatantId: null,
+                },
             };
         }
 
@@ -60,21 +55,21 @@ export class EncounterSerializerService {
         const data = payload as Partial<EncounterData> & Partial<BattleTurnState>;
         const turn = data.turn ?? {
             round: data.round,
-            activeCombatantId: data.activeCombatantId
+            activeCombatantId: data.activeCombatantId,
         };
 
         return {
             schema: 'dnd-battle.encounter',
             version: 1,
-            name: typeof data.name === 'string' && data.name.trim() ? data.name.trim() : fallbackName,
+            name:
+                typeof data.name === 'string' && data.name.trim() ? data.name.trim() : fallbackName,
             savedAt: typeof data.savedAt === 'string' ? data.savedAt : new Date().toISOString(),
             combatants: this.combatantNormalizer.normalizeCombatants(data.combatants),
             turn: {
                 round: Math.max(1, Math.floor(Number(turn.round)) || 1),
-                activeCombatantId: typeof turn.activeCombatantId === 'string'
-                    ? turn.activeCombatantId
-                    : null
-            }
+                activeCombatantId:
+                    typeof turn.activeCombatantId === 'string' ? turn.activeCombatantId : null,
+            },
         };
     }
 
@@ -90,13 +85,15 @@ export class EncounterSerializerService {
     }
 
     slugify(value: string): string {
-        return value
-            .trim()
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, '') || 'encounter';
+        return (
+            value
+                .trim()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '') || 'encounter'
+        );
     }
 
     private cloneCombatants(combatants: Combatant[]): Combatant[] {
